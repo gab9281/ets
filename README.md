@@ -8,6 +8,10 @@ EvalueTonSavoir est une plateforme open source et auto-hébergée qui poursuit l
 * Compatibilité GIFT : Créez des quiz facilement en utilisant le format GIFT, permettant une intégration transparente avec d'autres systèmes d'apprentissage.
 * Minimaliste et Efficace : Une approche bare bones pour garantir la simplicité et la facilité d'utilisation, mettant l'accent sur l'essentiel de l'apprentissage.
 
+## Contribution
+
+Actuellement, il n'y a pas de modèle établi pour les contributions. Si vous constatez quelque chose de manquant ou si vous pensez qu'une amélioration est possible, n'hésitez pas à ouvrir un issue et/ou une PR)
+
 ## Liens utiles
 
 * [Dépôt d'origine Frontend](https://github.com/ETS-PFE004-Plateforme-sondage-minitest/ETS-PFE004-EvalueTonSavoir-Frontend)
