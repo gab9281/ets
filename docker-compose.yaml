@@ -1,0 +1,52 @@
+version: '3'
+
+services: 
+
+  frontend:
+    build:
+      context: ./client
+    container_name: frontend
+    ports:
+      - "5173:5173"
+
+  backend:
+    build:
+      context: ./serveur
+    container_name: backend
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      MONGO_URI: "mongodb://mongo:27017/evaluetonsavoir" # Utilisez ceci si aucune authentification n'est requise
+      MONGO_DATABASE: evaluetonsavoir
+      EMAIL_SERVICE: gmail
+      SENDER_EMAIL: infoevaluetonsavoir@gmail.com
+      EMAIL_PSW: 'vvml wmfr dkzb vjzb'
+      JWT_SECRET: haQdgd2jp09qb897GeBZyJetC8ECSpbFJe
+      FRONTEND_URL: "http://evalsa.etsmtl.ca"
+    depends_on:
+      - mongo
+
+  nginx:
+    build: 
+      context: ./nginx
+    container_name: nginx
+    ports: 
+      - "80:80"
+    depends_on:
+       - backend
+       - frontend
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    tty: true
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+    external: false
