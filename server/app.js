@@ -4,7 +4,7 @@ const http = require("http");
 const dotenv = require('dotenv')
 
 // Import Sockets
-const { setupWebsocket } = require("./socket/socket");
+const { setupWebsocket } = require("./socket/socket.js");
 const { Server } = require("socket.io");
 
 //import routers

@@ -11,7 +11,7 @@ services:
 
   backend:
     build:
-      context: ./serveur
+      context: ./server
     container_name: backend
     ports:
       - "3000:3000"
