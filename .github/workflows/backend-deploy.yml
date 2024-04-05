@@ -2,10 +2,7 @@ name: Build and Deploy Backend
 
 on:
   push:
-    branches:
-      - pipeline
-    paths:
-      - 'server/**'
+    branches: [ pipeline ]
 
 jobs:
   build:
