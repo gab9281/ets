@@ -3,21 +3,19 @@ version: '3'
 services: 
 
   frontend:
-    build:
-      context: ./client
+    image: evaluetonsavoir/EvalueTonSavoir-frontend:latest
     container_name: frontend
     ports:
       - "5173:5173"
 
   backend:
-    build:
-      context: ./server
+    image: evaluetonsavoir/EvalueTonSavoir-backend:latest
     container_name: backend
     ports:
       - "3000:3000"
     environment:
       PORT: 3000
-      MONGO_URI: "mongodb://mongo:27017/evaluetonsavoir" # Utilisez ceci si aucune authentification n'est requise
+      MONGO_URI: "mongodb://mongo:27017/evaluetonsavoir"
       MONGO_DATABASE: evaluetonsavoir
       EMAIL_SERVICE: gmail
       SENDER_EMAIL: infoevaluetonsavoir@gmail.com
@@ -27,9 +25,9 @@ services:
     depends_on:
       - mongo
 
+  # Ce conteneur sert de routeur pour assurer le bon fonctionnement de l'application
   nginx:
-    build: 
-      context: ./nginx
+    image: evaluetonsavoir/EvalueTonSavoir-router:latest
     container_name: nginx
     ports: 
       - "80:80"
@@ -37,6 +35,7 @@ services:
        - backend
        - frontend
 
+  # Ce conteneur est la base de données principale pour l'application
   mongo:
     image: mongo
     container_name: mongo
@@ -45,6 +44,20 @@ services:
     tty: true
     volumes:
       - mongodb_data:/data/db
+    restart: unless-stopped
+
+  # Ce conteneur assure que l'application est à jour en allant chercher s'il y a des mises à jours à chaque heure
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - TZ=America/Montreal
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_DEBUG=true
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+      - WATCHTOWER_POLL_INTERVAL=7200 # every hour
     restart: unless-stopped
 
 volumes:
