@@ -2,9 +2,7 @@ name: CI/CD Pipeline for Nginx Router
 
 on:
   push:
-    branches: [ main ]
-    paths:
-      - 'nginx/**'
+    branches: [ deploy ]
 
 jobs:
   build_and_push_nginx:
