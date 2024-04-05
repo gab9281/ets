@@ -3,13 +3,13 @@ version: '3'
 services: 
 
   frontend:
-    image: evaluetonsavoir/EvalueTonSavoir-frontend:latest
+    image: evaluetonsavoir/evaluetonsavoir-frontend:latest
     container_name: frontend
     ports:
       - "5173:5173"
 
   backend:
-    image: evaluetonsavoir/EvalueTonSavoir-backend:latest
+    image: evaluetonsavoir/evaluetonsavoir-backend:latest
     container_name: backend
     ports:
       - "3000:3000"
@@ -27,7 +27,7 @@ services:
 
   # Ce conteneur sert de routeur pour assurer le bon fonctionnement de l'application
   nginx:
-    image: evaluetonsavoir/EvalueTonSavoir-router:latest
+    image: evaluetonsavoir/evaluetonsavoir-router:latest
     container_name: nginx
     ports: 
       - "80:80"
