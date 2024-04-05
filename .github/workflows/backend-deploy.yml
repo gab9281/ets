@@ -1,0 +1,22 @@
+name: Build and Deploy Backend
+
+on:
+  push:
+    branches:
+      - pipeline
+    paths:
+      - 'server/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Build and push Docker image for Backend
+      uses: docker/build-push-action@v2
+      with:
+        context: ./server
+        file: ./server/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_BACKEND_REPO }}:latest
