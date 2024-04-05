@@ -27,7 +27,7 @@ services:
 
   # Ce conteneur sert de routeur pour assurer le bon fonctionnement de l'application
   nginx:
-    image: evaluetonsavoir/evaluetonsavoir-router:latest
+    image: evaluetonsavoir/evaluetonsavoir-routeur:latest
     container_name: nginx
     ports: 
       - "80:80"
