@@ -25,7 +25,7 @@ const bodyParser = require('body-parser');
 
 const configureServer = (httpServer) => {
   return new Server(httpServer, {
-    path: "/api/socket.io",
+    path: "/socket.io",
     cors: {
       origin: "*",
       methods: ["GET", "POST"],
