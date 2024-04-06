@@ -83,7 +83,6 @@ const ManageRoom: React.FC = () => {
         setConnectingError('');
         const socket = webSocketService.connect(ENV_VARIABLES.VITE_BACKEND_URL);
         
-        console.log(socket);
         socket.on('connect', () => {
             webSocketService.createRoom();
         });
@@ -105,7 +104,6 @@ const ManageRoom: React.FC = () => {
         });
         socket.on('user-disconnected', (userId: string) => {
             setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
-            console.log(userId);
         });
         setSocket(socket);
     };
@@ -201,7 +199,7 @@ const ManageRoom: React.FC = () => {
     const showSelectedQuestion = (questionIndex: number) => {
         if (quiz?.content && quizQuestions) {
             setCurrentQuestion(quizQuestions[questionIndex]);
-            console.log(quizQuestions[questionIndex]);
+            
             if (quizMode === 'teacher') {
                 webSocketService.nextQuestion(roomName, quizQuestions[questionIndex]);
             }

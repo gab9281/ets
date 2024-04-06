@@ -42,24 +42,20 @@ const JoinRoom: React.FC = () => {
             console.log('Successfully joined the room.');
         });
         socket.on('next-question', (question: QuestionType) => {
-            console.log("NEXT MODE!")
             setQuizMode('teacher');
             setIsWaitingForTeacher(false);
             setQuestion(question);
         });
         socket.on('launch-student-mode', (questions: QuestionType[]) => {
-            console.log("STODENT MODE!")
             setQuizMode('student');
             setIsWaitingForTeacher(false);
             setQuestions(questions);
             setQuestion(questions[0]);
         });
         socket.on('end-quiz', () => {
-            console.log("END!")
             disconnect();
         });
         socket.on('join-failure', (message) => {
-            console.log("BIG FAIL!")
             console.log('Failed to join the room.');
             setConnectionError(`Erreur de connexion : ${message}`);
             setIsConnecting(false);
