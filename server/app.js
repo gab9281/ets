@@ -4,7 +4,7 @@ const http = require("http");
 const dotenv = require('dotenv')
 
 // Import Sockets
-const { setupWebsocket } = require("./socket/socket.js");
+const { setupWebsocket } = require("./socket/socket");
 const { Server } = require("socket.io");
 
 //import routers
@@ -54,7 +54,7 @@ app.use(errorHandler)
 // Start server
 async function start() {
 
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 4400;
 
   // Check DB connection
   await db.connect()

@@ -82,6 +82,7 @@ const ManageRoom: React.FC = () => {
     const createWebSocketRoom = () => {
         setConnectingError('');
         const socket = webSocketService.connect(ENV_VARIABLES.VITE_BACKEND_URL);
+        
         console.log(socket);
         socket.on('connect', () => {
             webSocketService.createRoom();
