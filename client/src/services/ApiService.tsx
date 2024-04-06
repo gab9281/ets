@@ -14,7 +14,7 @@ class ApiService {
     }
 
     private constructRequestUrl(endpoint: string): string {
-        return `${this.BASE_URL}/api${endpoint}`;
+        return `http://${this.BASE_URL}/api${endpoint}`;
     }
 
     private constructRequestHeaders(): any {
