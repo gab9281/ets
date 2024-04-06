@@ -21,7 +21,7 @@ services:
       SENDER_EMAIL: infoevaluetonsavoir@gmail.com
       EMAIL_PSW: 'vvml wmfr dkzb vjzb'
       JWT_SECRET: haQdgd2jp09qb897GeBZyJetC8ECSpbFJe
-      FRONTEND_URL: "http://evalsa.etsmtl.ca"
+      FRONTEND_URL: "http://localhost:5173"
     depends_on:
       - mongo
 
