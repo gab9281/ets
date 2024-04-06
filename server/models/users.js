@@ -2,8 +2,8 @@
 const db = require('../config/db.js');
 const bcrypt = require('bcrypt');
 const AppError = require('../middleware/AppError.js');
-const { USER_ALREADY_EXISTS } = require('../constants/errorCodes.js');
-const Folders = require('./folders.js');
+const { USER_ALREADY_EXISTS } = require('../constants/errorCodes');
+const Folders = require('../models/folders.js');
 
 class Users {
     

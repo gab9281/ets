@@ -35,6 +35,7 @@ const JoinRoom: React.FC = () => {
 
     const handleCreateSocket = () => {
         const socket = webSocketService.connect(ENV_VARIABLES.VITE_BACKEND_URL);
+
         socket.on('join-success', () => {
             setIsWaitingForTeacher(true);
             setIsConnecting(false);
