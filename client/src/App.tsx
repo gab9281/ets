@@ -27,6 +27,7 @@ const handleLogout = () => {
 }
 
 const isLoggedIn = () => {
+    console.log('check if logged in')
     return ApiService.isLogedIn();
 }
 
