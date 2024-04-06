@@ -98,25 +98,7 @@ const ManageRoom: React.FC = () => {
             console.log('Error creating room.');
         });
         
-        socket.on('user-joined', (user: UserType) => {
-            console.log("USER JOINED ! ")
-            console.log("quizMode: ", quizMode)
-
-            setUsers((prevUsers) => [...prevUsers, user]);
-
-            // This doesn't relaunch the quiz for users that connected late
-            if (quizMode === 'teacher') {
-                console.log("TEACHER")
-
-                webSocketService.nextQuestion(roomName, currentQuestion);
-
-            } else if (quizMode === 'student') {
-
-                console.log(quizQuestions);
-                webSocketService.launchStudentModeQuiz(roomName, quizQuestions);
-
-            }
-        });
+        
         socket.on('join-failure', (message) => {
             setConnectingError(message);
             setSocket(null);
@@ -127,6 +109,22 @@ const ManageRoom: React.FC = () => {
         });
         setSocket(socket);
     };
+
+    useEffect(() => {
+        // This is here to make sure the correct value is sent when user join
+        if (socket) {
+            socket.on('user-joined', (user: UserType) => {
+    
+                setUsers((prevUsers) => [...prevUsers, user]);
+    
+                if (quizMode === 'teacher') {
+                    webSocketService.nextQuestion(roomName, currentQuestion);
+                } else if (quizMode === 'student') {
+                    webSocketService.launchStudentModeQuiz(roomName, quizQuestions);
+                }
+            });
+        }
+    }, [currentQuestion, quizQuestions]);
 
     const nextQuestion = () => {
         if (!quizQuestions || !currentQuestion || !quiz?.content) return;
