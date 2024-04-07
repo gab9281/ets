@@ -176,6 +176,7 @@ const GiftCheatSheet: React.FC = () => {
             </div>
         </div>
     );
-};
+};  
+
 
 export default GiftCheatSheet;
