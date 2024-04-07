@@ -83,7 +83,6 @@ const ManageRoom: React.FC = () => {
         setConnectingError('');
         const socket = webSocketService.connect(ENV_VARIABLES.VITE_BACKEND_URL);
         
-        console.log(socket);
         socket.on('connect', () => {
             webSocketService.createRoom();
         });
@@ -98,35 +97,32 @@ const ManageRoom: React.FC = () => {
             console.log('Error creating room.');
         });
         
-        socket.on('user-joined', (user: UserType) => {
-            console.log("USER JOINED ! ")
-            console.log("quizMode: ", quizMode)
-
-            setUsers((prevUsers) => [...prevUsers, user]);
-
-            // This doesn't relaunch the quiz for users that connected late
-            if (quizMode === 'teacher') {
-                console.log("TEACHER")
-
-                webSocketService.nextQuestion(roomName, currentQuestion);
-
-            } else if (quizMode === 'student') {
-
-                console.log(quizQuestions);
-                webSocketService.launchStudentModeQuiz(roomName, quizQuestions);
-
-            }
-        });
+        
         socket.on('join-failure', (message) => {
             setConnectingError(message);
             setSocket(null);
         });
         socket.on('user-disconnected', (userId: string) => {
             setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
-            console.log(userId);
         });
         setSocket(socket);
     };
+
+    useEffect(() => {
+        // This is here to make sure the correct value is sent when user join
+        if (socket) {
+            socket.on('user-joined', (user: UserType) => {
+    
+                setUsers((prevUsers) => [...prevUsers, user]);
+    
+                if (quizMode === 'teacher') {
+                    webSocketService.nextQuestion(roomName, currentQuestion);
+                } else if (quizMode === 'student') {
+                    webSocketService.launchStudentModeQuiz(roomName, quizQuestions);
+                }
+            });
+        }
+    }, [currentQuestion, quizQuestions]);
 
     const nextQuestion = () => {
         if (!quizQuestions || !currentQuestion || !quiz?.content) return;
@@ -203,7 +199,7 @@ const ManageRoom: React.FC = () => {
     const showSelectedQuestion = (questionIndex: number) => {
         if (quiz?.content && quizQuestions) {
             setCurrentQuestion(quizQuestions[questionIndex]);
-            console.log(quizQuestions[questionIndex]);
+            
             if (quizMode === 'teacher') {
                 webSocketService.nextQuestion(roomName, quizQuestions[questionIndex]);
             }
