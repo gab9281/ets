@@ -264,12 +264,7 @@ const Dashboard: React.FC = () => {
             console.error('Error creating folder:', error);
         }
     };
-    function sleep(ms: number): Promise<void> {
-        return new Promise(resolve => {
-          setTimeout(resolve, ms);
-        });
-      }
-    
+  
     const handleDeleteFolder = async () => {
 
 

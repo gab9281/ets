@@ -9,6 +9,7 @@ const GiftCheatSheet: React.FC = () => {
         navigator.clipboard.writeText(text)
             .then(() => {
                 setCopySuccess(true); // Afficher le message de succès
+                console.log(copySuccess);
                 // Masquer le message de succès après quelques secondes
                 setTimeout(() => {
                     setCopySuccess(false);
