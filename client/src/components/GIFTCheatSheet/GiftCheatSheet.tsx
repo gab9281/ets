@@ -1,8 +1,30 @@
 // GiftCheatSheet.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import './giftCheatSheet.css';
 
 const GiftCheatSheet: React.FC = () => {
+    const [copySuccess, setCopySuccess] = useState(false);
+
+    const copyToClipboard = (text: string) => {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                setCopySuccess(true); // Afficher le message de succès
+                // Masquer le message de succès après quelques secondes
+                setTimeout(() => {
+                    setCopySuccess(false);
+                }, 3000); // 3 secondes
+            })
+            .catch((error) => {
+                console.error('Erreur lors de la copie dans le presse-papiers : ', error);
+            });
+    };
+    
+
+    const QuestionVraiFaux = "2+2 \\= 4 ? {T\n}// Vous pouvez utiliser les valeurs {T}, {F}, {TRUE} et {FALSE}";
+    const QuestionChoixMul = "Quelle ville est la capitale du Canada? {\n~ Toronto\n~ Montréal\n= Ottawa #Bonne réponse!\n}// La bonne réponse est Ottawa";
+    const QuestionChoixMulMany = "Quelles villes trouve-t-on au Canada? { \n~ %33.3% Montréal \n~ %33.3% Ottawa \n~ %33.3% Vancouver \n~ %-100% New York \n~ %-100% Paris \n#### La bonne réponse est Montréal, Ottawa et Vancouver \n} //On utilise le signe ~ pour toutes les réponses. On doit indiquer le pourcentage de chaque réponse";
+    const QuestionCourte ="Avec quoi ouvre-t-on une porte? { \n= clé \n= clef \n}// Permet de fournir plusieurs bonnes réponses. Note: Les majuscules ne sont pas prises en compte.";
+    const QuestionNum ="Question {#=Nombre\n} //OU \nQuestion {#=Nombre:Tolérance\n} //OU \nQuestion {#=PetitNombre..GrandNombre\n} // La tolérance est un pourcentage. La réponse doit être comprise entre PetitNombre et GrandNombre";
     return (
         <div className="gift-cheat-sheet">
             <h2 className="subtitle">Informations pratiques sur l'éditeur</h2>
@@ -15,9 +37,11 @@ const GiftCheatSheet: React.FC = () => {
                 <h4>1. Questions Vrai/Faux</h4>
                 <pre>
                     <code className="selectable-text">
-                        {'2+2 \\= 4 ? {T\n}// Vous pouvez utiliser les valeurs {T}, {F}, {TRUE} et {FALSE}'}
+                        {QuestionVraiFaux}
                     </code>
+
                 </pre>
+                <button onClick={() => copyToClipboard(QuestionVraiFaux)}>Copier</button>
             </div>
 
             <div className="question-type">
@@ -25,29 +49,32 @@ const GiftCheatSheet: React.FC = () => {
                 <pre>
                     <code className="question-code-block selectable-text">
                         {
-                            'Quelle ville est la capitale du Canada? {\n~ Toronto\n~ Montréal\n= Ottawa #Bonne réponse!\n}// La bonne réponse est Ottawa'
+                            QuestionChoixMul
                         }
                     </code>
                 </pre>
+                <button onClick={() => copyToClipboard(QuestionChoixMul)}>Copier</button>
             </div>
             <div className="question-type">
                 <h4>3. Questions à choix multiple avec plusieurs réponses</h4>
                 <pre>
                     <code className="question-code-block selectable-text">
                         {
-                            'Quelles villes trouve-t-on au Canada? { \n~ %33.3% Montréal \n~ %33.3% Ottawa \n~ %33.3% Vancouver \n~ %-100% New York \n~ %-100% Paris \n#### La bonne réponse est Montréal, Ottawa et Vancouver \n} //On utilise le signe ~ pour toutes les réponses. On doit indiquer le pourcentage de chaque réponse'
+                            QuestionChoixMulMany
                         }
                     </code>
                 </pre>
+                <button onClick={() => copyToClipboard(QuestionChoixMulMany)}>Copier</button>
             </div>
 
             <div className="question-type">
                 <h4>4. Questions à reponse courte</h4>
                 <pre>
                     <code className="question-code-block selectable-text">
-                        {'Avec quoi ouvre-t-on une porte? { \n= clé \n= clef \n}// Permet de fournir plusieurs bonnes réponses. Note: Les majuscules ne sont pas prises en compte.'}
+                        {QuestionCourte}
                     </code>
                 </pre>
+                <button onClick={() => copyToClipboard(QuestionCourte)}>Copier</button>
             </div>
 
             <div className="question-type">
@@ -55,10 +82,11 @@ const GiftCheatSheet: React.FC = () => {
                 <pre>
                     <code className="question-code-block selectable-text">
                         {
-                            'Question {#=Nombre\n} //OU \nQuestion {#=Nombre:Tolérance\n} //OU \nQuestion {#=PetitNombre..GrandNombre\n} // La tolérance est un pourcentage. La réponse doit être comprise entre PetitNombre et GrandNombre'
+                            QuestionNum
                         }
-                    </code>
+                    </code>                    
                 </pre>
+                <button onClick={() => copyToClipboard(QuestionNum)}>Copier</button>
             </div>
 
             <div className="question-type">
