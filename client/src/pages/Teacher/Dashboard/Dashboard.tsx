@@ -255,12 +255,21 @@ const Dashboard: React.FC = () => {
             if (folderTitle) {
                 await ApiService.createFolder(folderTitle);
                 const userFolders = await ApiService.getUserFolders();
-                setFolders(userFolders as FolderType[]);
+                setFolders(userFolders as FolderType[]);                
+                const newlyCreatedFolder = userFolders[userFolders.length - 1] as FolderType;
+                setSelectedFolder(newlyCreatedFolder._id);
+                
             }
         } catch (error) {
             console.error('Error creating folder:', error);
         }
     };
+    function sleep(ms: number): Promise<void> {
+        return new Promise(resolve => {
+          setTimeout(resolve, ms);
+        });
+      }
+    
     const handleDeleteFolder = async () => {
 
 
@@ -298,6 +307,7 @@ const Dashboard: React.FC = () => {
                 await ApiService.renameFolder(selectedFolder, newTitle);
                 const userFolders = await ApiService.getUserFolders();
                 setFolders(userFolders as FolderType[]);
+                
             }
         } catch (error) {
             console.error('Error renaming folder:', error);
