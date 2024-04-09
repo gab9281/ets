@@ -26,6 +26,11 @@
     justify-content: center;
 }
 
+.question-wrapper .katex {
+    display: block;
+    text-align: center;
+}
+
 .circle {
     height: 2.3rem;
     width: 2.3rem;

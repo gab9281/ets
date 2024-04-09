@@ -12,7 +12,8 @@ type CorrectAnswer = {
 };
 
 interface Props {
-    questionTitle: string;
+    questionTitle: string | null;
+    questionContent: string;
     correctAnswers: CorrectAnswer;
     globalFeedback?: string | undefined;
     handleOnSubmitAnswer?: (answer: number) => void;
@@ -20,7 +21,7 @@ interface Props {
 }
 
 const NumericalQuestion: React.FC<Props> = (props) => {
-    const { questionTitle, correctAnswers, showAnswer, handleOnSubmitAnswer, globalFeedback } =
+    const { questionTitle, questionContent, correctAnswers, showAnswer, handleOnSubmitAnswer, globalFeedback } =
         props;
 
     const [answer, setAnswer] = useState<number>();
@@ -33,7 +34,10 @@ const NumericalQuestion: React.FC<Props> = (props) => {
     return (
         <div className="question-wrapper">
             <div className="title mb-1 text-center center-h-align">
-                <Latex>{questionTitle}</Latex>
+                {questionTitle}
+            </div>
+            <div>
+                <Latex>{questionContent}</Latex>
             </div>
             {showAnswer ? (
                 <>
@@ -45,8 +49,8 @@ const NumericalQuestion: React.FC<Props> = (props) => {
                     <div className="answer-wrapper mb-1">
                         <TextField
                             type="number"
-                            id={questionTitle}
-                            name={questionTitle}
+                            id={questionContent}
+                            name={questionContent}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 setAnswer(e.target.valueAsNumber);
                             }}
