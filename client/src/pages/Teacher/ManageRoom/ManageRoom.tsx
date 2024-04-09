@@ -96,8 +96,16 @@ const ManageRoom: React.FC = () => {
         socket.on('create-failure', () => {
             console.log('Error creating room.');
         });
-        
-        
+        socket.on('user-joined', (user: UserType) => {
+    
+            setUsers((prevUsers) => [...prevUsers, user]);
+
+            if (quizMode === 'teacher') {
+                webSocketService.nextQuestion(roomName, currentQuestion);
+            } else if (quizMode === 'student') {
+                webSocketService.launchStudentModeQuiz(roomName, quizQuestions);
+            }
+        });
         socket.on('join-failure', (message) => {
             setConnectingError(message);
             setSocket(null);
