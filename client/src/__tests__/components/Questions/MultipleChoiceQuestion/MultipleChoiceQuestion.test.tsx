@@ -15,8 +15,7 @@ describe('MultipleChoiceQuestion', () => {
                 globalFeedback="feedback"
                 questionTitle="Test Question"
                 choices={choices}
-                handleOnSubmitAnswer={mockHandleOnSubmitAnswer}
-            />
+                handleOnSubmitAnswer={mockHandleOnSubmitAnswer} questionContent={''}            />
         );
     });
 

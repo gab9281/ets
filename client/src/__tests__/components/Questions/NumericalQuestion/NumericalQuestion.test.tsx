@@ -18,7 +18,7 @@ describe('NumericalQuestion Component', () => {
     };
 
     beforeEach(() => {
-        render(<NumericalQuestion {...sampleProps} />);
+        render(<NumericalQuestion questionContent={''} {...sampleProps} />);
     });
 
     it('renders correctly', () => {
