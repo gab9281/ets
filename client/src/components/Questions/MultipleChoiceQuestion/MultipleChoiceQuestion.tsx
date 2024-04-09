@@ -12,7 +12,8 @@ type Choices = {
 };
 
 interface Props {
-    questionTitle: string;
+    questionTitle: string | null;
+    questionContent: string;
     choices: Choices[];
     globalFeedback?: string | undefined;
     handleOnSubmitAnswer?: (answer: string) => void;
@@ -20,7 +21,7 @@ interface Props {
 }
 
 const MultipleChoiceQuestion: React.FC<Props> = (props) => {
-    const { questionTitle, choices, showAnswer, handleOnSubmitAnswer, globalFeedback } = props;
+    const { questionTitle, questionContent, choices, showAnswer, handleOnSubmitAnswer, globalFeedback } = props;
     const [answer, setAnswer] = useState<string>();
 
     const handleOnClickAnswer = (choice: string) => {
@@ -32,7 +33,10 @@ const MultipleChoiceQuestion: React.FC<Props> = (props) => {
     return (
         <div className="question-container">
             <div className="title mb-1 text-center align-h-center">
-                <Latex>{questionTitle}</Latex>
+                {questionTitle}
+            </div>
+            <div className="question content">
+                <Latex>{questionContent}</Latex>
             </div>
             <div className="choices-wrapper mb-1">
                 {choices.map((choice, i) => {
