@@ -60,7 +60,7 @@ services:
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_DEBUG=true
       - WATCHTOWER_INCLUDE_RESTARTING=true
-      - WATCHTOWER_POLL_INTERVAL=7200 # every hour
+      - WATCHTOWER_SCHEDULE=0 0 5 * * * # At 5 am everyday
     restart: always
 
 volumes:
