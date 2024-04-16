@@ -1,3 +1,7 @@
+[![CI/CD Pipeline for Frontend](https://github.com/louis-antoine-etsmtl/EvalueTonSavoir/actions/workflows/frontend-deploy.yml/badge.svg)](https://github.com/louis-antoine-etsmtl/EvalueTonSavoir/actions/workflows/frontend-deploy.yml)
+[![CI/CD Pipeline for Backend](https://github.com/louis-antoine-etsmtl/EvalueTonSavoir/actions/workflows/backend-deploy.yml/badge.svg)](https://github.com/louis-antoine-etsmtl/EvalueTonSavoir/actions/workflows/backend-deploy.yml)
+[![CI/CD Pipeline for Nginx Router](https://github.com/louis-antoine-etsmtl/EvalueTonSavoir/actions/workflows/deploy.yml/badge.svg)](https://github.com/louis-antoine-etsmtl/EvalueTonSavoir/actions/workflows/deploy.yml)
+
 # EvalueTonSavoir 
 
 EvalueTonSavoir est une plateforme open source et auto-hébergée qui poursuit le développement du code provenant de https://github.com/ETS-PFE004-Plateforme-sondage-minitest. Cette plateforme minimaliste est conçue comme un outil d'apprentissage et d'enseignement, offrant une solution simple et efficace pour la création de quiz utilisant le format GIFT, similaire à Moodle.

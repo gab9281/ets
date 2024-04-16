@@ -14,7 +14,7 @@ describe('TrueFalseQuestion Component', () => {
     };
 
     beforeEach(() => {
-        render(<TrueFalseQuestion {...sampleProps} />);
+        render(<TrueFalseQuestion questionContent={''} {...sampleProps} />);
     });
 
     it('renders correctly', () => {

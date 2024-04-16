@@ -7,6 +7,7 @@ services:
     container_name: frontend
     ports:
       - "5173:5173"
+    restart: always
 
   backend:
     image: evaluetonsavoir/evaluetonsavoir-backend:latest
@@ -24,6 +25,7 @@ services:
       FRONTEND_URL: "http://localhost:5173"
     depends_on:
       - mongo
+    restart: always
 
   # Ce conteneur sert de routeur pour assurer le bon fonctionnement de l'application
   nginx:
@@ -34,6 +36,7 @@ services:
     depends_on:
        - backend
        - frontend
+    restart: always
 
   # Ce conteneur est la base de données principale pour l'application
   mongo:
@@ -44,7 +47,7 @@ services:
     tty: true
     volumes:
       - mongodb_data:/data/db
-    restart: unless-stopped
+    restart: always
 
   # Ce conteneur assure que l'application est à jour en allant chercher s'il y a des mises à jours à chaque heure
   watchtower:
@@ -57,8 +60,8 @@ services:
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_DEBUG=true
       - WATCHTOWER_INCLUDE_RESTARTING=true
-      - WATCHTOWER_POLL_INTERVAL=7200 # every hour
-    restart: unless-stopped
+      - WATCHTOWER_SCHEDULE=0 0 5 * * * # At 5 am everyday
+    restart: always
 
 volumes:
   mongodb_data:
