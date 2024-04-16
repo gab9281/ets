@@ -30,7 +30,8 @@ const Question: React.FC<QuestionProps> = ({
         case 'TF':
             questionTypeComponent = (
                 <TrueFalseQuestion
-                    questionContent={question.stem}
+                    questionTitle={question.title}
+                    questionContent={question.stem.text}
                     correctAnswer={question.isTrue}
                     handleOnSubmitAnswer={handleOnSubmitAnswer}
                     showAnswer={showAnswer}
@@ -41,7 +42,8 @@ const Question: React.FC<QuestionProps> = ({
         case 'MC':
             questionTypeComponent = (
                 <MultipleChoiceQuestion
-                    questionContent={question.stem}
+                    questionTitle={question.title}
+                    questionContent={question.stem.text}
                     choices={question.choices}
                     handleOnSubmitAnswer={handleOnSubmitAnswer}
                     showAnswer={showAnswer}
@@ -54,7 +56,8 @@ const Question: React.FC<QuestionProps> = ({
                 if (!Array.isArray(question.choices)) {
                     questionTypeComponent = (
                         <NumericalQuestion
-                            questionContent={question.stem}
+                            questionTitle={question.title}
+                            questionContent={question.stem.text}
                             correctAnswers={question.choices}
                             handleOnSubmitAnswer={handleOnSubmitAnswer}
                             showAnswer={showAnswer}
@@ -64,7 +67,8 @@ const Question: React.FC<QuestionProps> = ({
                 } else {
                     questionTypeComponent = (
                         <NumericalQuestion
-                            questionContent={question.stem}
+                            questionTitle={question.title}
+                            questionContent={question.stem.text}
                             correctAnswers={question.choices[0].text}
                             handleOnSubmitAnswer={handleOnSubmitAnswer}
                             showAnswer={showAnswer}
@@ -77,7 +81,8 @@ const Question: React.FC<QuestionProps> = ({
         case 'Short':
             questionTypeComponent = (
                 <ShortAnswerQuestion
-                    questionContent={question.stem}
+                    questionTitle={question.title}
+                    questionContent={question.stem.text}
                     choices={question.choices}
                     handleOnSubmitAnswer={handleOnSubmitAnswer}
                     showAnswer={showAnswer}
