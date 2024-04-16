@@ -9,6 +9,7 @@ interface TextTypeOptions extends TemplateOptions {
 function formatLatex(text: string): string {
     return text
         .replace(/\$\$(.*?)\$\$/g, (_, inner) => katex.renderToString(inner, { displayMode: true }))
+        .replace(/\$(.*?)\$/g, (_, inner) => katex.renderToString(inner, { displayMode: false }))
         .replace(/\\\[(.*?)\\\]/g, (_, inner) => katex.renderToString(inner, { displayMode: true }))
         .replace(/\\\((.*?)\\\)/g, (_, inner) =>
             katex.renderToString(inner, { displayMode: false })

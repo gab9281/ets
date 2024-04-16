@@ -1,8 +1,10 @@
 // MultipleChoiceQuestion.tsx
-import React, { useState } from 'react';
-import Latex from 'react-latex';
+import React, { useEffect, useState } from 'react';
 import '../questionStyle.css';
 import { Button } from '@mui/material';
+import TextType from '../../GiftTemplate/templates/TextType';
+import { TextFormat } from '../../GiftTemplate/templates/types';
+import Latex from 'react-latex';
 
 type Choices = {
     feedback: { format: string; text: string } | null;
@@ -12,8 +14,7 @@ type Choices = {
 };
 
 interface Props {
-    questionTitle: string | null;
-    questionContent: string;
+    questionContent: TextFormat;
     choices: Choices[];
     globalFeedback?: string | undefined;
     handleOnSubmitAnswer?: (answer: string) => void;
@@ -21,22 +22,24 @@ interface Props {
 }
 
 const MultipleChoiceQuestion: React.FC<Props> = (props) => {
-    const { questionTitle, questionContent, choices, showAnswer, handleOnSubmitAnswer, globalFeedback } = props;
+    const { questionContent, choices, showAnswer, handleOnSubmitAnswer, globalFeedback } = props;
     const [answer, setAnswer] = useState<string>();
+
+    useEffect(() => {
+        setAnswer(undefined);
+    }, [questionContent]);
 
     const handleOnClickAnswer = (choice: string) => {
         setAnswer(choice);
     };
 
+
     const alpha = Array.from(Array(26)).map((_e, i) => i + 65);
     const alphabet = alpha.map((x) => String.fromCharCode(x));
     return (
         <div className="question-container">
-            <div className="title mb-1 text-center align-h-center">
-                {questionTitle}
-            </div>
             <div className="question content">
-                <Latex>{questionContent}</Latex>
+                <div dangerouslySetInnerHTML={{ __html: TextType({text: questionContent}) }} />
             </div>
             <div className="choices-wrapper mb-1">
                 {choices.map((choice, i) => {

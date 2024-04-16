@@ -1,8 +1,9 @@
 // ShortAnswerQuestion.tsx
 import React, { useState } from 'react';
-import Latex from 'react-latex';
 import '../questionStyle.css';
 import { Button, TextField } from '@mui/material';
+import TextType from '../../GiftTemplate/templates/TextType';
+import { TextFormat } from '../../GiftTemplate/templates/types';
 
 type Choices = {
     feedback: { format: string; text: string } | null;
@@ -12,8 +13,7 @@ type Choices = {
 };
 
 interface Props {
-    questionTitle: string | null;
-    questionContent: string;
+    questionContent: TextFormat;
     choices: Choices[];
     globalFeedback?: string | undefined;
     handleOnSubmitAnswer?: (answer: string) => void;
@@ -21,16 +21,13 @@ interface Props {
 }
 
 const ShortAnswerQuestion: React.FC<Props> = (props) => {
-    const { questionTitle, questionContent, choices, showAnswer, handleOnSubmitAnswer, globalFeedback } = props;
+    const { questionContent, choices, showAnswer, handleOnSubmitAnswer, globalFeedback } = props;
     const [answer, setAnswer] = useState<string>();
 
     return (
         <div className="question-wrapper">
-            <div className="title mb-1 text-center center-h-align">
-                {questionTitle}
-            </div>
             <div className="question content">
-                <Latex>{questionContent}</Latex>
+                <div dangerouslySetInnerHTML={{ __html: TextType({text: questionContent}) }} />
             </div>
             {showAnswer ? (
                 <>
@@ -46,8 +43,8 @@ const ShortAnswerQuestion: React.FC<Props> = (props) => {
                     <div className="answer-wrapper mb-1">
                         <TextField
                             type="text"
-                            id={questionContent}
-                            name={questionContent}
+                            id={questionContent.text}
+                            name={questionContent.text}
                             onChange={(e) => {
                                 setAnswer(e.target.value);
                             }}

@@ -1,12 +1,12 @@
 // TrueFalseQuestion.tsx
 import React, { useState, useEffect } from 'react';
-import Latex from 'react-latex';
 import '../questionStyle.css';
 import { Button } from '@mui/material';
+import TextType from '../../GiftTemplate/templates/TextType';
+import { TextFormat } from '../../GiftTemplate/templates/types';
 
 interface Props {
-    questionTitle: string | null;
-    questionContent: string;
+    questionContent: TextFormat;
     correctAnswer: boolean;
     globalFeedback?: string | undefined;
     handleOnSubmitAnswer?: (answer: boolean) => void;
@@ -14,23 +14,20 @@ interface Props {
 }
 
 const TrueFalseQuestion: React.FC<Props> = (props) => {
-    const { questionTitle, questionContent, correctAnswer, showAnswer, handleOnSubmitAnswer, globalFeedback } =
+    const { questionContent, correctAnswer, showAnswer, handleOnSubmitAnswer, globalFeedback } =
         props;
     const [answer, setAnswer] = useState<boolean | undefined>(undefined);
 
     useEffect(() => {
         setAnswer(undefined);
-    }, [questionTitle]);
+    }, [questionContent]);
 
     const selectedTrue = answer ? 'selected' : '';
     const selectedFalse = answer !== undefined && !answer ? 'selected' : '';
     return (
         <div className="question-container">
-            <div className="title mb-1">
-                {questionTitle}
-            </div>
             <div className="question content">
-                <Latex>{questionContent}</Latex>
+            <div dangerouslySetInnerHTML={{ __html: TextType({text: questionContent}) }} />
             </div>
             <div className="choices-wrapper mb-1">
                 <Button
