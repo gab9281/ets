@@ -1,4 +1,4 @@
-# Plan d'itération 1
+# Plan d'itération 2
 
 ## Étapes jalons
 

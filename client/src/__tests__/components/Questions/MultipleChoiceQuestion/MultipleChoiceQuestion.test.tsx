@@ -13,9 +13,8 @@ describe('MultipleChoiceQuestion', () => {
         render(
             <MultipleChoiceQuestion
                 globalFeedback="feedback"
-                questionTitle="Test Question"
                 choices={choices}
-                handleOnSubmitAnswer={mockHandleOnSubmitAnswer} questionContent={''}            />
+                handleOnSubmitAnswer={mockHandleOnSubmitAnswer} questionContent={{text: '', format: 'plain'}}            />
         );
     });
 

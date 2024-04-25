@@ -34,7 +34,7 @@ describe('ShortAnswerQuestion Component', () => {
     };
 
     beforeEach(() => {
-        render(<ShortAnswerQuestion questionContent={''} {...sampleProps} />);
+        render(<ShortAnswerQuestion questionContent={{text: '', format: 'plain'}} {...sampleProps} />);
     });
 
     it('renders correctly', () => {
