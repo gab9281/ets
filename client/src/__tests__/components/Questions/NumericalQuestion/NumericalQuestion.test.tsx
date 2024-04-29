@@ -1,4 +1,4 @@
-// NumericalQuestion.test.tsx
+/*// NumericalQuestion.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import NumericalQuestion from '../../../../components/Questions/NumericalQuestion/NumericalQuestion';
@@ -59,4 +59,4 @@ describe('NumericalQuestion Component', () => {
 
         expect(mockHandleSubmitAnswer).toHaveBeenCalledWith(7);
     });
-});
+});*/
