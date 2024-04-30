@@ -137,14 +137,19 @@ const GiftCheatSheet: React.FC = () => {
             </div>
 
             <div className="question-type">
-                <h4> 8. LaTeX </h4>
+                <h4> 8. LaTeX et Markdown</h4>
                 <p>
-                    Le format LaTeX est supporté dans cette application. Vous devez cependant penser
+                    Les format LaTeX et markdown sont supportés dans cette application. Vous devez cependant penser
                     à 'échapper' les caractères spéciaux mentionnés plus haut.
                 </p>
                 <p>Exemple d'équation:</p>
                 <pre>
-                    <code className="question-code-block">{'$$x\\= \\frac\\{y^2\\}\\{4\\}$$'}</code>
+                    <code className="question-code-block selectable-text">{'$$x\\= \\frac\\{y^2\\}\\{4\\}$$'}</code>
+                    <code className="question-code-block selectable-text">{'\n$x\\= \\frac\\{y^2\\}\\{4\\}$'}</code>
+                </pre>
+                <p>Exemple de texte Markdown:</p>
+                <pre>
+                    <code className="question-code-block selectable-text">{'[markdown]Grâce à la balise markdown, Il est possible d\'insérer du texte *italique*, **gras**, du `code` et bien plus.'}</code>
                 </pre>
             </div>
 

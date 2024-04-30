@@ -1,8 +1,9 @@
 // NumericalQuestion.tsx
 import React, { useState } from 'react';
-import Latex from 'react-latex';
 import '../questionStyle.css';
 import { Button, TextField } from '@mui/material';
+import TextType from '../../GiftTemplate/templates/TextType';
+import { TextFormat } from '../../GiftTemplate/templates/types';
 
 type CorrectAnswer = {
     numberHigh?: number;
@@ -12,8 +13,7 @@ type CorrectAnswer = {
 };
 
 interface Props {
-    questionTitle: string | null;
-    questionContent: string;
+    questionContent: TextFormat;
     correctAnswers: CorrectAnswer;
     globalFeedback?: string | undefined;
     handleOnSubmitAnswer?: (answer: number) => void;
@@ -21,7 +21,7 @@ interface Props {
 }
 
 const NumericalQuestion: React.FC<Props> = (props) => {
-    const { questionTitle, questionContent, correctAnswers, showAnswer, handleOnSubmitAnswer, globalFeedback } =
+    const { questionContent, correctAnswers, showAnswer, handleOnSubmitAnswer, globalFeedback } =
         props;
 
     const [answer, setAnswer] = useState<number>();
@@ -33,11 +33,8 @@ const NumericalQuestion: React.FC<Props> = (props) => {
 
     return (
         <div className="question-wrapper">
-            <div className="title mb-1 text-center center-h-align">
-                {questionTitle}
-            </div>
             <div>
-                <Latex>{questionContent}</Latex>
+                <div dangerouslySetInnerHTML={{ __html: TextType({text: questionContent}) }} />
             </div>
             {showAnswer ? (
                 <>
@@ -49,8 +46,8 @@ const NumericalQuestion: React.FC<Props> = (props) => {
                     <div className="answer-wrapper mb-1">
                         <TextField
                             type="number"
-                            id={questionContent}
-                            name={questionContent}
+                            id={questionContent.text}
+                            name={questionContent.text}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 setAnswer(e.target.valueAsNumber);
                             }}

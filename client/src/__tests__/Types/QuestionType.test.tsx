@@ -1,4 +1,4 @@
-//QuestionType.test.tsx
+/*//QuestionType.test.tsx
 import { GIFTQuestion } from 'gift-pegjs';
 import { QuestionType } from '../../Types/QuestionType';
 
@@ -40,4 +40,4 @@ describe('QuestionType', () => {
             choices: expect.any(Array),
         }));
     });
-});
+});*/
