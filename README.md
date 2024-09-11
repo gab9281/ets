@@ -1,6 +1,6 @@
-[![CI/CD Pipeline for Frontend](https://github.com/louis-antoine-etsmtl/EvalueTonSavoir/actions/workflows/frontend-deploy.yml/badge.svg)](https://github.com/louis-antoine-etsmtl/EvalueTonSavoir/actions/workflows/frontend-deploy.yml)
-[![CI/CD Pipeline for Backend](https://github.com/louis-antoine-etsmtl/EvalueTonSavoir/actions/workflows/backend-deploy.yml/badge.svg)](https://github.com/louis-antoine-etsmtl/EvalueTonSavoir/actions/workflows/backend-deploy.yml)
-[![CI/CD Pipeline for Nginx Router](https://github.com/louis-antoine-etsmtl/EvalueTonSavoir/actions/workflows/deploy.yml/badge.svg)](https://github.com/louis-antoine-etsmtl/EvalueTonSavoir/actions/workflows/deploy.yml)
+[![CI/CD Pipeline for Frontend](https://github.com/ets-cfuhrman-pfe/EvalueTonSavoir/actions/workflows/frontend-deploy.yml/badge.svg)](https://github.com/ets-cfuhrman-pfe/EvalueTonSavoir/actions/workflows/frontend-deploy.yml)
+[![CI/CD Pipeline for Backend](https://github.com/ets-cfuhrman-pfe/EvalueTonSavoir/actions/workflows/backend-deploy.yml/badge.svg)](https://github.com/ets-cfuhrman-pfe/EvalueTonSavoir/actions/workflows/backend-deploy.yml)
+[![CI/CD Pipeline for Nginx Router](https://github.com/ets-cfuhrman-pfe/EvalueTonSavoir/actions/workflows/deploy.yml/badge.svg)](https://github.com/ets-cfuhrman-pfe/EvalueTonSavoir/actions/workflows/deploy.yml)
 
 # EvalueTonSavoir 
 
