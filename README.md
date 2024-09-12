@@ -20,7 +20,7 @@ Actuellement, il n'y a pas de modèle établi pour les contributions. Si vous co
 
 * [Dépôt d'origine Frontend](https://github.com/ETS-PFE004-Plateforme-sondage-minitest/ETS-PFE004-EvalueTonSavoir-Frontend)
 * [Dépôt d'origine Backend](https://github.com/ETS-PFE004-Plateforme-sondage-minitest/ETS-PFE004-EvalueTonSavoir-Backend)
-* [Documentation (Wiki)](https://github.com/louis-antoine-etsmtl/EvalueTonSavoir/wiki)
+* [Documentation (Wiki)](https://github.com/ets-cfuhrman-pfe/EvalueTonSavoir/wiki)
 
 ## License
 

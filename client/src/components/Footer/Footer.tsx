@@ -16,7 +16,7 @@ const Footer: React.FC<FooterProps> = ({ }) => {
                 <span className="divider">|</span>
                 <a href="https://github.com/louis-antoine-etsmtl/ETS-PFE042-EvalueTonSavoir-Backend">Backend GitHub</a>
                 <span className="divider">|</span>
-                <a href="https://github.com/louis-antoine-etsmtl/EvalueTonSavoir/wiki">Wiki GitHub</a>
+                <a href="https://github.com/ets-cfuhrman-pfe/EvalueTonSavoir/wiki">Wiki GitHub</a>
             </div>
         </div>
     );
