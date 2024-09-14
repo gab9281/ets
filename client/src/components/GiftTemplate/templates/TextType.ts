@@ -16,17 +16,8 @@ function formatLatex(text: string): string {
         );
 }
 
-function escapeHTML(text: string) {
-    return text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
-
 export default function TextType({ text }: TextTypeOptions): string {
-    const formatText = formatLatex(escapeHTML(text.text.trim()));
+    const formatText = formatLatex(text.text.trim());  // latex needs pure "&", ">", etc. Must not be escaped
 
     switch (text.format) {
         case 'moodle':
