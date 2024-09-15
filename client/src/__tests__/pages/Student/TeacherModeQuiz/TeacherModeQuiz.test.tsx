@@ -1,9 +1,10 @@
 //TeacherModeQuiz.test.tsx
-import { render, screen, fireEvent} from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { GIFTQuestion } from 'gift-pegjs';
 
 import TeacherModeQuiz from '../../../../components/TeacherModeQuiz/TeacherModeQuiz';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('TeacherModeQuiz', () => {
     const mockQuestion: GIFTQuestion = {
@@ -24,11 +25,13 @@ describe('TeacherModeQuiz', () => {
 
     beforeEach(() => {
         render(
-            <TeacherModeQuiz
-                questionInfos={{ question: mockQuestion }}
-                submitAnswer={mockSubmitAnswer}
-                disconnectWebSocket={mockDisconnectWebSocket}
-            />
+            <MemoryRouter>
+                <TeacherModeQuiz
+                    questionInfos={{ question: mockQuestion }}
+                    submitAnswer={mockSubmitAnswer}
+                    disconnectWebSocket={mockDisconnectWebSocket}
+                />
+            </MemoryRouter>
         );
     });
 
@@ -37,7 +40,7 @@ describe('TeacherModeQuiz', () => {
         expect(screen.getByText('Sample Question')).toBeInTheDocument();
         expect(screen.getByText('Option A')).toBeInTheDocument();
         expect(screen.getByText('Option B')).toBeInTheDocument();
-        expect(screen.getByText('Déconnexion')).toBeInTheDocument();
+        expect(screen.getByText('Quitter')).toBeInTheDocument();
         expect(screen.getByText('Répondre')).toBeInTheDocument();
     });
 
@@ -50,7 +53,7 @@ describe('TeacherModeQuiz', () => {
     });
 
     test('handles disconnect button click', () => {
-        fireEvent.click(screen.getByText('Déconnexion'));
+        fireEvent.click(screen.getByText('Quitter'));
 
         expect(mockDisconnectWebSocket).toHaveBeenCalled();
     });

@@ -45,9 +45,8 @@ const MultipleChoiceQuestion: React.FC<Props> = (props) => {
                 {choices.map((choice, i) => {
                     const selected = answer === choice.text.text ? 'selected' : '';
                     return (
-                        <div className="choice-container">
-                            <Button
-                                key={choice.text.text + i}
+                        <div key={choice.text.text + i} className="choice-container">
+                                <Button
                                 variant="text"
                                 className="button-wrapper"
                                 onClick={() => !showAnswer && handleOnClickAnswer(choice.text.text)}
