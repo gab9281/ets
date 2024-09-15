@@ -21,6 +21,8 @@ const GIFTTemplatePreview: React.FC<GIFTTemplatePreviewProps> = ({
         try {
             let previewHTML = '';
             questions.forEach((giftQuestion) => {
+                // TODO : afficher un message que les images spécifiées par <img> sont dépréciées et qu'il faut utiliser [markdown] et la syntaxe ![alt](url)
+
                 // const isImage = item.includes('<img');
                 // if (isImage) {
                 //     const imageUrlMatch = item.match(/<img[^>]+>/i);
