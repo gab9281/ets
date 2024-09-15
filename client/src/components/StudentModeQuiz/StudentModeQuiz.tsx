@@ -4,7 +4,7 @@ import QuestionComponent from '../Questions/Question';
 
 import '../../pages/Student/JoinRoom/joinRoom.css';
 import { QuestionType } from '../../Types/QuestionType';
-import { QuestionService } from '../../services/QuestionService';
+// import { QuestionService } from '../../services/QuestionService';
 import { Button } from '@mui/material';
 import QuestionNavigation from '../QuestionNavigation/QuestionNavigation';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
@@ -23,16 +23,14 @@ const StudentModeQuiz: React.FC<StudentModeQuizProps> = ({
 }) => {
     const [questionInfos, setQuestion] = useState<QuestionType>(questions[0]);
     const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
-    const [imageUrl, setImageUrl] = useState('');
+    // const [imageUrl, setImageUrl] = useState('');
 
     const previousQuestion = () => {
         setQuestion(questions[Number(questionInfos.question?.id) - 2]);
         setIsAnswerSubmitted(false);
     };
 
-    useEffect(() => {
-        setImageUrl(QuestionService.getImageSource(questionInfos.image));
-    }, [questionInfos]);
+    useEffect(() => {}, [questionInfos]);
 
     const nextQuestion = () => {
         setQuestion(questions[Number(questionInfos.question?.id)]);
@@ -68,7 +66,7 @@ const StudentModeQuiz: React.FC<StudentModeQuizProps> = ({
                     handleOnSubmitAnswer={handleOnSubmitAnswer}
                     question={questionInfos.question}
                     showAnswer={isAnswerSubmitted}
-                    imageUrl={imageUrl}
+                    // imageUrl={imageUrl}
                     />
                 <div className="center-h-align mt-1/2">
                     <div className="w-12">

@@ -16,23 +16,15 @@ function formatLatex(text: string): string {
         );
 }
 
-function escapeHTML(text: string) {
-    return text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
-
 export default function TextType({ text }: TextTypeOptions): string {
-    const formatText = formatLatex(escapeHTML(text.text.trim()));
+    const formatText = formatLatex(text.text.trim());
 
     switch (text.format) {
         case 'moodle':
         case 'plain':
             return formatText.replace(/(?:\r\n|\r|\n)/g, '<br>');
         case 'html':
+            // Strip outer paragraph tags (not a great approach with regex)
             return formatText.replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2');
         case 'markdown':
             return (
@@ -42,6 +34,6 @@ export default function TextType({ text }: TextTypeOptions): string {
                     .replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2')
             );
         default:
-            return ``;
+            throw new Error(`Unsupported text format: ${text.format}`);
     }
 }

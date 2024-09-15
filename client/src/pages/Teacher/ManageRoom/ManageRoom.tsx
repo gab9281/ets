@@ -5,7 +5,7 @@ import { Socket } from 'socket.io-client';
 import { parse } from 'gift-pegjs';
 import { QuestionType } from '../../../Types/QuestionType';
 import LiveResultsComponent from '../../../components/LiveResults/LiveResults';
-import { QuestionService } from '../../../services/QuestionService';
+// import { QuestionService } from '../../../services/QuestionService';
 import webSocketService from '../../../services/WebsocketService';
 import { QuizType } from '../../../Types/QuizType';
 
@@ -160,10 +160,7 @@ const ManageRoom: React.FC = () => {
         const parsedQuestions = [] as QuestionType[];
 
         quizQuestionArray.forEach((question, index) => {
-            const imageTag = QuestionService.getImage(question);
-            const imageUrl = QuestionService.getImageSource(imageTag);
-            question = QuestionService.ignoreImgTags(question);
-            parsedQuestions.push({ question: parse(question)[0], image: imageUrl });
+            parsedQuestions.push({ question: parse(question)[0] });
             parsedQuestions[index].question.id = (index + 1).toString();
         });
         if (parsedQuestions.length === 0) return null;
@@ -285,7 +282,6 @@ const ManageRoom: React.FC = () => {
 
                                 {currentQuestion && (
                                     <Question
-                                        imageUrl={currentQuestion?.image}
                                         showAnswer={false}
                                         question={currentQuestion?.question}
                                     />

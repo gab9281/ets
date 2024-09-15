@@ -9,12 +9,12 @@ import TrueFalse from './TrueFalse';
 import Error from './Error';
 import {
     GIFTQuestion,
-    Category as CategoryType,
-    Description as DescriptionType,
+    // Category as CategoryType,
+    // Description as DescriptionType,
     MultipleChoice as MultipleChoiceType,
     Numerical as NumericalType,
     ShortAnswer as ShortAnswerType,
-    Essay as EssayType,
+    // Essay as EssayType,
     TrueFalse as TrueFalseType,
     Matching as MatchingType,
     DisplayOptions
@@ -29,12 +29,13 @@ export default function Template(
     Object.assign(state, options);
 
     switch (type) {
-        case 'Category':
-            return Category({ ...(keys as CategoryType) });
-        case 'Description':
-            return Description({
-                ...(keys as DescriptionType)
-            });
+        // Category, Description, Essay are not supported?
+        // case 'Category':
+        //     return Category({ ...(keys as CategoryType) });
+        // case 'Description':
+        //     return Description({
+        //         ...(keys as DescriptionType)
+        //     });
         case 'MC':
             return MultipleChoice({
                 ...(keys as MultipleChoiceType)
@@ -45,13 +46,15 @@ export default function Template(
             return ShortAnswer({
                 ...(keys as ShortAnswerType)
             });
-        case 'Essay':
-            return Essay({ ...(keys as EssayType) });
+        // case 'Essay':
+        //     return Essay({ ...(keys as EssayType) });
         case 'TF':
             return TrueFalse({ ...(keys as TrueFalseType) });
         case 'Matching':
             return Matching({ ...(keys as MatchingType) });
         default:
+            // TODO: throw error for unsupported question types?
+            // throw new Error(`Unsupported question type: ${type}`);
             return ``;
     }
 }

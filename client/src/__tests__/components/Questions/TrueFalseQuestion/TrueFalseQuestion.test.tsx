@@ -1,10 +1,11 @@
-/*// TrueFalseQuestion.test.tsx
+// TrueFalseQuestion.test.tsx
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TrueFalseQuestion from '../../../../components/Questions/TrueFalseQuestion/TrueFalseQuestion';
 
 describe('TrueFalseQuestion Component', () => {
     const mockHandleSubmitAnswer = jest.fn();
+    const sampleStem = 'Sample question stem';
 
     const sampleProps = {
         questionTitle: 'Sample True/False Question',
@@ -14,15 +15,13 @@ describe('TrueFalseQuestion Component', () => {
     };
 
     beforeEach(() => {
-        render(<TrueFalseQuestion questionContent={{text: '', format: 'plain'}} {...sampleProps} />);
+        render(<TrueFalseQuestion questionContent={{text: sampleStem, format: 'plain'}} {...sampleProps} />);
     });
 
     it('renders correctly', () => {
-        expect(screen.getByText('Sample True/False Question')).toBeInTheDocument();
-
+        expect(screen.getByText(sampleStem)).toBeInTheDocument();
         expect(screen.getByText('Vrai')).toBeInTheDocument();
         expect(screen.getByText('Faux')).toBeInTheDocument();
-
         expect(screen.getByText('Répondre')).toBeInTheDocument();
     });
 
@@ -61,4 +60,4 @@ describe('TrueFalseQuestion Component', () => {
 
         expect(mockHandleSubmitAnswer).toHaveBeenCalledWith(false);
     });
-});*/
+});
