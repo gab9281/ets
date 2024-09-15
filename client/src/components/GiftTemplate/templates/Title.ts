@@ -45,7 +45,7 @@ export default function Title({ type, title }: TitleOptions): string {
       ${
           title !== null
               ? `<span style="${QuestionTitle}">${title}</span>`
-              : `<span style="${OptionalTitle}">Titre optionnel...</span>`
+              : `<span style="${OptionalTitle}"><em>(Sans titre)</em></span>`
       }
     </span>
     <span style="${QuestionTypeContainer} margin-bottom: 10px;">

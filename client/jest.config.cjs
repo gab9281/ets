@@ -3,7 +3,7 @@
 module.exports = {
     roots: ['<rootDir>/src'],
     transform: {
-        '^.+\\.(ts|tsx)$': 'ts-jest',
+        '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.json' }],
         '^.+\\.(js|jsx)$': 'babel-jest'
     },
     testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
@@ -13,5 +13,5 @@ module.exports = {
     moduleNameMapper: {
         '\\.(css|less|scss|sass)$': 'identity-obj-proxy'
     },
-    transformIgnorePatterns: ['node_modules/(?!nanoid/)']
+    transformIgnorePatterns: ['node_modules/(?!nanoid/)'],
 };

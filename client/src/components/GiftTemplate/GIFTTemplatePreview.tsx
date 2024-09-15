@@ -20,32 +20,33 @@ const GIFTTemplatePreview: React.FC<GIFTTemplatePreviewProps> = ({
     useEffect(() => {
         try {
             let previewHTML = '';
-            questions.forEach((item) => {
-                const isImage = item.includes('<img');
-                if (isImage) {
-                    const imageUrlMatch = item.match(/<img[^>]+>/i);
-                    if (imageUrlMatch) {
-                        let imageUrl = imageUrlMatch[0];
-                        imageUrl = imageUrl.replace('img', 'img style="width:10vw;" src=');
-                        item = item.replace(imageUrlMatch[0], '');
-                        previewHTML += `${imageUrl}`;
-                    }
-                }
+            questions.forEach((giftQuestion) => {
+                // TODO : afficher un message que les images spécifiées par <img> sont dépréciées et qu'il faut utiliser [markdown] et la syntaxe ![alt](url)
+
+                // const isImage = item.includes('<img');
+                // if (isImage) {
+                //     const imageUrlMatch = item.match(/<img[^>]+>/i);
+                //     if (imageUrlMatch) {
+                //         let imageUrl = imageUrlMatch[0];
+                //         imageUrl = imageUrl.replace('img', 'img style="width:10vw;" src=');
+                //         item = item.replace(imageUrlMatch[0], '');
+                //         previewHTML += `${imageUrl}`;
+                //     }
+                // }
 
                 try {
-                    const parsedItem = parse(item);
-                    previewHTML += Template(parsedItem[0], {
+                    const question = parse(giftQuestion);
+                    previewHTML += Template(question[0], {
                         preview: true,
                         theme: 'light'
                     });
                 } catch (error) {
                     if (error instanceof Error) {
-                        previewHTML += ErrorTemplate(item + '\n' + error.message);
+                        previewHTML += ErrorTemplate(giftQuestion + '\n' + error.message);
                     } else {
-                        previewHTML += ErrorTemplate(item + '\n' + 'Erreur inconnue');
+                        previewHTML += ErrorTemplate(giftQuestion + '\n' + 'Erreur inconnue');
                     }
                 }
-                previewHTML += '';
             });
 
             if (hideAnswers) {

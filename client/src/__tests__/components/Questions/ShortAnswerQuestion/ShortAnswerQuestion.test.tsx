@@ -1,10 +1,11 @@
-/*// ShortAnswerQuestion.test.tsx
+// ShortAnswerQuestion.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ShortAnswerQuestion from '../../../../components/Questions/ShortAnswerQuestion/ShortAnswerQuestion';
 
 describe('ShortAnswerQuestion Component', () => {
     const mockHandleSubmitAnswer = jest.fn();
+    const sampleStem = 'Sample question stem';
 
     const sampleProps = {
         questionTitle: 'Sample Question',
@@ -34,14 +35,12 @@ describe('ShortAnswerQuestion Component', () => {
     };
 
     beforeEach(() => {
-        render(<ShortAnswerQuestion questionContent={{text: '', format: 'plain'}} {...sampleProps} />);
+        render(<ShortAnswerQuestion questionContent={{text: sampleStem, format: 'plain'}} {...sampleProps} />);
     });
 
     it('renders correctly', () => {
-        expect(screen.getByText('Sample Question')).toBeInTheDocument();
-
+        expect(screen.getByText(sampleStem)).toBeInTheDocument();
         expect(screen.getByTestId('text-input')).toBeInTheDocument();
-
         expect(screen.getByText('Répondre')).toBeInTheDocument();
     });
 
@@ -77,4 +76,4 @@ describe('ShortAnswerQuestion Component', () => {
 
         expect(mockHandleSubmitAnswer).toHaveBeenCalledWith('User Input');
     });
-});*/
+});

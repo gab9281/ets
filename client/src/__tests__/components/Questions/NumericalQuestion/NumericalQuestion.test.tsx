@@ -1,10 +1,11 @@
-/*// NumericalQuestion.test.tsx
+// NumericalQuestion.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import NumericalQuestion from '../../../../components/Questions/NumericalQuestion/NumericalQuestion';
 
 describe('NumericalQuestion Component', () => {
     const mockHandleSubmitAnswer = jest.fn();
+    const sampleStem = 'Sample question stem';
 
     const sampleProps = {
         questionTitle: 'Sample Question',
@@ -18,11 +19,11 @@ describe('NumericalQuestion Component', () => {
     };
 
     beforeEach(() => {
-        render(<NumericalQuestion questionContent={{text: '', format: 'plain'}} {...sampleProps} />);
+        render(<NumericalQuestion questionContent={{text: sampleStem, format: 'plain'}} {...sampleProps} />);
     });
 
     it('renders correctly', () => {
-        expect(screen.getByText('Sample Question')).toBeInTheDocument();
+        expect(screen.getByText(sampleStem)).toBeInTheDocument();
         expect(screen.getByTestId('number-input')).toBeInTheDocument();
         expect(screen.getByText('Répondre')).toBeInTheDocument();
     });
@@ -59,4 +60,4 @@ describe('NumericalQuestion Component', () => {
 
         expect(mockHandleSubmitAnswer).toHaveBeenCalledWith(7);
     });
-});*/
+});

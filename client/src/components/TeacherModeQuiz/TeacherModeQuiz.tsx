@@ -5,7 +5,7 @@ import QuestionComponent from '../Questions/Question';
 
 import '../../pages/Student/JoinRoom/joinRoom.css';
 import { QuestionType } from '../../Types/QuestionType';
-import { QuestionService } from '../../services/QuestionService';
+// import { QuestionService } from '../../services/QuestionService';
 import DisconnectButton from '../../components/DisconnectButton/DisconnectButton';
 
 interface TeacherModeQuizProps {
@@ -20,11 +20,10 @@ const TeacherModeQuiz: React.FC<TeacherModeQuizProps> = ({
     disconnectWebSocket
 }) => {
     const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
-    const [imageUrl, setImageUrl] = useState('');
+    // const [imageUrl, setImageUrl] = useState('');
 
     useEffect(() => {
         setIsAnswerSubmitted(false);
-        setImageUrl(QuestionService.getImageSource(questionInfos.image));
     }, [questionInfos]);
 
     const handleOnSubmitAnswer = (answer: string | number | boolean) => {
@@ -55,7 +54,7 @@ const TeacherModeQuiz: React.FC<TeacherModeQuizProps> = ({
                     </div>
                 ) : (
                     <QuestionComponent
-                        imageUrl={imageUrl}
+                        // imageUrl={imageUrl}
                         handleOnSubmitAnswer={handleOnSubmitAnswer}
                         question={questionInfos.question}
                     />

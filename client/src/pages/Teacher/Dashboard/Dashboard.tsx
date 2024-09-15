@@ -6,7 +6,7 @@ import { parse } from 'gift-pegjs';
 import Template from '../../../components/GiftTemplate/templates';
 import { QuizType } from '../../../Types/QuizType';
 import { FolderType } from '../../../Types/FolderType';
-import { QuestionService } from '../../../services/QuestionService';
+// import { QuestionService } from '../../../services/QuestionService';
 import ApiService from '../../../services/ApiService';
 
 import './dashboard.css';
@@ -178,7 +178,7 @@ const Dashboard: React.FC = () => {
         // Otherwise the quiz is invalid
         for (let i = 0; i < questions.length; i++) {
             try {
-                questions[i] = QuestionService.ignoreImgTags(questions[i]);
+                // questions[i] = QuestionService.ignoreImgTags(questions[i]);
                 const parsedItem = parse(questions[i]);
                 Template(parsedItem[0]);
             } catch (error) {

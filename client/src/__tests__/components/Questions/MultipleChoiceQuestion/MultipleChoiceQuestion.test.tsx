@@ -1,6 +1,9 @@
-/*import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import MultipleChoiceQuestion from '../../../../components/Questions/MultipleChoiceQuestion/MultipleChoiceQuestion';
+
+const questionStem = 'Question stem';
+const sampleFeedback = 'Feedback';
 
 describe('MultipleChoiceQuestion', () => {
     const mockHandleOnSubmitAnswer = jest.fn();
@@ -12,14 +15,14 @@ describe('MultipleChoiceQuestion', () => {
     beforeEach(() => {
         render(
             <MultipleChoiceQuestion
-                globalFeedback="feedback"
+                globalFeedback={sampleFeedback}
                 choices={choices}
-                handleOnSubmitAnswer={mockHandleOnSubmitAnswer} questionContent={{text: '', format: 'plain'}}            />
+                handleOnSubmitAnswer={mockHandleOnSubmitAnswer} questionContent={{text: questionStem, format: 'plain'}}            />
         );
     });
 
     test('renders the question and choices', () => {
-        expect(screen.getByText('Test Question')).toBeInTheDocument();
+        expect(screen.getByText(questionStem)).toBeInTheDocument();
         choices.forEach((choice) => {
             expect(screen.getByText(choice.text.text)).toBeInTheDocument();
         });
@@ -39,4 +42,4 @@ describe('MultipleChoiceQuestion', () => {
         fireEvent.click(submitButton);
         expect(mockHandleOnSubmitAnswer).toHaveBeenCalledWith('Choice 1');
     });
-});*/
+});
