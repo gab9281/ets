@@ -67,8 +67,8 @@ const multiple: GIFTQuestion[] = [
         hasEmbeddedAnswers: false,
         globalFeedback: null,
         isTrue: false,
-        incorrectFeedback: null,
-        correctFeedback: null
+        falseFeedback: null,
+        trueFeedback: null
     },
     {
         type: 'Short',
