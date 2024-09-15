@@ -17,7 +17,7 @@ function formatLatex(text: string): string {
 }
 
 export default function TextType({ text }: TextTypeOptions): string {
-    const formatText = formatLatex(text.text.trim());
+    const formatText = formatLatex(text.text.trim());  // latex needs pure "&", ">", etc. Must not be escaped
 
     switch (text.format) {
         case 'moodle':
