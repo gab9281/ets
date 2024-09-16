@@ -18,7 +18,7 @@ class ApiService {
     }
 
     private constructRequestHeaders(): any {
-        if (this.isLogedIn()) {
+        if (this.isLoggedIn()) {
             return {
                 Authorization: `Bearer ${this.getToken()}`,
                 'Content-Type': 'application/json'
@@ -63,7 +63,7 @@ class ApiService {
         return object.token;
     }
 
-    public isLogedIn(): boolean {
+    public isLoggedIn(): boolean {
         const token = this.getToken()
 
         if (token == null) {

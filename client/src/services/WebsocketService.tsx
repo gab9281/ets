@@ -5,7 +5,7 @@ class WebSocketService {
     private socket: Socket | null = null;
 
     connect(backendUrl: string): Socket {
-        console.log(backendUrl);
+        // console.log(backendUrl);
         this.socket = io(`${backendUrl}`, {
             transports: ['websocket'],
             reconnectionAttempts: 1
