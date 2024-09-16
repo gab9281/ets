@@ -63,7 +63,6 @@
         "ts-jest": "^29.1.1",
         "typescript": "^5.6.2",
         "vite": "^5.4.5",
-        "vite-plugin-environment": "^1.1.3",
-        "vite-plugin-rewrite-all": "^1.0.1"
+        "vite-plugin-environment": "^1.1.3"
     }
 }
