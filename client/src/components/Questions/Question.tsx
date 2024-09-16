@@ -41,7 +41,7 @@ const Question: React.FC<QuestionProps> = ({
         case 'MC':
             questionTypeComponent = (
                 <MultipleChoiceQuestion
-                    questionContent={question.stem}
+                    questionStem={question.stem}
                     choices={question.choices}
                     handleOnSubmitAnswer={handleOnSubmitAnswer}
                     showAnswer={showAnswer}

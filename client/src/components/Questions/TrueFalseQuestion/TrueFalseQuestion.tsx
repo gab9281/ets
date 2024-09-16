@@ -27,7 +27,7 @@ const TrueFalseQuestion: React.FC<Props> = (props) => {
     return (
         <div className="question-container">
             <div className="question content">
-            <div dangerouslySetInnerHTML={{ __html: TextType({text: questionContent}) }} />
+            <div dangerouslySetInnerHTML={{ __html: TextType({ text: questionContent }) }} />
             </div>
             <div className="choices-wrapper mb-1">
                 <Button

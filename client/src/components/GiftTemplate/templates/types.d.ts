@@ -12,31 +12,9 @@ export interface DisplayOptions {
     preview: boolean;
 }
 
-export type QuestionType =
-    | 'Description'
-    | 'Category'
-    | 'MC'
-    | 'Numerical'
-    | 'Short'
-    | 'Essay'
-    | 'TF'
-    | 'Matching';
-
-export type FormatType = 'moodle' | 'html' | 'markdown' | 'plain';
-export type NumericalType = 'simple' | 'range' | 'high-low';
-
-export interface TextFormat {
-    format: FormatType;
-    text: string;
-}
-
-export interface NumericalFormat {
-    type: NumericalType;
-    number?: number;
-    range?: number;
-    numberHigh?: number;
-    numberLow?: number;
-}
+export { 
+    QuestionType, FormatType, NumericalType, TextFormat, NumericalFormat, TextChoice, NumericalChoice, Question, Description, Category, MultipleChoice, ShortAnswer, Numerical, Essay, TrueFalse,
+    Matching, Match, GIFTQuestion } from 'gift-pegjs';
 
 export interface Choice {
     isCorrect: boolean;
@@ -44,77 +22,3 @@ export interface Choice {
     text: TextFormat | NumericalFormat;
     feedback: TextFormat | null;
 }
-
-export interface TextChoice extends Choice {
-    text: TextFormat;
-}
-
-export interface NumericalChoice extends Choice {
-    text: NumericalFormat;
-}
-
-export interface Question {
-    type: QuestionType;
-    title: string | null;
-    stem: TextFormat;
-    hasEmbeddedAnswers: boolean;
-    globalFeedback: TextFormat | null;
-}
-
-export interface Description {
-    type: Extract<QuestionType, 'Description'>;
-    title: string | null;
-    stem: TextFormat;
-    hasEmbeddedAnswers: boolean;
-}
-
-export interface Category {
-    type: Extract<QuestionType, 'Category'>;
-    title: string;
-}
-
-export interface MultipleChoice extends Question {
-    type: Extract<QuestionType, 'MC'>;
-    choices: TextChoice[];
-}
-
-export interface ShortAnswer extends Question {
-    type: Extract<QuestionType, 'Short'>;
-    choices: TextChoice[];
-}
-
-export interface Numerical extends Question {
-    type: Extract<QuestionType, 'Numerical'>;
-    choices: NumericalChoice[] | NumericalFormat;
-}
-
-export interface Essay extends Question {
-    type: Extract<QuestionType, 'Essay'>;
-}
-
-export interface TrueFalse extends Question {
-    type: Extract<QuestionType, 'TF'>;
-    isTrue: boolean;
-    falseFeedback: TextFormat | null;
-    trueFeedback: TextFormat | null;
-}
-
-export interface Matching extends Question {
-    type: Extract<QuestionType, 'Matching'>;
-    matchPairs: Match[];
-}
-
-export interface Match {
-    subquestion: TextFormat;
-    subanswer: string;
-}
-
-export type GIFTQuestion =
-    | Description
-    | Category
-    | MultipleChoice
-    | ShortAnswer
-    | Numerical
-    | Essay
-    | TrueFalse
-    | Matching;

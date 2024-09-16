@@ -28,7 +28,7 @@ function formatLatex(text: string): string {
  * @see marked
  * @see katex
  */
-export default function TextType({ text }: TextTypeOptions): string {
+export default function TextType({ text }: TextTypeOptions) {
     const formatText = formatLatex(text.text.trim());  // latex needs pure "&", ">", etc. Must not be escaped
 
     switch (text.format) {
@@ -40,12 +40,8 @@ export default function TextType({ text }: TextTypeOptions): string {
             // Strip outer paragraph tags (not a great approach with regex)
             return formatText.replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2');
         case 'markdown':
-            return (
-                marked
-                    .parse(formatText, { breaks: true }) // call marked.parse instead of marked
-                    // Strip outer paragraph tags
-                    .replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2')
-            );
+            const parsedText = marked.parse(formatText, { breaks: true }) as string; // https://github.com/markedjs/marked/discussions/3219
+            return parsedText.replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2');
         default:
             throw new Error(`Unsupported text format: ${text.format}`);
     }

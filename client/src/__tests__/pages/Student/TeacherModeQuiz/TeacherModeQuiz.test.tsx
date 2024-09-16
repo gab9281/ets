@@ -1,36 +1,31 @@
 //TeacherModeQuiz.test.tsx
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
+import { screen } from '@testing-library/dom';
 import '@testing-library/jest-dom';
-import { GIFTQuestion } from 'gift-pegjs';
+import { parse } from 'gift-pegjs';
 
 import TeacherModeQuiz from '../../../../components/TeacherModeQuiz/TeacherModeQuiz';
 import { MemoryRouter } from 'react-router-dom';
+// import { mock } from 'node:test';
+
+const mockGiftQuestions = parse(
+    `::Sample Question:: Sample Question {=Option A ~Option B}`);
+
 
 describe('TeacherModeQuiz', () => {
-    const mockQuestion: GIFTQuestion = {
-        id: '1',
-        type: 'MC',
-        stem: { format: 'plain', text: 'Sample Question' },
-        title: 'Sample Question',
-        hasEmbeddedAnswers: false,
-        globalFeedback: null,
-        choices: [
-            { text: { format: 'plain', text: 'Option A' }, isCorrect: true, weight: 1, feedback: null },
-            { text: { format: 'plain', text: 'Option B' }, isCorrect: false, weight: 0, feedback: null },
-        ],
-    };
+    const mockQuestion = mockGiftQuestions[0];
+    mockQuestion.id = '1';
 
     const mockSubmitAnswer = jest.fn();
     const mockDisconnectWebSocket = jest.fn();
 
-    beforeEach(() => {
+    beforeEach(async () => {
         render(
             <MemoryRouter>
                 <TeacherModeQuiz
                     questionInfos={{ question: mockQuestion }}
                     submitAnswer={mockSubmitAnswer}
-                    disconnectWebSocket={mockDisconnectWebSocket}
-                />
+                    disconnectWebSocket={mockDisconnectWebSocket} />
             </MemoryRouter>
         );
     });
@@ -45,16 +40,21 @@ describe('TeacherModeQuiz', () => {
     });
 
     test('handles answer submission and displays wait text', () => {
-        fireEvent.click(screen.getByText('Option A'));
-        fireEvent.click(screen.getByText('Répondre'));
 
+        act(() => {
+            fireEvent.click(screen.getByText('Option A'));
+        });
+        act(() => {
+            fireEvent.click(screen.getByText('Répondre'));
+        });
         expect(mockSubmitAnswer).toHaveBeenCalledWith('Option A', '1');
         expect(screen.getByText('En attente pour la prochaine question...')).toBeInTheDocument();
     });
 
     test('handles disconnect button click', () => {
-        fireEvent.click(screen.getByText('Quitter'));
-
+        act(() => {
+            fireEvent.click(screen.getByText('Quitter'));
+        });
         expect(mockDisconnectWebSocket).toHaveBeenCalled();
     });
 });
