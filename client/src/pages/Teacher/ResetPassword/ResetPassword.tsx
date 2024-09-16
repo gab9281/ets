@@ -46,7 +46,7 @@ const ResetPassword: React.FC = () => {
                 variant="outlined"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Nom d'utilisateur"
+                placeholder="Adresse courriel"
                 sx={{ marginBottom: '1rem' }}
                 fullWidth
             />

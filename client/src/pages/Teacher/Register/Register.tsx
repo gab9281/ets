@@ -47,7 +47,7 @@ const Register: React.FC = () => {
                 variant="outlined"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Nom d'utilisateur"
+                placeholder="Adresse courriel"
                 sx={{ marginBottom: '1rem' }}
                 fullWidth
             />
@@ -58,7 +58,7 @@ const Register: React.FC = () => {
                 value={password}
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Nom de la salle"
+                placeholder="Mot de passe"
                 sx={{ marginBottom: '1rem' }}
                 fullWidth
             />
