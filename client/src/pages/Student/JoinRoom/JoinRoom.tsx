@@ -167,7 +167,7 @@ const JoinRoom: React.FC = () => {
                         variant="outlined"
                         value={roomName}
                         onChange={(e) => setRoomName(e.target.value)}
-                        placeholder="Nom de la salle"
+                        placeholder="Numéro de la salle"
                         sx={{ marginBottom: '1rem' }}
                         fullWidth
                     />
