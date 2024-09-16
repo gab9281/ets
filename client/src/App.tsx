@@ -27,7 +27,7 @@ const handleLogout = () => {
 }
 
 const isLoggedIn = () => {
-    return ApiService.isLogedIn();
+    return ApiService.isLoggedIn();
 }
 
 function App() {

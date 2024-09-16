@@ -31,7 +31,7 @@ const Share: React.FC = () => {
                 return;
             }
 
-            if (!ApiService.isLogedIn()) {
+            if (!ApiService.isLoggedIn()) {
                 window.alert(`Vous n'êtes pas connecté.\nVeuillez vous connecter et revenir à ce lien`);
                 navigate("/teacher/login");
                 return;

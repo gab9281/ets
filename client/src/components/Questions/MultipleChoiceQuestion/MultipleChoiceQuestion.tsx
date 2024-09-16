@@ -14,7 +14,7 @@ type Choices = {
 };
 
 interface Props {
-    questionContent: TextFormat;
+    questionStem: TextFormat;
     choices: Choices[];
     globalFeedback?: string | undefined;
     handleOnSubmitAnswer?: (answer: string) => void;
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const MultipleChoiceQuestion: React.FC<Props> = (props) => {
-    const { questionContent, choices, showAnswer, handleOnSubmitAnswer, globalFeedback } = props;
+    const { questionStem: questionContent, choices, showAnswer, handleOnSubmitAnswer, globalFeedback } = props;
     const [answer, setAnswer] = useState<string>();
 
     useEffect(() => {

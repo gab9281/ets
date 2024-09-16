@@ -43,7 +43,7 @@ const Dashboard: React.FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (!ApiService.isLogedIn()) {
+            if (!ApiService.isLoggedIn()) {
                 navigate("/teacher/login");
                 return;
             }

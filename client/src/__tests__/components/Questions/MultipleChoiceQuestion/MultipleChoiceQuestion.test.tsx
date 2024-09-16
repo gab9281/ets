@@ -1,6 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import MultipleChoiceQuestion from '../../../../components/Questions/MultipleChoiceQuestion/MultipleChoiceQuestion';
+import { act } from 'react';
+import { MemoryRouter } from 'react-router-dom';
 
 const questionStem = 'Question stem';
 const sampleFeedback = 'Feedback';
@@ -14,11 +16,13 @@ describe('MultipleChoiceQuestion', () => {
 
     beforeEach(() => {
         render(
-            <MultipleChoiceQuestion
-                globalFeedback={sampleFeedback}
-                choices={choices}
-                handleOnSubmitAnswer={mockHandleOnSubmitAnswer} questionContent={{text: questionStem, format: 'plain'}}            />
-        );
+            <MemoryRouter>
+                <MultipleChoiceQuestion
+                    globalFeedback={sampleFeedback}
+                    choices={choices}
+                    handleOnSubmitAnswer={mockHandleOnSubmitAnswer}
+                    questionStem={{ text: questionStem, format: 'plain' }} />
+            </MemoryRouter>);
     });
 
     test('renders the question and choices', () => {
@@ -30,16 +34,24 @@ describe('MultipleChoiceQuestion', () => {
 
     test('does not submit when no answer is selected', () => {
         const submitButton = screen.getByText('Répondre');
-        fireEvent.click(submitButton);
+        act(() => {
+            fireEvent.click(submitButton);
+        });
         expect(mockHandleOnSubmitAnswer).not.toHaveBeenCalled();
     });
 
     test('submits the selected answer', () => {
         const choiceButton = screen.getByText('Choice 1').closest('button');
         if (!choiceButton) throw new Error('Choice button not found');
-        fireEvent.click(choiceButton);
+        act(() => {
+            fireEvent.click(choiceButton);
+        });
+
         const submitButton = screen.getByText('Répondre');
-        fireEvent.click(submitButton);
+        act(() => {
+            fireEvent.click(submitButton);
+        });
+
         expect(mockHandleOnSubmitAnswer).toHaveBeenCalledWith('Choice 1');
     });
 });

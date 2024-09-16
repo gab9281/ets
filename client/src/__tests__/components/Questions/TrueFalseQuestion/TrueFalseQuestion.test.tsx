@@ -1,7 +1,8 @@
 // TrueFalseQuestion.test.tsx
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TrueFalseQuestion from '../../../../components/Questions/TrueFalseQuestion/TrueFalseQuestion';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('TrueFalseQuestion Component', () => {
     const mockHandleSubmitAnswer = jest.fn();
@@ -15,7 +16,10 @@ describe('TrueFalseQuestion Component', () => {
     };
 
     beforeEach(() => {
-        render(<TrueFalseQuestion questionContent={{text: sampleStem, format: 'plain'}} {...sampleProps} />);
+        render(
+            <MemoryRouter>
+                <TrueFalseQuestion questionContent={{ text: sampleStem, format: 'plain' }} {...sampleProps} />
+            </MemoryRouter>);
     });
 
     it('renders correctly', () => {
@@ -27,14 +31,14 @@ describe('TrueFalseQuestion Component', () => {
 
     it('Submit button should be disabled if no option is selected', () => {
         const submitButton = screen.getByText('Répondre');
-
         expect(submitButton).toBeDisabled();
     });
 
     it('not submit answer if no option is selected', () => {
         const submitButton = screen.getByText('Répondre');
-
-        fireEvent.click(submitButton);
+        act(() => {
+            fireEvent.click(submitButton);
+        });
 
         expect(mockHandleSubmitAnswer).not.toHaveBeenCalled();
     });
@@ -43,9 +47,13 @@ describe('TrueFalseQuestion Component', () => {
         const trueButton = screen.getByText('Vrai');
         const submitButton = screen.getByText('Répondre');
 
-        fireEvent.click(trueButton);
+        act(() => {
+            fireEvent.click(trueButton);
+        });
 
-        fireEvent.click(submitButton);
+        act(() => {
+            fireEvent.click(submitButton);
+        });
 
         expect(mockHandleSubmitAnswer).toHaveBeenCalledWith(true);
     });
@@ -53,10 +61,12 @@ describe('TrueFalseQuestion Component', () => {
     it('submits answer correctly for False', () => {
         const falseButton = screen.getByText('Faux');
         const submitButton = screen.getByText('Répondre');
-
-        fireEvent.click(falseButton);
-
-        fireEvent.click(submitButton);
+        act(() => {
+            fireEvent.click(falseButton);
+        });
+        act(() => {
+            fireEvent.click(submitButton);
+        });
 
         expect(mockHandleSubmitAnswer).toHaveBeenCalledWith(false);
     });

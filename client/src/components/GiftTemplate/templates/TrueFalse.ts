@@ -13,8 +13,8 @@ export default function TrueFalse({
     title,
     isTrue,
     stem,
-    correctFeedback,
-    incorrectFeedback,
+    trueFeedback: trueFeedback,
+    falseFeedback: falseFeedback,
     globalFeedback
 }: TrueFalseOptions): string {
     const choices: TextChoice[] = [
@@ -25,7 +25,7 @@ export default function TrueFalse({
             },
             isCorrect: isTrue,
             weight: null,
-            feedback: isTrue ? correctFeedback : incorrectFeedback
+            feedback: isTrue ? trueFeedback : falseFeedback
         },
         {
             text: {
@@ -34,7 +34,7 @@ export default function TrueFalse({
             },
             isCorrect: !isTrue,
             weight: null,
-            feedback: !isTrue ? correctFeedback : incorrectFeedback
+            feedback: !isTrue ? trueFeedback : falseFeedback
         }
     ];
 
