@@ -229,21 +229,26 @@ const Dashboard: React.FC = () => {
             console.log(selectedQuiz.content);
             selectedQuiz.content.forEach((question, qIndex) => {
                 const formattedQuestion = question.trim();
-                console.log(formattedQuestion);
+                // console.log(formattedQuestion);
                 if (formattedQuestion !== '') {
-                    quizContent += formattedQuestion;
+                    quizContent += formattedQuestion + '\n';
                     if (qIndex !== selectedQuiz.content.length - 1) {
                         quizContent += '\n';
                     }
                 }
             });
 
+            if (!validateQuiz(selectedQuiz.content)) {
+                window.alert('Attention! Ce quiz contient des questions invalides selon le format GIFT.');
+            }
             const blob = new Blob([quizContent], { type: 'text/plain' });
             const a = document.createElement('a');
             const filename = title;
-            a.download = `${filename}.txt`;
+            a.download = `${filename}.gift`;
             a.href = window.URL.createObjectURL(blob);
             a.click();
+
+
         } catch (error) {
             console.error('Error exporting selected quiz:', error);
         }
