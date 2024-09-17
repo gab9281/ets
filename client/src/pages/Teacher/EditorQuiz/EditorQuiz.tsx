@@ -1,5 +1,5 @@
 // EditorQuiz.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { FolderType } from '../../../Types/FolderType';
@@ -11,11 +11,12 @@ import GIFTTemplatePreview from '../../../components/GiftTemplate/GIFTTemplatePr
 import { QuizType } from '../../../Types/QuizType';
 
 import './editorQuiz.css';
-import { Button, TextField, NativeSelect, IconButton } from '@mui/material';
-import { Send } from '@mui/icons-material';
+import { Button, TextField, NativeSelect, Divider, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material';
 import ReturnButton from '../../../components/ReturnButton/ReturnButton';
 
 import ApiService from '../../../services/ApiService';
+import { escapeForGIFT } from '../../../utils/giftUtils';
+import { Upload } from '@mui/icons-material';
 
 interface EditQuizParams {
     id: string;
@@ -37,6 +38,8 @@ const QuizForm: React.FC = () => {
     const handleSelectFolder = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedFolder(event.target.value);
     };
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -134,9 +137,14 @@ const QuizForm: React.FC = () => {
     const handleSaveImage = async () => {
         try {
             const inputElement = document.getElementById('file-input') as HTMLInputElement;
-            
+
+            if (!inputElement?.files || inputElement.files.length === 0) {
+                setDialogOpen(true);
+                return;
+            }
+
             if (!inputElement.files || inputElement.files.length === 0) {
-                window.alert("Veuillez d'abord choisir un fichier à télécharger")
+                window.alert("Veuillez d'abord choisir une image à téléverser.")
                 return;
             }
 
@@ -149,6 +157,11 @@ const QuizForm: React.FC = () => {
             }
 
             setImageLinks(prevLinks => [...prevLinks, imageUrl]);
+
+            // Reset the file input element
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
         } catch (error) {
             window.alert(`Une erreur est survenue.\n Veuillez réessayer plus tard`)
         }
@@ -172,65 +185,95 @@ const QuizForm: React.FC = () => {
                 <div className='dumb'></div>
             </div>
 
+            {/* <h2 className="subtitle">Éditeur</h2> */}
+
+            <TextField
+                onChange={handleQuizTitleChange}
+                value={quizTitle}
+                placeholder="Titre du quiz"
+                label="Titre du quiz"
+                fullWidth
+            />
+            <label>Choisir un dossier:
+            <NativeSelect
+                id="select-folder"
+                color="primary"
+                value={selectedFolder}
+                onChange={handleSelectFolder}
+                disabled={!isNewQuiz}
+                style={{ marginBottom: '16px' }} // Ajout de marge en bas
+                >
+                <option disabled value=""> Choisir un dossier... </option>
+
+                {folders.map((folder: FolderType) => (
+                    <option value={folder._id} key={folder._id}> {folder.title} </option>
+                ))}
+            </NativeSelect></label>
+
+            <Button variant="contained" onClick={handleQuizSave}>
+                Enregistrer
+            </Button>
+
+            <Divider style={{ margin: '16px 0' }} />
+
             <div className='editSection'>
 
                 <div className='edit'>
-                    <h2 className="subtitle">Éditeur</h2>
-                    <TextField
-                        onChange={handleQuizTitleChange}
-                        value={quizTitle}
-                        placeholder="Titre du quiz"
-                        fullWidth
-                    />
-
-                    <NativeSelect
-                        id="select-folder"
-                        color="primary"
-                        value={selectedFolder}
-                        onChange={handleSelectFolder}
-                        disabled={!isNewQuiz}
-                    >
-                        <option disabled value=""> Choisir un dossier... </option>
-
-                        {folders.map((folder: FolderType) => (
-                            <option value={folder._id} key={folder._id}> {folder.title} </option>
-                        ))}
-                    </NativeSelect>
-
-                    <Editor initialValue={value} onEditorChange={handleUpdatePreview} />
+                    <Editor
+                        label="Contenu GIFT du quiz:"
+                        initialValue={value}
+                        onEditorChange={handleUpdatePreview} />
 
                     <div className='images'>
                         <div className='upload'>
                             <label className="dropArea">
-                                <input type="file" id="file-input" className="file-input" accept="image/jpeg" multiple />
+                                <input type="file" id="file-input" className="file-input"
+                                accept="image/jpeg, image/png"
+                                multiple 
+                                ref={fileInputRef} />
+
+                                <Button
+                                variant="outlined"
+                                aria-label='Téléverser'
+                                onClick={handleSaveImage}>
+                                    Téléverser <Upload /> 
+                                </Button>
+
                             </label>
-
-                            <IconButton
-                                color="primary"
-                                onClick={handleSaveImage}
-                            > <Send /> </IconButton>
-
+                            <Dialog
+                                open={dialogOpen}
+                                onClose={() => setDialogOpen(false)} >
+                                <DialogTitle>Erreur</DialogTitle>
+                                <DialogContent>
+                                    Veuillez d'abord choisir une image à téléverser.
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={() => setDialogOpen(false)} color="primary">
+                                        OK
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
                         </div>
 
-                        <h2 className="subtitle">Mes images :</h2>
+                        <h4>Mes images :</h4>
 
                         <div>
+                            <div>(Cliquez sur un lien pour le copier)</div>
                             <ul>
-                                {imageLinks.map((link, index) => (
-                                    <li key={index}>
-                                        <code
-                                            onClick={() => handleCopyToClipboard(`<img ${link} >`)}>
-                                            {`<img ${link} >`}
-                                        </code>
-                                    </li>
-                                ))}
+                                {imageLinks.map((link, index) => {
+                                    const imgTag = `![alt_text](${escapeForGIFT(link)} "texte de l'infobulle")`;
+                                    return (
+                                        <li key={index}>
+                                            <code
+                                                onClick={() => handleCopyToClipboard(imgTag)}>
+                                                {imgTag}
+                                            </code>
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         </div>
                     </div>
-
-                    <Button variant="contained" onClick={handleQuizSave}>
-                        Enregistrer
-                    </Button>
 
                     <GiftCheatSheet />
 
@@ -238,7 +281,7 @@ const QuizForm: React.FC = () => {
 
                 <div className='preview'>
                     <div className="preview-column">
-                        <h2 className="subtitle">Prévisualisation</h2>
+                        <h4>Prévisualisation</h4>
                         <div>
                             <GIFTTemplatePreview questions={filteredValue} />
                         </div>

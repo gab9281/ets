@@ -21,18 +21,18 @@ const GiftCheatSheet: React.FC = () => {
     };
     
 
-    const QuestionVraiFaux = "2+2 \\= 4 ? {T\n}// Vous pouvez utiliser les valeurs {T}, {F}, {TRUE} et {FALSE}";
+    const QuestionVraiFaux = "2+2 \\= 4 ? {T\n}// Utilisez les valeurs {T}, {F}, {TRUE} et {FALSE}";
     const QuestionChoixMul = "Quelle ville est la capitale du Canada? {\n~ Toronto\n~ Montréal\n= Ottawa #Bonne réponse!\n}// La bonne réponse est Ottawa";
-    const QuestionChoixMulMany = "Quelles villes trouve-t-on au Canada? { \n~ %33.3% Montréal \n~ %33.3% Ottawa \n~ %33.3% Vancouver \n~ %-100% New York \n~ %-100% Paris \n#### La bonne réponse est Montréal, Ottawa et Vancouver \n} //On utilise le signe ~ pour toutes les réponses. On doit indiquer le pourcentage de chaque réponse";
-    const QuestionCourte ="Avec quoi ouvre-t-on une porte? { \n= clé \n= clef \n}// Permet de fournir plusieurs bonnes réponses. Note: Les majuscules ne sont pas prises en compte.";
-    const QuestionNum ="Question {#=Nombre\n} //OU \nQuestion {#=Nombre:Tolérance\n} //OU \nQuestion {#=PetitNombre..GrandNombre\n} // La tolérance est un pourcentage. La réponse doit être comprise entre PetitNombre et GrandNombre";
+    const QuestionChoixMulMany = "Quelles villes trouve-t-on au Canada? { \n~ %33.3% Montréal \n ~ %33.3% Ottawa \n ~ %33.3% Vancouver \n ~ %-100% New York \n ~ %-100% Paris \n#### La bonne réponse est Montréal, Ottawa et Vancouver \n}\n// Utilisez le signe ~ pour toutes les réponses.\n// On doit indiquer le pourcentage de chaque réponse.";
+    const QuestionCourte ="Avec quoi ouvre-t-on une porte? { \n= clé \n= clef \n}\n// Permet de fournir plusieurs bonnes réponses.\n// Note: La casse n'est pas prise en compte.";
+    const QuestionNum ="Question {#=Nombre\n} //OU \nQuestion {#=Nombre:Tolérance\n} // OU \nQuestion {#=PetitNombre..GrandNombre\n}\n// La tolérance est un pourcentage.\n// La réponse doit être comprise entre PetitNombre et GrandNombre";
     return (
         <div className="gift-cheat-sheet">
             <h2 className="subtitle">Informations pratiques sur l'éditeur</h2>
             <span>
                 L'éditeur utilise le format GIFT (General Import Format Template) créé pour la
-                plateforme Moodle afin de générer les quizs. Ci-dessous vous pouvez retrouver la
-                syntaxe pour chaque type de question ainsi que les champs optionnels :
+                plateforme Moodle afin de générer les mini-tests. Ci-dessous vous pouvez retrouver la
+                syntaxe pour chaque type de question&nbsp;:
             </span>
             <div className="question-type">
                 <h4>1. Questions Vrai/Faux</h4>
@@ -69,7 +69,7 @@ const GiftCheatSheet: React.FC = () => {
             </div>
 
             <div className="question-type">
-                <h4>4. Questions à reponse courte</h4>
+                <h4>4. Questions à réponse courte</h4>
                 <pre>
                     <code className="question-code-block selectable-text">
                         {QuestionCourte}
@@ -79,7 +79,7 @@ const GiftCheatSheet: React.FC = () => {
             </div>
 
             <div className="question-type">
-                <h4> 5. Questions numériques </h4>
+                <h4> 5. Question numérique </h4>
                 <pre>
                     <code className="question-code-block selectable-text">
                         {
@@ -139,7 +139,7 @@ const GiftCheatSheet: React.FC = () => {
             <div className="question-type">
                 <h4> 8. LaTeX et Markdown</h4>
                 <p>
-                    Les format LaTeX et markdown sont supportés dans cette application. Vous devez cependant penser
+                    Les formats LaTeX et Markdown sont supportés dans cette application. Vous devez cependant penser
                     à 'échapper' les caractères spéciaux mentionnés plus haut.
                 </p>
                 <p>Exemple d'équation:</p>
@@ -154,18 +154,30 @@ const GiftCheatSheet: React.FC = () => {
             </div>
 
             <div className="question-type">
-                <h4> 9. inserer une image </h4>
-                <p>Pour insérer une image, vous devez utiliser la syntaxe suivante:</p>
+                <h4> 9. Images </h4>
+                <p>Pour insérer une image dans une question ou dans une réponse, vous devez utiliser la syntaxe suivante:</p>
                 <pre>
                     <code className="question-code-block">
-                        {'<img '}
-                        <span className="code-comment">{`un_URL_d_image`}</span>
-                        {' >'}
+                        {'!['}
+                        <span className="code-comment">{`text alternatif`}</span>
+                        {']('}
+                        <span className="code-comment">{`URL-de-l'image`}</span>
+                        {' "'}
+                        <span className="code-comment">{`texte de l'infobulle`}</span>
+                        {'")'}
                     </code>
                 </pre>
+                <p>Exemple d'une question Vrai/Faux avec l'image d'un chat:</p>
+                <pre>
+                    <code className="question-code-block">
+                        {'[markdown]Ceci est un chat: \n![Image de chat](https\\://www.example.com\\:8000/chat.jpg "Chat mignon")\n{T}'}
+                    </code>
+                </pre>
+                <p>Note&nbsp;: les images étant spécifiées avec la syntaxe Markdown dans GIFT, on doit échapper les caractères spéciales (:) dans l'URL de l'image.</p>
+                <p>Note&nbsp;: On ne peut utiliser les images dans les messages de rétroaction (GIFT), car les rétroactions ne supportent pas le texte avec formatage (Markdown).</p>
                 <p style={{ color: 'red' }}>
-                    Attention nous ne supportons pas encore les images en tant que réponses à une
-                    question
+                    Attention: l'ancienne fonctionnalité avec les balises <code>{'<img>'}</code> n'est plus
+                    supportée.
                 </p>
             </div>
 
@@ -183,6 +195,5 @@ const GiftCheatSheet: React.FC = () => {
         </div>
     );
 };  
-
 
 export default GiftCheatSheet;
