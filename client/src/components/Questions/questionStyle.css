@@ -31,6 +31,10 @@
     text-align: center;
 }
 
+.katex * {
+    font-family: 'KaTeX_Main'  /* to display characters like \neq properly */
+}
+
 .circle {
     height: 2.3rem;
     width: 2.3rem;
