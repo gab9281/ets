@@ -7,6 +7,7 @@ describe('Editor Component', () => {
     const mockOnEditorChange = jest.fn();
 
     const sampleProps = {
+        label: 'Sample Label',
         initialValue: 'Sample Initial Value',
         onEditorChange: mockOnEditorChange
     };
@@ -29,6 +30,7 @@ describe('Editor Component', () => {
 
     it('updates editor value when initialValue prop changes', () => {
         const updatedProps = {
+            label: 'Updated Label',
             initialValue: 'Updated Initial Value',
             onEditorChange: mockOnEditorChange
         };
@@ -43,6 +45,7 @@ describe('Editor Component', () => {
 
     test('should call change text with the correct value on textarea change', () => {
         const updatedProps = {
+            label: 'Updated Label',
             initialValue: 'Updated Initial Value',
             onEditorChange: mockOnEditorChange
         };
@@ -58,6 +61,7 @@ describe('Editor Component', () => {
 
     test('should call onEditorChange with an empty string if textarea value is falsy', () => {
         const updatedProps = {
+            label: 'Updated Label',
             initialValue: 'Updated Initial Value',
             onEditorChange: mockOnEditorChange
         };

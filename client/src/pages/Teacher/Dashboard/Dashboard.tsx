@@ -370,7 +370,7 @@ const Dashboard: React.FC = () => {
                 <TextField
                     onChange={handleSearch}
                     value={searchTerm}
-                    placeholder="Rechercher un quiz"
+                    placeholder="Rechercher un quiz par son titre"
                     fullWidth
                     InputProps={{
                         endAdornment: (
