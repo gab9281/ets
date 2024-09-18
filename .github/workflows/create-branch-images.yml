@@ -4,9 +4,12 @@ on:
   workflow_call:
   workflow_dispatch:
   push:
+    branches:
+      - 'main'
+      - 'dev'
     tags:
       - '**'
-
+      
 jobs:
   docker:
     runs-on: ubuntu-latest
