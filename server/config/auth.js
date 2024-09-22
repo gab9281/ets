@@ -1,5 +1,3 @@
-require('dotenv').config({ path: './.env.auth' });
-
 module.exports = {
   // Enable or disable the types of authentications
   simpleLoginActive: process.env.SIMPLE_LOGIN_ACTIVE === 'true',
@@ -18,7 +16,7 @@ module.exports = {
     callbackURL: process.env.OAUTH_CALLBACK_URL || '',
     scope: process.env.OAUTH_ADD_SCOPE || '',
     teacherRoleClaim: process.env.OAUTH_ROLE_TEACHER_VALUE || '',
-    studentRoleClaim: process.env.OAUTH_ROLE_STUDENT_VALUE || '',  // Added based on env file
+    studentRoleClaim: process.env.OAUTH_ROLE_STUDENT_VALUE || '',
   },
 
   // OIDC Configuration
