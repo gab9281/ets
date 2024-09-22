@@ -1,8 +1,8 @@
 module.exports = {
   // Enable or disable the types of authentications
-  simpleLoginActive: process.env.SIMPLE_LOGIN_ACTIVE === 'true',
-  oauthActive: process.env.OAUTH_ACTIVE === 'false',
-  oidcActive: process.env.OIDC_ACTIVE === 'false',
+  simpleLoginActive: process.env.SIMPLE_LOGIN_ACTIVE || 'true',
+  oauthActive: process.env.OAUTH_ACTIVE || 'false',
+  oidcActive: process.env.OIDC_ACTIVE || 'false',
 
   // Simple Login Configuration
   sessionSecret: process.env.SESSION_SECRET || 'default_session_secret',
