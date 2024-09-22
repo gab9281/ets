@@ -1,15 +1,15 @@
 require('dotenv').config({ path: './.env.auth' });
 
 module.exports = {
-  // Activer ou désactiver les types d'authentifications
+  // Enable or disable the types of authentications
   simpleLoginActive: process.env.SIMPLE_LOGIN_ACTIVE === 'true',
-  oauthActive: process.env.OAUTH_ACTIVE === 'true',
-  oidcActive: process.env.OIDC_ACTIVE === 'true',
+  oauthActive: process.env.OAUTH_ACTIVE === 'false',
+  oidcActive: process.env.OIDC_ACTIVE === 'false',
 
-  // Configuration Simple Login
+  // Simple Login Configuration
   sessionSecret: process.env.SESSION_SECRET || 'default_session_secret',
 
-  // Configuration OAuth
+  // OAuth Configuration
   oauth: {
     authorizationURL: process.env.OAUTH_AUTHORIZATION_URL || '',
     tokenURL: process.env.OAUTH_TOKEN_URL || '',
@@ -18,9 +18,10 @@ module.exports = {
     callbackURL: process.env.OAUTH_CALLBACK_URL || '',
     scope: process.env.OAUTH_ADD_SCOPE || '',
     teacherRoleClaim: process.env.OAUTH_ROLE_TEACHER_VALUE || '',
+    studentRoleClaim: process.env.OAUTH_ROLE_STUDENT_VALUE || '',  // Added based on env file
   },
 
-  // Configuration OIDC
+  // OIDC Configuration
   oidc: {
     clientID: process.env.OIDC_CLIENT_ID || '',
     clientSecret: process.env.OIDC_CLIENT_SECRET || '',
