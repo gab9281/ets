@@ -40,7 +40,7 @@ class Users {
         await userCollection.insertOne(newUser);
 
         const folderTitle = 'Dossier par Défaut'; 
-        const userId = newUser._id; 
+        const userId = newUser._id.toString(); 
         await Folders.create(folderTitle, userId);
 
         // TODO: verif if inserted properly...
