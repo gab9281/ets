@@ -3,18 +3,21 @@ const authConfig = require('../config/auth.js');
 class authController {
 
     async getActive(req, res, next) {
+
         try {
-            console.log(authConfig);
-            const authServices = {
-                simpleLoginActive: authConfig.simpleLoginActive,
-                oauthActive: authConfig.oauthActive,
-                oidcActive: authConfig.oidcActive
+
+            const passportConfig = authConfig.getPassportJSConfig();
+            const simpleLoginConfig = authConfig.getSimpleLoginConfig();
+
+            const response = {
+                passportConfig,
+                simpleLoginConfig
             };
 
-            res.json(authServices);
+            return res.json(response);
         }
         catch (error) {
-            return next(error);
+            return next(error);  // Gérer l'erreur
         }
     }
 

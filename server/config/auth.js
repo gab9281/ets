@@ -1,29 +1,52 @@
-module.exports = {
-  // Enable or disable the types of authentications
-  simpleLoginActive: process.env.SIMPLE_LOGIN_ACTIVE || 'true',
-  oauthActive: process.env.OAUTH_ACTIVE || 'false',
-  oidcActive: process.env.OIDC_ACTIVE || 'false',
+const fs = require('fs');
+const path = require('path');
 
-  // Simple Login Configuration
-  sessionSecret: process.env.SESSION_SECRET || 'default_session_secret',
+class AuthConfig {
 
-  // OAuth Configuration
-  oauth: {
-    authorizationURL: process.env.OAUTH_AUTHORIZATION_URL || '',
-    tokenURL: process.env.OAUTH_TOKEN_URL || '',
-    clientID: process.env.OAUTH_CLIENT_ID || '',
-    clientSecret: process.env.OAUTH_CLIENT_SECRET || '',
-    callbackURL: process.env.OAUTH_CALLBACK_URL || '',
-    scope: process.env.OAUTH_ADD_SCOPE || '',
-    teacherRoleClaim: process.env.OAUTH_ROLE_TEACHER_VALUE || '',
-    studentRoleClaim: process.env.OAUTH_ROLE_STUDENT_VALUE || '',
-  },
-
-  // OIDC Configuration
-  oidc: {
-    clientID: process.env.OIDC_CLIENT_ID || '',
-    clientSecret: process.env.OIDC_CLIENT_SECRET || '',
-    issuerURL: process.env.OIDC_ISSUER_URL || '',
-    callbackURL: process.env.OIDC_CALLBACK_URL || '',
+  constructor(configPath) {
+    this.configPath = configPath;
+    this.config = this.loadConfig();
   }
-};
+
+  // Méthode pour lire le fichier de configuration JSON
+  loadConfig() {
+    try {
+      const configData = fs.readFileSync(this.configPath, 'utf-8');
+      return JSON.parse(configData);
+    } catch (error) {
+      console.error("Erreur lors de la lecture du fichier de configuration :", error);
+      return null;
+    }
+  }
+
+  // Méthode pour retourner la configuration des fournisseurs PassportJS
+  getPassportJSConfig() {
+    if (this.config && this.config.auth && this.config.auth.passportjs) {
+      const passportConfig = {};
+
+      this.config.auth.passportjs.forEach(provider => {
+        const providerName = Object.keys(provider)[0];
+        passportConfig[providerName] = provider[providerName];
+      });
+
+      return passportConfig;
+    } else {
+      return { error: "Aucune configuration PassportJS disponible." };
+    }
+  }
+
+  // Méthode pour retourner la configuration de Simple Login
+  getSimpleLoginConfig() {
+    if (this.config && this.config.auth && this.config.auth["simple-login"]) {
+      return this.config.auth["simple-login"];
+    } else {
+      return { error: "Aucune configuration Simple Login disponible." };
+    }
+  }
+}
+
+// Utilisation de la classe ConfigManager
+const configPath = path.join(__dirname, './auth_config.json');
+const instance = new AuthConfig(configPath);
+module.exports = instance;
+
