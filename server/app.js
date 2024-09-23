@@ -12,6 +12,7 @@ const userRouter = require('./routers/users.js');
 const folderRouter = require('./routers/folders.js');
 const quizRouter = require('./routers/quiz.js');
 const imagesRouter = require('./routers/images.js')
+const authRouter = require('./routers/auth.js')
 
 // Setup environement
 dotenv.config();
@@ -48,6 +49,7 @@ app.use('/api/user', userRouter);
 app.use('/api/folder', folderRouter);
 app.use('/api/quiz', quizRouter);
 app.use('/api/image', imagesRouter);
+app.use('/api/auth', authRouter);
 
 app.use(errorHandler)
 
