@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const pathAuthConfig = './auth_config.json';
 
 class AuthConfig {
 
@@ -46,7 +47,7 @@ class AuthConfig {
 }
 
 // Utilisation de la classe ConfigManager
-const configPath = path.join(__dirname, './auth_config.json');
+const configPath = path.join(__dirname, pathAuthConfig);
 const instance = new AuthConfig(configPath);
 module.exports = instance;
 
