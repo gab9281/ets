@@ -19,8 +19,8 @@ import {
     TableHead,
     TableRow
 } from '@mui/material';
-import Latex from 'react-latex';
 import { UserType } from '../../Types/UserType';
+import { formatLatex } from '../GiftTemplate/templates/TextType';
 
 interface LiveResultsProps {
     socket: Socket | null;
@@ -301,6 +301,7 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
                                 );
                                 const answerText = answer ? answer.answer.toString() : '';
                                 const isCorrect = answer ? answer.isCorrect : false;
+
                                 return (
                                     <TableCell
                                         key={index}
@@ -319,7 +320,7 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
                                         }
                                     >
                                         {showCorrectAnswers ? (
-                                            <Latex>{answerText}</Latex>
+                                            <div>{formatLatex(answerText)}</div>
                                         ) : isCorrect ? (
                                             <FontAwesomeIcon icon={faCheck} />
                                         ) : (
