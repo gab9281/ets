@@ -12,6 +12,7 @@ const userRouter = require('./routers/users.js');
 const folderRouter = require('./routers/folders.js');
 const quizRouter = require('./routers/quiz.js');
 const imagesRouter = require('./routers/images.js')
+const AuthManager = require('./auth/auth-manager.js')
 
 // Setup environement
 dotenv.config();
@@ -48,6 +49,14 @@ app.use('/api/user', userRouter);
 app.use('/api/folder', folderRouter);
 app.use('/api/quiz', quizRouter);
 app.use('/api/image', imagesRouter);
+
+// Add Auths methods
+const session = require('express-session');
+app.use(session({secret: process.env['SESSION_Secret']}));
+
+authManager = new AuthManager(app)
+authManager.addModule('passport-js')
+authManager.registerAuths()
 
 app.use(errorHandler)
 
