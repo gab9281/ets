@@ -27,6 +27,39 @@
     align-items: flex-start;
 }
 
+.table-cell-border {
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(224, 224, 224, 1);
+}
+
+/* -------------- */
+
+.table-container {
+    overflow-x: auto;
+    position: relative;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 2; /* Ensure it stays above other cells */
+}
+
+.sticky-column {
+    position: sticky;
+    left: 0;
+    background-color: white;
+    z-index: 1; /* Ensure it stays above other cells but below the header */
+}
+
+.sticky-intersection {
+    z-index: 3; /* Ensure the top-left cell stays above both header and column */
+}
+
+/* ------------------------------- */
+
 /* Media query for narrow screens */
 @media (max-width: 600px) {
     .action-bar {
