@@ -39,7 +39,7 @@ describe('TeacherModeQuiz', () => {
         expect(screen.getByText('Répondre')).toBeInTheDocument();
     });
 
-    test('handles answer submission and displays wait text', () => {
+    test('handles answer submission and displays feedback', () => {
 
         act(() => {
             fireEvent.click(screen.getByText('Option A'));
@@ -48,7 +48,7 @@ describe('TeacherModeQuiz', () => {
             fireEvent.click(screen.getByText('Répondre'));
         });
         expect(mockSubmitAnswer).toHaveBeenCalledWith('Option A', '1');
-        expect(screen.getByText('En attente pour la prochaine question...')).toBeInTheDocument();
+        expect(screen.getByText('Votre réponse est "Option A".')).toBeInTheDocument();
     });
 
     test('handles disconnect button click', () => {
