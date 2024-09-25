@@ -11,7 +11,7 @@ import { QuizType } from '../../../Types/QuizType';
 
 import './manageRoom.css';
 import { ENV_VARIABLES } from '../../../constants';
-import { UserType } from '../../../Types/UserType';
+import { StudentType } from '../../../Types/StudentType';
 import { Button } from '@mui/material';
 import LoadingCircle from '../../../components/LoadingCircle/LoadingCircle';
 import { Refresh, Error } from '@mui/icons-material';
@@ -25,7 +25,7 @@ const ManageRoom: React.FC = () => {
     const navigate = useNavigate();
     const [roomName, setRoomName] = useState<string>('');
     const [socket, setSocket] = useState<Socket | null>(null);
-    const [students, setStudents] = useState<UserType[]>([]);
+    const [students, setStudents] = useState<StudentType[]>([]);
     const quizId = useParams<{ id: string }>();
     const [quizQuestions, setQuizQuestions] = useState<QuestionType[] | undefined>();
     const [quiz, setQuiz] = useState<QuizType | null>(null);
@@ -96,7 +96,7 @@ const ManageRoom: React.FC = () => {
         socket.on('create-failure', () => {
             console.log('Error creating room.');
         });
-        socket.on('user-joined', (student: UserType) => {
+        socket.on('user-joined', (student: StudentType) => {
     
             setStudents((prevStudents) => [...prevStudents, student]);
 
@@ -119,7 +119,7 @@ const ManageRoom: React.FC = () => {
     useEffect(() => {
         // This is here to make sure the correct value is sent when user join
         if (socket) {
-            socket.on('user-joined', (_student: UserType) => {
+            socket.on('user-joined', (_student: StudentType) => {
     
                 // setUsers((prevUsers) => [...prevUsers, user]);
     

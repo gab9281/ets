@@ -19,7 +19,7 @@ import {
     TableHead,
     TableRow
 } from '@mui/material';
-import { UserType } from '../../Types/UserType';
+import { StudentType } from '../../Types/StudentType';
 import { formatLatex } from '../GiftTemplate/templates/TextType';
 
 interface LiveResultsProps {
@@ -27,7 +27,7 @@ interface LiveResultsProps {
     questions: QuestionType[];
     showSelectedQuestion: (index: number) => void;
     quizMode: 'teacher' | 'student';
-    students: UserType[]
+    students: StudentType[]
 }
 
 interface Answer {
@@ -64,7 +64,7 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
     useEffect(() => {
         // studentResultsMap is inconsistent with students -- need to update
 
-        for (const student of students as UserType[]) {
+        for (const student of students as StudentType[]) {
             if (!studentResultsMap.has(student.id)) {
                 studentResultsMap.set(student.id, { username: student.name, idUser: student.id, answers: [] });
             }   

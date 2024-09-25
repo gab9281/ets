@@ -1,12 +1,12 @@
 import { Button, Chip, Grid } from '@mui/material';
-import { UserType } from '../../Types/UserType';
+import { StudentType } from '../../Types/StudentType';
 import { PlayArrow } from '@mui/icons-material';
 import LaunchQuizDialog from '../LaunchQuizDialog/LaunchQuizDialog';
 import { useState } from 'react';
 import './userWaitPage.css';
 
 interface Props {
-    users: UserType[];
+    users: StudentType[];
     launchQuiz: () => void;
     setQuizMode: (mode: 'student' | 'teacher') => void;
 }
