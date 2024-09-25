@@ -15,7 +15,7 @@ import { StudentType } from '../../../Types/StudentType';
 import { Button } from '@mui/material';
 import LoadingCircle from '../../../components/LoadingCircle/LoadingCircle';
 import { Refresh, Error } from '@mui/icons-material';
-import UserWaitPage from '../../../components/UserWaitPage/UserWaitPage';
+import StudentWaitPage from '../../../components/StudentWaitPage/StudentWaitPage';
 import DisconnectButton from '../../../components/DisconnectButton/DisconnectButton';
 import QuestionNavigation from '../../../components/QuestionNavigation/QuestionNavigation';
 import Question from '../../../components/Questions/Question';
@@ -311,7 +311,7 @@ const ManageRoom: React.FC = () => {
 
                 ) : (
 
-                    <UserWaitPage
+                    <StudentWaitPage
                         users={students}
                         launchQuiz={launchQuiz}
                         setQuizMode={setQuizMode}

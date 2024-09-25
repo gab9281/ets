@@ -1,9 +1,9 @@
 // Importez le type UserType s'il n'est pas déjà importé
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import UserWaitPage from '../../../components/UserWaitPage/UserWaitPage';
+import StudentWaitPage from '../../../components/StudentWaitPage/StudentWaitPage';
 
-describe('UserWaitPage Component', () => {
+describe('StudentWaitPage Component', () => {
     const mockUsers = [
         { id: '1', name: 'User1' },
         { id: '2', name: 'User2' },
@@ -17,8 +17,8 @@ describe('UserWaitPage Component', () => {
         setQuizMode: jest.fn(),
       };
 
-    test('renders UserWaitPage with correct content', () => {
-        render(<UserWaitPage {...mockProps} />);
+    test('renders StudentWaitPage with correct content', () => {
+        render(<StudentWaitPage {...mockProps} />);
 
         //expect(screen.getByText(/Test Room/)).toBeInTheDocument();
 
@@ -31,7 +31,7 @@ describe('UserWaitPage Component', () => {
       });
 
       test('clicking on "Lancer" button opens LaunchQuizDialog', () => {
-        render(<UserWaitPage {...mockProps} />);
+        render(<StudentWaitPage {...mockProps} />);
 
         fireEvent.click(screen.getByRole('button', { name: /Lancer/i }));
 
