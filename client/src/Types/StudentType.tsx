@@ -8,5 +8,5 @@ export interface StudentType {
     name: string;
     id: string;
     room?: string;
-    answers?: Answer[];
+    answers: Answer[];
 }

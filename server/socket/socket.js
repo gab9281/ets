@@ -49,10 +49,15 @@ const setupWebsocket = (io) => {
           io.sockets.adapter.rooms.get(enteredRoomName).size;
 
         if (clientsInRoom <= MAX_USERS_PER_ROOM) {
+          const newStudent = {
+            id: socket.id,
+            name: username,
+            answers: [],
+          };
           socket.join(enteredRoomName);
           socket
             .to(enteredRoomName)
-            .emit("user-joined", { name: username, id: socket.id });
+            .emit("user-joined", newStudent);
           socket.emit("join-success");
         } else {
           socket.emit("join-failure", "La salle est remplie");

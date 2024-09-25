@@ -2,16 +2,17 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import StudentWaitPage from '../../../components/StudentWaitPage/StudentWaitPage';
+import { StudentType, Answer } from '../../../Types/StudentType';
 
 describe('StudentWaitPage Component', () => {
-    const mockUsers = [
-        { id: '1', name: 'User1' },
-        { id: '2', name: 'User2' },
-        { id: '3', name: 'User3' },
+    const mockUsers: StudentType[] = [
+        { id: '1', name: 'User1', answers: new Array<Answer>() },
+        { id: '2', name: 'User2', answers: new Array<Answer>() },
+        { id: '3', name: 'User3', answers: new Array<Answer>() },
       ];
 
       const mockProps = {
-        users: mockUsers,
+        students: mockUsers,
         launchQuiz: jest.fn(),
         roomName: 'Test Room',
         setQuizMode: jest.fn(),

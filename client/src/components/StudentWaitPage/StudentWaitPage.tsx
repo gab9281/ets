@@ -1,4 +1,4 @@
-import { Button, Chip, Grid } from '@mui/material';
+import { Box, Button, Chip } from '@mui/material';
 import { StudentType } from '../../Types/StudentType';
 import { PlayArrow } from '@mui/icons-material';
 import LaunchQuizDialog from '../LaunchQuizDialog/LaunchQuizDialog';
@@ -6,12 +6,12 @@ import { useState } from 'react';
 import './studentWaitPage.css';
 
 interface Props {
-    users: StudentType[];
+    students: StudentType[];
     launchQuiz: () => void;
     setQuizMode: (mode: 'student' | 'teacher') => void;
 }
 
-const StudentWaitPage: React.FC<Props> = ({ users, launchQuiz, setQuizMode }) => {
+const StudentWaitPage: React.FC<Props> = ({ students, launchQuiz, setQuizMode }) => {
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
     return (
@@ -30,15 +30,15 @@ const StudentWaitPage: React.FC<Props> = ({ users, launchQuiz, setQuizMode }) =>
 
             <div className="students">
                
-                <Grid container spacing={3}>
+                <Box display="flex" flexWrap="wrap" gap={3}>
 
-                    {users.map((user, index) => (
-                        <Grid item key={user.name + index}>
-                            <Chip label={user.name} sx={{ width: '100%' }} />
-                        </Grid>
+                    {students.map((student, index) => (
+                        <Box key={student.name + index} >
+                            <Chip label={student.name} sx={{ width: '100%' }} />
+                        </Box>
                     ))}
                     
-                </Grid>
+                </Box>
 
             </div>
 

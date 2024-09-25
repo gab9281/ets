@@ -74,7 +74,7 @@ const ManageRoom: React.FC = () => {
             setSocket(null);
             setQuizQuestions(undefined);
             setCurrentQuestion(undefined);
-            setStudents([]);
+            setStudents(new Array<StudentType>());
             setRoomName('');
         }
     };
@@ -293,7 +293,7 @@ const ManageRoom: React.FC = () => {
                                     socket={socket}
                                     questions={quizQuestions}
                                     showSelectedQuestion={showSelectedQuestion}
-                                    students={students}
+                                    connectedStudents={students}
                                 ></LiveResultsComponent>
 
                             </div>
@@ -312,7 +312,7 @@ const ManageRoom: React.FC = () => {
                 ) : (
 
                     <StudentWaitPage
-                        users={students}
+                        students={students}
                         launchQuiz={launchQuiz}
                         setQuizMode={setQuizMode}
                     />

@@ -19,7 +19,7 @@ import {
     TableHead,
     TableRow
 } from '@mui/material';
-import { StudentType } from '../../Types/StudentType';
+import { StudentType, Answer } from '../../Types/StudentType';
 import { formatLatex } from '../GiftTemplate/templates/TextType';
 
 interface LiveResultsProps {
@@ -27,50 +27,53 @@ interface LiveResultsProps {
     questions: QuestionType[];
     showSelectedQuestion: (index: number) => void;
     quizMode: 'teacher' | 'student';
-    students: StudentType[]
+    connectedStudents: StudentType[]
 }
 
-interface Answer {
-    answer: string | number | boolean;
-    isCorrect: boolean;
-    idQuestion: number;
-}
+// interface Answer {
+//     answer: string | number | boolean;
+//     isCorrect: boolean;
+//     idQuestion: number;
+// }
 
-interface StudentResult {
-    username: string;
-    idUser: string;
-    answers: Answer[];
-}
+// interface StudentResult {
+//     username: string;
+//     idUser: string;
+//     answers: Answer[];
+// }
 
-const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelectedQuestion, students }) => {
+const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelectedQuestion, connectedStudents }) => {
     const [showUsernames, setShowUsernames] = useState<boolean>(false);
     const [showCorrectAnswers, setShowCorrectAnswers] = useState<boolean>(false);
-    const [studentResultsMap, setStudentResultsMap] = useState<Map<string, StudentResult>>(new Map());
+    const [students, setStudents] = useState<StudentType[]>(connectedStudents);
+    // const [studentResultsMap, setStudentResultsMap] = useState<Map<string, StudentResult>>(new Map());
 
     const maxQuestions = questions.length;
 
-    useEffect(() => {
-        // Initialize the map with the current students
-        const newStudentResultsMap = new Map<string, StudentResult>();
+    // useEffect(() => {
+    //     // Initialize the map with the current students
+    //     const newStudentResultsMap = new Map<string, StudentResult>();
 
-        for (const student of students) {
-            newStudentResultsMap.set(student.id, { username: student.name, idUser: student.id, answers: [] });
-        }
+    //     for (const student of students) {
+    //         newStudentResultsMap.set(student.id, { username: student.name, idUser: student.id, answers: [] });
+    //     }
 
-        setStudentResultsMap(newStudentResultsMap);
-    }, [])
+    //     setStudentResultsMap(newStudentResultsMap);
+    // }, [])
 
     // update when students change
+    // useEffect(() => {
+    //     // studentResultsMap is inconsistent with students -- need to update
+
+    //     for (const student of students as StudentType[]) {
+    //     }
+
+    // }, [students])
     useEffect(() => {
-        // studentResultsMap is inconsistent with students -- need to update
+        // Update the students state when the initialStudents prop changes
+        setStudents(connectedStudents);
+    }, [connectedStudents]);
 
-        for (const student of students as StudentType[]) {
-            if (!studentResultsMap.has(student.id)) {
-                studentResultsMap.set(student.id, { username: student.name, idUser: student.id, answers: [] });
-            }   
-        }
-
-    }, [students])
 
     useEffect(() => {
         if (socket) {
@@ -84,35 +87,19 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
                 answer: string | number | boolean;
                 idQuestion: number;
             }) => {
-                // Update the student results in the map with the answer
-                setStudentResultsMap((currentResults) => {
-                    const studentResult = currentResults.get(idUser);
-                    if (!studentResult) {
-                        return currentResults;
-                    }
+                // make a copy of the students array so we can update it
+                const updatedStudents = [...students];
 
-                    const isCorrect = checkIfIsCorrect(answer, idQuestion);
-                    studentResult.answers.push({ answer, isCorrect, idQuestion });
-                    return new Map(currentResults).set(idUser, studentResult);
-                });
+                const student = updatedStudents.find((student) => student.id === idUser);
+                if (!student) {
+                    // this is a bad thing if an answer was submitted but the student isn't in the list
+                    return;
+                }
 
-
-                // setStudentResults((currentResults) => {
-                //     const userIndex = currentResults.findIndex(
-                //         (result) => result.idUser === idUser
-                //     );
-                //     const isCorrect = checkIfIsCorrect(answer, idQuestion);
-                //     if (userIndex !== -1) {
-                //         const newResults = [...currentResults];
-                //         newResults[userIndex].answers.push({ answer, isCorrect, idQuestion });
-                //         return newResults;
-                //     } else {
-                //         return [
-                //             ...currentResults,
-                //             { idUser, username, answers: [{ answer, isCorrect, idQuestion }] }
-                //         ];
-                //     }
-                // });
+                const isCorrect = checkIfIsCorrect(answer, idQuestion);
+                const newAnswer: Answer = { answer, isCorrect, idQuestion };
+                student.answers.push(newAnswer);
+                setStudents(updatedStudents); // update the state
             };
 
             socket.on('submit-answer', submitAnswerHandler);
@@ -122,7 +109,7 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
         }
     }, [socket]);
 
-    const getStudentGrade = (student: StudentResult): number => {
+    const getStudentGrade = (student: StudentType): number => {
         if (student.answers.length === 0) {
             return 0;
         }
@@ -147,25 +134,22 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
 
     const classAverage: number = useMemo(() => {
         let classTotal = 0;
-
-        const studentResults = Array.from(studentResultsMap.values());
         
-        studentResults.forEach((student) => {
+        students.forEach((student) => {
             classTotal += getStudentGrade(student);
         });
 
-        return classTotal / studentResults.length;
-    }, [studentResultsMap]);
+        return classTotal / students.length;
+    }, [students]);
 
     const getCorrectAnswersPerQuestion = (index: number): number => {
         return (
-            (Array.from(studentResultsMap.values()).filter((student) =>
+            (students.filter((student) =>
                 student.answers.some(
                     (answer) =>
                         parseInt(answer.idQuestion.toString()) === index + 1 && answer.isCorrect
                 )
-            ).length / studentResultsMap.size) *
-            100
+            ).length / students.length) * 100
         );
     };
 
@@ -314,8 +298,8 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {Array.from(studentResultsMap.values()).map((student) => (
-                        <TableRow key={student.idUser}>
+                    {students.map((student) => (
+                        <TableRow key={student.id}>
                             <TableCell
                                 className="sticky-column"
                                 sx={{
@@ -325,7 +309,7 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
                                 }}
                             >
                                 <div className="text-base">
-                                    {showUsernames ? student.username : '******'}
+                                    {showUsernames ? student.name : '******'}
                                 </div>
                             </TableCell>
                             {Array.from({ length: maxQuestions }, (_, index) => {
@@ -396,7 +380,7 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
                                     color: 'rgba(0, 0, 0)'
                                 }}
                             >
-                                {studentResultsMap.size > 0
+                                {students.length > 0
                                     ? `${getCorrectAnswersPerQuestion(index).toFixed()} %`
                                     : '-'}
                             </TableCell>
@@ -412,7 +396,7 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
                                 color: 'rgba(0, 0, 0)'
                             }}
                         >
-                            {studentResultsMap.size > 0 ? `${classAverage.toFixed()} %` : '-'}
+                            {students.length > 0 ? `${classAverage.toFixed()} %` : '-'}
                         </TableCell>
                     </TableRow>
                 </TableFooter>
