@@ -72,6 +72,7 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
     useEffect(() => {
         // Update the students state when the initialStudents prop changes
         setStudents(connectedStudents);
+        console.log(`useEffect: connectedStudents: ${JSON.stringify(connectedStudents)}`);
     }, [connectedStudents]);
 
 
@@ -87,19 +88,56 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
                 answer: string | number | boolean;
                 idQuestion: number;
             }) => {
+                console.log(`Received answer from ${idUser} for question ${idQuestion}: ${answer}`);
+
+                // print the list of current student names
+                console.log('Current students:');
+                students.forEach((student) => {
+                    console.log(student.name);
+                });
+
+                // Update the students state using the functional form of setStudents
+                setStudents((prevStudents) => {
+                    let foundStudent = false;
+                    const updatedStudents = prevStudents.map((student) => {
+                        if (student.id === idUser) {
+                            foundStudent = true;
+                            const updatedAnswers = student.answers.map((ans) => {
+                                const newAnswer: Answer = { answer, isCorrect: checkIfIsCorrect(answer, idQuestion), idQuestion };
+                                console.log(`Updating answer for ${student.name} for question ${idQuestion} to ${answer}`);
+                                return (ans.idQuestion === idQuestion ? { ...ans, newAnswer } : ans);
+                            }
+                            );
+                            return { ...student, answers: updatedAnswers };
+                        }
+                        return student;
+                    });
+                    if (!foundStudent) {
+                        console.log(`Student ${idUser} not found in the list of students in LiveResults`);
+                    }
+                    return updatedStudents;
+                });
+
+
                 // make a copy of the students array so we can update it
-                const updatedStudents = [...students];
+                // const updatedStudents = [...students];
 
-                const student = updatedStudents.find((student) => student.id === idUser);
-                if (!student) {
-                    // this is a bad thing if an answer was submitted but the student isn't in the list
-                    return;
-                }
+                // const student = updatedStudents.find((student) => student.id === idUser);
+                // if (!student) {
+                //     // this is a bad thing if an answer was submitted but the student isn't in the list
+                //     console.log(`Student ${idUser} not found in the list of students in LiveResults`);
+                //     return;
+                // }
 
-                const isCorrect = checkIfIsCorrect(answer, idQuestion);
-                const newAnswer: Answer = { answer, isCorrect, idQuestion };
-                student.answers.push(newAnswer);
-                setStudents(updatedStudents); // update the state
+                // const isCorrect = checkIfIsCorrect(answer, idQuestion);
+                // const newAnswer: Answer = { answer, isCorrect, idQuestion };
+                // student.answers.push(newAnswer);
+                // // print list of answers
+                // console.log('Answers:');
+                // student.answers.forEach((answer) => {
+                //     console.log(answer.answer);
+                // });
+                // setStudents(updatedStudents); // update the state
             };
 
             socket.on('submit-answer', submitAnswerHandler);

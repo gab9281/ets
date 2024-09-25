@@ -97,6 +97,7 @@ const ManageRoom: React.FC = () => {
             console.log('Error creating room.');
         });
         socket.on('user-joined', (student: StudentType) => {
+            console.log(`Student joined: name = ${student.name}, id = ${student.id}`);
     
             setStudents((prevStudents) => [...prevStudents, student]);
 
@@ -111,6 +112,7 @@ const ManageRoom: React.FC = () => {
             setSocket(null);
         });
         socket.on('user-disconnected', (userId: string) => {
+            console.log(`Student left: id = ${userId}`);
             setStudents((prevUsers) => prevUsers.filter((user) => user.id !== userId));
         });
         setSocket(socket);
