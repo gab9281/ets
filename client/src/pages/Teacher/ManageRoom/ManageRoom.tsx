@@ -189,7 +189,8 @@ const ManageRoom: React.FC = () => {
     };
 
     const launchQuiz = () => {
-        if (!socket || !roomName || quiz?.content.length === 0) {
+        if (!socket || !roomName || !quiz?.content || quiz?.content.length === 0) {
+            // TODO: This error happens when token expires! Need to handle it properly
             console.log('Error launching quiz. No socket, room name or no questions.');
             return;
         }

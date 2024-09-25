@@ -7,6 +7,7 @@ import '../../pages/Student/JoinRoom/joinRoom.css';
 import { QuestionType } from '../../Types/QuestionType';
 // import { QuestionService } from '../../services/QuestionService';
 import DisconnectButton from '../../components/DisconnectButton/DisconnectButton';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 
 interface TeacherModeQuizProps {
     questionInfos: QuestionType;
@@ -20,7 +21,8 @@ const TeacherModeQuiz: React.FC<TeacherModeQuizProps> = ({
     disconnectWebSocket
 }) => {
     const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
-    // const [imageUrl, setImageUrl] = useState('');
+    const [isFeedbackDialogOpen, setIsFeedbackDialogOpen] = useState(false);
+    const [feedbackMessage, setFeedbackMessage] = useState('');
 
     useEffect(() => {
         setIsAnswerSubmitted(false);
@@ -29,6 +31,12 @@ const TeacherModeQuiz: React.FC<TeacherModeQuizProps> = ({
     const handleOnSubmitAnswer = (answer: string | number | boolean) => {
         const idQuestion = questionInfos.question.id || '-1';
         submitAnswer(answer, idQuestion);
+        setFeedbackMessage(`Votre réponse est "${answer.toString()}".`);
+        setIsFeedbackDialogOpen(true);
+    };
+
+    const handleFeedbackDialogClose = () => {
+        setIsFeedbackDialogOpen(false);
         setIsAnswerSubmitted(true);
     };
 
@@ -49,17 +57,36 @@ const TeacherModeQuiz: React.FC<TeacherModeQuizProps> = ({
                 </div>
 
                 {isAnswerSubmitted ? (
-                    <div>
-                        En attente pour la prochaine question...
-                    </div>
-                ) : (
-                    <QuestionComponent
-                        // imageUrl={imageUrl}
-                        handleOnSubmitAnswer={handleOnSubmitAnswer}
-                        question={questionInfos.question}
+                <div>
+                    En attente pour la prochaine question...
+                </div>
+            ) : (
+                <QuestionComponent
+                    handleOnSubmitAnswer={handleOnSubmitAnswer}
+                    question={questionInfos.question}
+                />
+            )}
+
+            <Dialog
+                open={isFeedbackDialogOpen}
+                onClose={handleFeedbackDialogClose}
+            >
+                <DialogTitle>Rétroaction</DialogTitle>
+                <DialogContent>
+                    {feedbackMessage}
+                <QuestionComponent
+                    handleOnSubmitAnswer={handleOnSubmitAnswer}
+                    question={questionInfos.question}
+                    showAnswer={true}
                     />
-                )}
-            </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleFeedbackDialogClose} color="primary">
+                        OK
+                    </Button>
+                </DialogActions>
+            </Dialog>
+                        </div>
     );
 };
 

@@ -66,7 +66,6 @@ const StudentModeQuiz: React.FC<StudentModeQuizProps> = ({
                     handleOnSubmitAnswer={handleOnSubmitAnswer}
                     question={questionInfos.question}
                     showAnswer={isAnswerSubmitted}
-                    // imageUrl={imageUrl}
                     />
                 <div className="center-h-align mt-1/2">
                     <div className="w-12">
