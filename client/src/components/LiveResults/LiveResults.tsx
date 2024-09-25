@@ -45,27 +45,37 @@ interface StudentResult {
 const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelectedQuestion, students }) => {
     const [showUsernames, setShowUsernames] = useState<boolean>(false);
     const [showCorrectAnswers, setShowCorrectAnswers] = useState<boolean>(false);
-    const [studentResults, setStudentResults] = useState<StudentResult[]>([]);
+    const [studentResultsMap, setStudentResultsMap] = useState<Map<string, StudentResult>>(new Map());
 
     const maxQuestions = questions.length;
 
     useEffect(() => {
-        // Set student list before starting
-        let newStudents: StudentResult[] = [];
+        // Initialize the map with the current students
+        const newStudentResultsMap = new Map<string, StudentResult>();
 
-        for (const student of students as UserType[]) {
-            newStudents.push({ username: student.name, idUser: student.id, answers: [] })
+        for (const student of students) {
+            newStudentResultsMap.set(student.id, { username: student.name, idUser: student.id, answers: [] });
         }
 
-        setStudentResults(newStudents);
-
+        setStudentResultsMap(newStudentResultsMap);
     }, [])
+
+    // update when students change
+    useEffect(() => {
+        // studentResultsMap is inconsistent with students -- need to update
+
+        for (const student of students as UserType[]) {
+            if (!studentResultsMap.has(student.id)) {
+                studentResultsMap.set(student.id, { username: student.name, idUser: student.id, answers: [] });
+            }   
+        }
+
+    }, [students])
 
     useEffect(() => {
         if (socket) {
             const submitAnswerHandler = ({
                 idUser,
-                username,
                 answer,
                 idQuestion
             }: {
@@ -74,22 +84,35 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
                 answer: string | number | boolean;
                 idQuestion: number;
             }) => {
-                setStudentResults((currentResults) => {
-                    const userIndex = currentResults.findIndex(
-                        (result) => result.idUser === idUser
-                    );
-                    const isCorrect = checkIfIsCorrect(answer, idQuestion);
-                    if (userIndex !== -1) {
-                        const newResults = [...currentResults];
-                        newResults[userIndex].answers.push({ answer, isCorrect, idQuestion });
-                        return newResults;
-                    } else {
-                        return [
-                            ...currentResults,
-                            { idUser, username, answers: [{ answer, isCorrect, idQuestion }] }
-                        ];
+                // Update the student results in the map with the answer
+                setStudentResultsMap((currentResults) => {
+                    const studentResult = currentResults.get(idUser);
+                    if (!studentResult) {
+                        return currentResults;
                     }
+
+                    const isCorrect = checkIfIsCorrect(answer, idQuestion);
+                    studentResult.answers.push({ answer, isCorrect, idQuestion });
+                    return new Map(currentResults).set(idUser, studentResult);
                 });
+
+
+                // setStudentResults((currentResults) => {
+                //     const userIndex = currentResults.findIndex(
+                //         (result) => result.idUser === idUser
+                //     );
+                //     const isCorrect = checkIfIsCorrect(answer, idQuestion);
+                //     if (userIndex !== -1) {
+                //         const newResults = [...currentResults];
+                //         newResults[userIndex].answers.push({ answer, isCorrect, idQuestion });
+                //         return newResults;
+                //     } else {
+                //         return [
+                //             ...currentResults,
+                //             { idUser, username, answers: [{ answer, isCorrect, idQuestion }] }
+                //         ];
+                //     }
+                // });
             };
 
             socket.on('submit-answer', submitAnswerHandler);
@@ -124,25 +147,38 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
 
     const classAverage: number = useMemo(() => {
         let classTotal = 0;
+
+        const studentResults = Array.from(studentResultsMap.values());
+        
         studentResults.forEach((student) => {
             classTotal += getStudentGrade(student);
         });
 
         return classTotal / studentResults.length;
-    }, [studentResults]);
+    }, [studentResultsMap]);
 
     const getCorrectAnswersPerQuestion = (index: number): number => {
         return (
-            (studentResults.filter((student) =>
+            (Array.from(studentResultsMap.values()).filter((student) =>
                 student.answers.some(
                     (answer) =>
                         parseInt(answer.idQuestion.toString()) === index + 1 && answer.isCorrect
                 )
-            ).length /
-                studentResults.length) *
+            ).length / studentResultsMap.size) *
             100
         );
     };
+
+        //     (studentResults.filter((student) =>
+        //         student.answers.some(
+        //             (answer) =>
+        //                 parseInt(answer.idQuestion.toString()) === index + 1 && answer.isCorrect
+        //         )
+        //     ).length /
+        //         studentResults.length) *
+        //     100
+        // );
+    // };
 
     function checkIfIsCorrect(answer: string | number | boolean, idQuestion: number): boolean {
         const questionInfo = questions.find((q) =>
@@ -278,7 +314,7 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {studentResults.map((student) => (
+                    {Array.from(studentResultsMap.values()).map((student) => (
                         <TableRow key={student.idUser}>
                             <TableCell
                                 className="sticky-column"
@@ -360,7 +396,7 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
                                     color: 'rgba(0, 0, 0)'
                                 }}
                             >
-                                {studentResults.length > 0
+                                {studentResultsMap.size > 0
                                     ? `${getCorrectAnswersPerQuestion(index).toFixed()} %`
                                     : '-'}
                             </TableCell>
@@ -376,7 +412,7 @@ const LiveResults: React.FC<LiveResultsProps> = ({ socket, questions, showSelect
                                 color: 'rgba(0, 0, 0)'
                             }}
                         >
-                            {studentResults.length > 0 ? `${classAverage.toFixed()} %` : '-'}
+                            {studentResultsMap.size > 0 ? `${classAverage.toFixed()} %` : '-'}
                         </TableCell>
                     </TableRow>
                 </TableFooter>

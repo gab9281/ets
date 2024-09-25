@@ -25,7 +25,7 @@ const ManageRoom: React.FC = () => {
     const navigate = useNavigate();
     const [roomName, setRoomName] = useState<string>('');
     const [socket, setSocket] = useState<Socket | null>(null);
-    const [users, setUsers] = useState<UserType[]>([]);
+    const [students, setStudents] = useState<UserType[]>([]);
     const quizId = useParams<{ id: string }>();
     const [quizQuestions, setQuizQuestions] = useState<QuestionType[] | undefined>();
     const [quiz, setQuiz] = useState<QuizType | null>(null);
@@ -74,7 +74,7 @@ const ManageRoom: React.FC = () => {
             setSocket(null);
             setQuizQuestions(undefined);
             setCurrentQuestion(undefined);
-            setUsers([]);
+            setStudents([]);
             setRoomName('');
         }
     };
@@ -96,9 +96,9 @@ const ManageRoom: React.FC = () => {
         socket.on('create-failure', () => {
             console.log('Error creating room.');
         });
-        socket.on('user-joined', (user: UserType) => {
+        socket.on('user-joined', (student: UserType) => {
     
-            setUsers((prevUsers) => [...prevUsers, user]);
+            setStudents((prevStudents) => [...prevStudents, student]);
 
             if (quizMode === 'teacher') {
                 webSocketService.nextQuestion(roomName, currentQuestion);
@@ -111,7 +111,7 @@ const ManageRoom: React.FC = () => {
             setSocket(null);
         });
         socket.on('user-disconnected', (userId: string) => {
-            setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+            setStudents((prevUsers) => prevUsers.filter((user) => user.id !== userId));
         });
         setSocket(socket);
     };
@@ -119,9 +119,9 @@ const ManageRoom: React.FC = () => {
     useEffect(() => {
         // This is here to make sure the correct value is sent when user join
         if (socket) {
-            socket.on('user-joined', (user: UserType) => {
+            socket.on('user-joined', (_student: UserType) => {
     
-                setUsers((prevUsers) => [...prevUsers, user]);
+                // setUsers((prevUsers) => [...prevUsers, user]);
     
                 if (quizMode === 'teacher') {
                     webSocketService.nextQuestion(roomName, currentQuestion);
@@ -250,13 +250,13 @@ const ManageRoom: React.FC = () => {
 
                 <div className='centerTitle'>
                     <div className='title'>Salle: {roomName}</div>
-                    <div className='userCount subtitle'>Utilisateurs: {users.length}/60</div>
+                    <div className='userCount subtitle'>Utilisateurs: {students.length}/60</div>
                 </div>
 
                 <div className='dumb'></div>
 
             </div>
-{/* the following breaks the css (nested room classes) */}
+{/* the following breaks the css (if 'room' classes are nested) */}
             <div className=''>
 
                 {quizQuestions ? (
@@ -293,7 +293,7 @@ const ManageRoom: React.FC = () => {
                                     socket={socket}
                                     questions={quizQuestions}
                                     showSelectedQuestion={showSelectedQuestion}
-                                    students={users}
+                                    students={students}
                                 ></LiveResultsComponent>
 
                             </div>
@@ -312,7 +312,7 @@ const ManageRoom: React.FC = () => {
                 ) : (
 
                     <UserWaitPage
-                        users={users}
+                        users={students}
                         launchQuiz={launchQuiz}
                         setQuizMode={setQuizMode}
                     />
