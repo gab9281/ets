@@ -6,12 +6,10 @@ class authController {
 
         try {
 
-            const passportConfig = authConfig.getPassportJSConfig();
-            const simpleLoginConfig = authConfig.getSimpleLoginConfig();
+            const authActive = authConfig.getActiveAuth();
 
             const response = {
-                passportConfig,
-                simpleLoginConfig
+                authActive
             };
 
             return res.json(response);

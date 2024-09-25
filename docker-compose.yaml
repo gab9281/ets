@@ -10,7 +10,9 @@ services:
     restart: always
 
   backend:
-    image: fuhrmanator/evaluetonsavoir-backend:latest
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     container_name: backend
     ports:
       - "3000:3000"
