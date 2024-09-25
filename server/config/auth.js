@@ -133,36 +133,47 @@ class AuthConfig {
 
   // Méthode pour retourner la configuration des fournisseurs PassportJS pour le frontend
   getActiveAuth() {
-    if (this.config && this.config.auth && this.config.auth.passportjs) {
+    if (this.config && this.config.auth) {
       const passportConfig = {};
 
-      this.config.auth.passportjs.forEach(provider => {
-        const providerName = Object.keys(provider)[0];
-        const providerConfig = provider[providerName];
+      // Gestion des providers PassportJS
+      if (this.config.auth.passportjs) {
+        this.config.auth.passportjs.forEach(provider => {
+          const providerName = Object.keys(provider)[0];
+          const providerConfig = provider[providerName];
 
-        // On inclut uniquement les champs nécessaires pour le frontend
-        passportConfig[providerName] = {};
+          passportConfig[providerName] = {};
 
-        if (providerConfig.type === 'oauth') {
-          passportConfig[providerName] = {
-            type: providerConfig.type,
-            authorizationUrl: providerConfig.OAUTH_AUTHORIZATION_URL,
-            callbackUrl: providerConfig.OAUTH_CALLBACK_URL,
-          };
-        } else if (providerConfig.type === 'oidc') {
-          passportConfig[providerName] = {
-            type: providerConfig.type,
-            issuerUrl: providerConfig.OIDC_ISSUER_URL,
-            callbackUrl: providerConfig.OIDC_CALLBACK_URL
-          };
-        }
-      });
+          if (providerConfig.type === 'oauth') {
+            passportConfig[providerName] = {
+              type: providerConfig.type,
+              authorizationUrl: providerConfig.OAUTH_AUTHORIZATION_URL,
+              callbackUrl: providerConfig.OAUTH_CALLBACK_URL,
+            };
+          } else if (providerConfig.type === 'oidc') {
+            passportConfig[providerName] = {
+              type: providerConfig.type,
+              issuerUrl: providerConfig.OIDC_ISSUER_URL,
+              callbackUrl: providerConfig.OIDC_CALLBACK_URL
+            };
+          }
+        });
+      }
+
+      // Gestion du Simple Login
+      if (this.config.auth["simple-login"] && this.config.auth["simple-login"].enabled) {
+        passportConfig['simple-login'] = {
+          type: "simple-login",
+          name: this.config.auth["simple-login"].name
+        };
+      }
 
       return passportConfig;
     } else {
-      return { error: "Aucune configuration PassportJS disponible." };
+      return { error: "Aucune configuration d'authentification disponible." };
     }
   }
+
 
 }
 
