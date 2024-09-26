@@ -8,7 +8,7 @@ class PassportOAuth{
             tokenURL: provider.token_url,
             clientID: provider.client_id,
             clientSecret: provider.client_secret,
-            callbackURL: `http://gti700.gmatte.xyz:4400/api/auth/gmatte/callback`,
+            callbackURL: `http://localhost:4400/api/auth/gmatte/callback`,
           },
           async function(accessToken, refreshToken, params, profile, done) {
             try {
