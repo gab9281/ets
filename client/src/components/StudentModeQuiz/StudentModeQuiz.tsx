@@ -12,7 +12,7 @@ import DisconnectButton from '../../components/DisconnectButton/DisconnectButton
 
 interface StudentModeQuizProps {
     questions: QuestionType[];
-    submitAnswer: (answer: string | number | boolean, idQuestion: string) => void;
+    submitAnswer: (answer: string | number | boolean, idQuestion: number) => void;
     disconnectWebSocket: () => void;
 }
 
@@ -38,7 +38,7 @@ const StudentModeQuiz: React.FC<StudentModeQuizProps> = ({
     };
 
     const handleOnSubmitAnswer = (answer: string | number | boolean) => {
-        const idQuestion = questionInfos.question.id || '-1';
+        const idQuestion = Number(questionInfos.question.id) || -1;
         submitAnswer(answer, idQuestion);
         setIsAnswerSubmitted(true);
     };

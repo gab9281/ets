@@ -2,16 +2,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
-import { parse } from 'gift-pegjs';
+import { GIFTQuestion, parse } from 'gift-pegjs';
 import { QuestionType } from '../../../Types/QuestionType';
 import LiveResultsComponent from '../../../components/LiveResults/LiveResults';
 // import { QuestionService } from '../../../services/QuestionService';
-import webSocketService from '../../../services/WebsocketService';
+import webSocketService, { AnswerReceptionFromBackendType } from '../../../services/WebsocketService';
 import { QuizType } from '../../../Types/QuizType';
 
 import './manageRoom.css';
 import { ENV_VARIABLES } from '../../../constants';
-import { StudentType } from '../../../Types/StudentType';
+import { StudentType, Answer } from '../../../Types/StudentType';
 import { Button } from '@mui/material';
 import LoadingCircle from '../../../components/LoadingCircle/LoadingCircle';
 import { Refresh, Error } from '@mui/icons-material';
@@ -82,7 +82,7 @@ const ManageRoom: React.FC = () => {
     const createWebSocketRoom = () => {
         setConnectingError('');
         const socket = webSocketService.connect(ENV_VARIABLES.VITE_BACKEND_URL);
-        
+
         socket.on('connect', () => {
             webSocketService.createRoom();
         });
@@ -98,7 +98,7 @@ const ManageRoom: React.FC = () => {
         });
         socket.on('user-joined', (student: StudentType) => {
             console.log(`Student joined: name = ${student.name}, id = ${student.id}`);
-    
+
             setStudents((prevStudents) => [...prevStudents, student]);
 
             if (quizMode === 'teacher') {
@@ -121,10 +121,9 @@ const ManageRoom: React.FC = () => {
     useEffect(() => {
         // This is here to make sure the correct value is sent when user join
         if (socket) {
+            console.log(`Listening for user-joined in room ${roomName}`);
             socket.on('user-joined', (_student: StudentType) => {
-    
-                // setUsers((prevUsers) => [...prevUsers, user]);
-    
+
                 if (quizMode === 'teacher') {
                     webSocketService.nextQuestion(roomName, currentQuestion);
                 } else if (quizMode === 'student') {
@@ -132,7 +131,122 @@ const ManageRoom: React.FC = () => {
                 }
             });
         }
-    }, [currentQuestion, quizQuestions]);
+
+        if (socket) {
+            // handle the case where user submits an answer
+            console.log(`Listening for submit-answer-room in room ${roomName}`);
+            socket.on('submit-answer-room', (answerData: AnswerReceptionFromBackendType) => {
+                const { answer, idQuestion, idUser, username } = answerData;
+                console.log(`Received answer from ${username} for question ${idQuestion}: ${answer}`);
+                if (!quizQuestions) {
+                    console.log('Quiz questions not found (cannot update answers without them).');
+                    return;
+                }
+    
+                // Update the students state using the functional form of setStudents
+                setStudents((prevStudents) => {
+                    // print the list of current student names
+                    console.log('Current students:');
+                    prevStudents.forEach((student) => {
+                        console.log(student.name);
+                    });
+    
+                    let foundStudent = false;
+                    const updatedStudents = prevStudents.map((student) => {
+                        console.log(`Comparing ${student.id} to ${idUser}`);
+                        if (student.id === idUser) {
+                            foundStudent = true;
+                            const existingAnswer = student.answers.find((ans) => ans.idQuestion === idQuestion);
+                            let updatedAnswers: Answer[] = [];
+                            if (existingAnswer) {
+                                // Update the existing answer
+                                updatedAnswers = student.answers.map((ans) => {
+                                    console.log(`Comparing ${ans.idQuestion} to ${idQuestion}`);
+                                    return (ans.idQuestion === idQuestion ? { ...ans, answer, isCorrect: checkIfIsCorrect(answer, idQuestion, quizQuestions!) } : ans);
+                                });
+                            } else {
+                                // Add a new answer
+                                const newAnswer = { idQuestion, answer, isCorrect: checkIfIsCorrect(answer, idQuestion, quizQuestions!) };
+                                updatedAnswers = [...student.answers, newAnswer];
+                            }
+                            return { ...student, answers: updatedAnswers };
+                                    }
+                        return student;
+                    });
+                    if (!foundStudent) {
+                        console.log(`Student ${username} not found in the list.`);
+                    }
+                    return updatedStudents;
+                });
+            });
+            setSocket(socket);
+        }
+
+    }, [socket, currentQuestion, quizQuestions]);
+
+    // useEffect(() => {
+    //     if (socket) {
+    //         const submitAnswerHandler = (answerData: answerSubmissionType) => {
+    //             const { answer, idQuestion, username } = answerData;
+    //             console.log(`Received answer from ${username} for question ${idQuestion}: ${answer}`);
+
+    //             // print the list of current student names
+    //             console.log('Current students:');
+    //             students.forEach((student) => {
+    //                 console.log(student.name);
+    //             });
+
+    //             // Update the students state using the functional form of setStudents
+    //             setStudents((prevStudents) => {
+    //                 let foundStudent = false;
+    //                 const updatedStudents = prevStudents.map((student) => {
+    //                     if (student.id === username) {
+    //                         foundStudent = true;
+    //                         const updatedAnswers = student.answers.map((ans) => {
+    //                             const newAnswer: Answer = { answer, isCorrect: checkIfIsCorrect(answer, idQuestion, quizQuestions!), idQuestion };
+    //                             console.log(`Updating answer for ${student.name} for question ${idQuestion} to ${answer}`);
+    //                             return (ans.idQuestion === idQuestion ? { ...ans, newAnswer } : ans);
+    //                         }
+    //                         );
+    //                         return { ...student, answers: updatedAnswers };
+    //                     }
+    //                     return student;
+    //                 });
+    //                 if (!foundStudent) {
+    //                     console.log(`Student ${username} not found in the list of students in LiveResults`);
+    //                 }
+    //                 return updatedStudents;
+    //             });
+
+
+    //             // make a copy of the students array so we can update it
+    //             // const updatedStudents = [...students];
+
+    //             // const student = updatedStudents.find((student) => student.id === idUser);
+    //             // if (!student) {
+    //             //     // this is a bad thing if an answer was submitted but the student isn't in the list
+    //             //     console.log(`Student ${idUser} not found in the list of students in LiveResults`);
+    //             //     return;
+    //             // }
+
+    //             // const isCorrect = checkIfIsCorrect(answer, idQuestion);
+    //             // const newAnswer: Answer = { answer, isCorrect, idQuestion };
+    //             // student.answers.push(newAnswer);
+    //             // // print list of answers
+    //             // console.log('Answers:');
+    //             // student.answers.forEach((answer) => {
+    //             //     console.log(answer.answer);
+    //             // });
+    //             // setStudents(updatedStudents); // update the state
+    //         };
+
+    //         socket.on('submit-answer', submitAnswerHandler);
+    //         return () => {
+    //             socket.off('submit-answer');
+    //         };
+    //     }
+    // }, [socket]);
+
 
     const nextQuestion = () => {
         if (!quizQuestions || !currentQuestion || !quiz?.content) return;
@@ -173,8 +287,12 @@ const ManageRoom: React.FC = () => {
 
     const launchTeacherMode = () => {
         const quizQuestions = initializeQuizQuestion();
+        console.log('launchTeacherMode - quizQuestions:', quizQuestions);
 
-        if (!quizQuestions) return;
+        if (!quizQuestions) {
+            console.log('Error launching quiz (launchTeacherMode). No questions found.');
+            return;
+        }
 
         setCurrentQuestion(quizQuestions[0]);
         webSocketService.nextQuestion(roomName, quizQuestions[0]);
@@ -182,18 +300,20 @@ const ManageRoom: React.FC = () => {
 
     const launchStudentMode = () => {
         const quizQuestions = initializeQuizQuestion();
+        console.log('launchStudentMode - quizQuestions:', quizQuestions);
 
         if (!quizQuestions) {
+            console.log('Error launching quiz (launchStudentMode). No questions found.');
             return;
         }
-
+        setQuizQuestions(quizQuestions);
         webSocketService.launchStudentModeQuiz(roomName, quizQuestions);
     };
 
     const launchQuiz = () => {
         if (!socket || !roomName || !quiz?.content || quiz?.content.length === 0) {
             // TODO: This error happens when token expires! Need to handle it properly
-            console.log('Error launching quiz. No socket, room name or no questions.');
+            console.log(`Error launching quiz. socket: ${socket}, roomName: ${roomName}, quiz: ${quiz}`);
             return;
         }
         switch (quizMode) {
@@ -207,7 +327,7 @@ const ManageRoom: React.FC = () => {
     const showSelectedQuestion = (questionIndex: number) => {
         if (quiz?.content && quizQuestions) {
             setCurrentQuestion(quizQuestions[questionIndex]);
-            
+
             if (quizMode === 'teacher') {
                 webSocketService.nextQuestion(roomName, quizQuestions[questionIndex]);
             }
@@ -218,6 +338,75 @@ const ManageRoom: React.FC = () => {
         disconnectWebSocket();
         navigate('/teacher/dashboard');
     };
+
+    function checkIfIsCorrect(answer: string | number | boolean, idQuestion: number, questions: QuestionType[]): boolean {
+        const questionInfo = questions.find((q) =>
+            q.question.id ? q.question.id === idQuestion.toString() : false
+        ) as QuestionType | undefined;
+
+        const answerText = answer.toString();
+        if (questionInfo) {
+            const question = questionInfo.question as GIFTQuestion;
+            if (question.type === 'TF') {
+                return (
+                    (question.isTrue && answerText == 'true') ||
+                    (!question.isTrue && answerText == 'false')
+                );
+            } else if (question.type === 'MC') {
+                return question.choices.some(
+                    (choice) => choice.isCorrect && choice.text.text === answerText
+                );
+            } else if (question.type === 'Numerical') {
+                if (question.choices && !Array.isArray(question.choices)) {
+                    if (
+                        question.choices.type === 'high-low' &&
+                        question.choices.numberHigh &&
+                        question.choices.numberLow
+                    ) {
+                        const answerNumber = parseFloat(answerText);
+                        if (!isNaN(answerNumber)) {
+                            return (
+                                answerNumber <= question.choices.numberHigh &&
+                                answerNumber >= question.choices.numberLow
+                            );
+                        }
+                    }
+                }
+                if (question.choices && Array.isArray(question.choices)) {
+                    if (
+                        question.choices[0].text.type === 'range' &&
+                        question.choices[0].text.number &&
+                        question.choices[0].text.range
+                    ) {
+                        const answerNumber = parseFloat(answerText);
+                        const range = question.choices[0].text.range;
+                        const correctAnswer = question.choices[0].text.number;
+                        if (!isNaN(answerNumber)) {
+                            return (
+                                answerNumber <= correctAnswer + range &&
+                                answerNumber >= correctAnswer - range
+                            );
+                        }
+                    }
+                    if (
+                        question.choices[0].text.type === 'simple' &&
+                        question.choices[0].text.number
+                    ) {
+                        const answerNumber = parseFloat(answerText);
+                        if (!isNaN(answerNumber)) {
+                            return answerNumber === question.choices[0].text.number;
+                        }
+                    }
+                }
+            } else if (question.type === 'Short') {
+                return question.choices.some(
+                    (choice) => choice.text.text.toUpperCase() === answerText.toUpperCase()
+                );
+            }
+        }
+        return false;
+    }
+
 
     if (!roomName) {
         return (
@@ -258,7 +447,7 @@ const ManageRoom: React.FC = () => {
                 <div className='dumb'></div>
 
             </div>
-{/* the following breaks the css (if 'room' classes are nested) */}
+            {/* the following breaks the css (if 'room' classes are nested) */}
             <div className=''>
 
                 {quizQuestions ? (
@@ -295,7 +484,7 @@ const ManageRoom: React.FC = () => {
                                     socket={socket}
                                     questions={quizQuestions}
                                     showSelectedQuestion={showSelectedQuestion}
-                                    connectedStudents={students}
+                                    students={students}
                                 ></LiveResultsComponent>
 
                             </div>

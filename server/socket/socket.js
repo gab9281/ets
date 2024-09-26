@@ -101,7 +101,7 @@ const setupWebsocket = (io) => {
     });
 
     socket.on("submit-answer", ({ roomName, username, answer, idQuestion }) => {
-      socket.to(roomName).emit("submit-answer", {
+      socket.to(roomName).emit("submit-answer-room", {
         idUser: socket.id,
         username,
         answer,

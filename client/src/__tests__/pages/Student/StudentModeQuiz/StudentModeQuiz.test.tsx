@@ -48,7 +48,7 @@ describe('StudentModeQuiz', () => {
             fireEvent.click(screen.getByText('Répondre'));
         });
 
-        expect(mockSubmitAnswer).toHaveBeenCalledWith('Option A', '1');
+        expect(mockSubmitAnswer).toHaveBeenCalledWith('Option A', 1);
     });
 
     test('handles quit button click', async () => {
