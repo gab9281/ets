@@ -5,7 +5,7 @@ import { ENV_VARIABLES } from '../../../constants';
 
 import StudentModeQuiz from '../../../components/StudentModeQuiz/StudentModeQuiz';
 import TeacherModeQuiz from '../../../components/TeacherModeQuiz/TeacherModeQuiz';
-import webSocketService from '../../../services/WebsocketService';
+import webSocketService, { AnswerSubmissionToBackendType } from '../../../services/WebsocketService';
 import DisconnectButton from '../../../components/DisconnectButton/DisconnectButton';
 
 import './joinRoom.css';
@@ -99,8 +99,15 @@ const JoinRoom: React.FC = () => {
         }
     };
 
-    const handleOnSubmitAnswer = (answer: string | number | boolean, idQuestion: string) => {
-        webSocketService.submitAnswer(roomName, answer, username, idQuestion);
+    const handleOnSubmitAnswer = (answer: string | number | boolean, idQuestion: number) => {
+        const answerData: AnswerSubmissionToBackendType = {
+            roomName: roomName,
+            answer: answer,
+            username: username,
+            idQuestion: idQuestion
+        };
+
+        webSocketService.submitAnswer(answerData);
     };
 
     if (isWaitingForTeacher) {

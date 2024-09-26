@@ -125,7 +125,7 @@ describe("websocket server", () => {
       answer: "answer1",
       idQuestion: 1,
     });
-    teacherSocket.on("submit-answer", (answer) => {
+    teacherSocket.on("submit-answer-room", (answer) => {
       expect(answer).toEqual({
         idUser: studentSocket.id,
         username: "student1",

@@ -47,7 +47,7 @@ describe('TeacherModeQuiz', () => {
         act(() => {
             fireEvent.click(screen.getByText('Répondre'));
         });
-        expect(mockSubmitAnswer).toHaveBeenCalledWith('Option A', '1');
+        expect(mockSubmitAnswer).toHaveBeenCalledWith('Option A', 1);
         expect(screen.getByText('Votre réponse est "Option A".')).toBeInTheDocument();
     });
 

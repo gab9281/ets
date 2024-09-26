@@ -11,7 +11,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/
 
 interface TeacherModeQuizProps {
     questionInfos: QuestionType;
-    submitAnswer: (answer: string | number | boolean, idQuestion: string) => void;
+    submitAnswer: (answer: string | number | boolean, idQuestion: number) => void;
     disconnectWebSocket: () => void;
 }
 
@@ -29,7 +29,7 @@ const TeacherModeQuiz: React.FC<TeacherModeQuizProps> = ({
     }, [questionInfos]);
 
     const handleOnSubmitAnswer = (answer: string | number | boolean) => {
-        const idQuestion = questionInfos.question.id || '-1';
+        const idQuestion = Number(questionInfos.question.id) || -1;
         submitAnswer(answer, idQuestion);
         setFeedbackMessage(`Votre réponse est "${answer.toString()}".`);
         setIsFeedbackDialogOpen(true);

@@ -1,6 +1,22 @@
 // WebSocketService.tsx
 import { io, Socket } from 'socket.io-client';
 
+// Must (manually) sync these types to server/socket/socket.js
+
+export type AnswerSubmissionToBackendType = {
+    roomName: string;
+    username: string;
+    answer: string | number | boolean;
+    idQuestion: number;
+};
+
+export type AnswerReceptionFromBackendType = {
+    idUser: string;
+    username: string;
+    answer: string | number | boolean;
+    idQuestion: number;
+};
+
 class WebSocketService {
     private socket: Socket | null = null;
 
@@ -51,19 +67,22 @@ class WebSocketService {
         }
     }
 
-    submitAnswer(
-        roomName: string,
-        answer: string | number | boolean,
-        username: string,
-        idQuestion: string
+    submitAnswer(answerData: AnswerSubmissionToBackendType
+        // roomName: string,
+        // answer: string | number | boolean,
+        // username: string,
+        // idQuestion: string
     ) {
         if (this.socket) {
-            this.socket?.emit('submit-answer', {
-                answer: answer,
-                roomName: roomName,
-                username: username,
-                idQuestion: idQuestion
-            });
+            this.socket?.emit('submit-answer', 
+            //     {
+            //     answer: answer,
+            //     roomName: roomName,
+            //     username: username,
+            //     idQuestion: idQuestion
+            // }
+            answerData
+        );
         }
     }
 }
