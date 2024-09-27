@@ -1,17 +1,18 @@
-const authConfig = require('../config/auth.js');
+const AuthConfig = require('../config/auth.js');
 
 class authController {
 
     async getActive(req, res, next) {
-
         try {
 
-            const authActive = authConfig.getActiveAuth();
+            const authC = new AuthConfig();
+            authC.loadConfig();
+
+            const authActive = authC.getActiveAuth();
 
             const response = {
                 authActive
             };
-
             return res.json(response);
         }
         catch (error) {

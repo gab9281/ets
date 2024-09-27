@@ -2,23 +2,27 @@ const fs = require('fs');
 const path = require('path');
 const pathAuthConfig = './auth_config.json';
 
+const configPath = path.join(__dirname, pathAuthConfig);
+
 class AuthConfig {
 
-  constructor(configPath) {
-    this.configPath = configPath;
-    this.config = this.loadConfig();
-    this.validateProvidersConfig();
-  }
+  config = null;
+
 
   // Méthode pour lire le fichier de configuration JSON
   loadConfig() {
     try {
-      const configData = fs.readFileSync(this.configPath, 'utf-8');
-      return JSON.parse(configData);
+      const configData = fs.readFileSync(configPath, 'utf-8');
+      this.config = JSON.parse(configData);
     } catch (error) {
       console.error("Erreur lors de la lecture du fichier de configuration :", error);
       return null;
     }
+  }
+
+  // Méthode pour load le fichier de test
+  loadConfigTest(mockConfig) {
+    this.config = mockConfig;
   }
 
   // Méthode pour retourner la configuration des fournisseurs PassportJS
@@ -177,7 +181,4 @@ class AuthConfig {
 
 }
 
-// Utilisation de la classe ConfigManager
-const configPath = path.join(__dirname, pathAuthConfig);
-const instance = new AuthConfig(configPath);
-module.exports = instance;
+module.exports = AuthConfig;
