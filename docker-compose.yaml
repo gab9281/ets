@@ -24,7 +24,7 @@ services:
       JWT_SECRET: haQdgd2jp09qb897GeBZyJetC8ECSpbFJe
       FRONTEND_URL: "http://localhost:5173"
     volumes:
-      - ./auth_config.json:/usr/src/app/serveur/config/auth_config.json
+      - ./server/auth_config.json:/usr/src/app/serveur/config/auth_config.json
     depends_on:
       - mongo
     restart: always
