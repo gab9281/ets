@@ -1,18 +1,18 @@
 var OAuth2Strategy = require('passport-oauth2')
 
 class PassportOAuth {
-    register(app, passport, name, provider) {
+    register(app, passport,endpoint, name, provider) {
         passport.use(name, new OAuth2Strategy({
-            authorizationURL: provider.authorization_url,
-            tokenURL: provider.token_url,
-            clientID: provider.client_id,
-            clientSecret: provider.client_secret,
-            callbackURL: `http://localhost:4400/api/auth/gmatte/callback`,
+            authorizationURL: provider.OAUTH_AUTHORIZATION_URL,
+            tokenURL: provider.OAUTH_TOKEN_URL,
+            clientID: provider.OAUTH_CLIENT_ID,
+            clientSecret: provider.OAUTH_CLIENT_SECRET,
+            callbackURL: `${endpoint}/${name}/callback`,
             passReqToCallback: true
         },
         async function(req, accessToken, refreshToken, params, profile, done) {
             try {
-                const userInfoResponse = await fetch(provider.userinfo_url, {
+                const userInfoResponse = await fetch(provider.OAUTH_USERINFO_URL, {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
                 const userInfo = await userInfoResponse.json();
@@ -35,27 +35,28 @@ class PassportOAuth {
 
                 return done(null, user);
             } catch (error) {
-                console.error(`Error in OAuth2 Strategy ${name} :`, error);
+                console.error(`Erreur dans la strategie OAuth2 '${name}' : ${error}`);
                 return done(error);
             }
         }));
 
-        app.get(`/api/auth/${name}`, (req, res, next) => {
+        app.get(`${endpoint}/${name}`, (req, res, next) => {
             passport.authenticate(name, {
-                scope: provider.scopes.join(' ') ?? 'openid profile email offline_access',
+                scope: 'openid profile email offline_access'+ ` ${provider.OAUTH_ADD_SCOPE}`,
                 prompt: 'consent'
             })(req, res, next);
         });
 
-        app.get(`/api/auth/${name}/callback`, 
+        app.get(`${endpoint}/${name}/callback`, 
             (req, res, next) => {
                 passport.authenticate(name, { failureRedirect: '/login' })(req, res, next);
             },
             (req, res) => {
                 if (req.user) {
                     res.json(req.user)
+                    console.info(`L'utilisateur '${req.user.name}' vient de se connecter`)
                 } else {
-                    res.status(401).json({ error: 'Authentication failed' });
+                    res.status(401).json({ error: "L'authentification a échoué" });
                 }
             }
         );
