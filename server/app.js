@@ -62,8 +62,6 @@ app.use(session({
 }));
 
 authManager = new AuthManager(app)
-authManager.addModule('passport-js')
-authManager.registerAuths()
 
 app.use(errorHandler)
 

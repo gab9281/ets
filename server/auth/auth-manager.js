@@ -1,26 +1,20 @@
 const fs = require('fs');
-
-const settings = {
-    "passport-js":{
-        "gmatte" : {
-            type: "oauth",
-            authorization_url: process.env['OAUTH_AuthorizeUrl'],
-            client_id : process.env['OAUTH_ClientID'],
-            client_secret: process.env['OAUTH_ClientSecret'],
-            config_url: process.env['OAUTH_ConfigUrl'],
-            userinfo_url: process.env['OAUTH_UserinfoUrl'],
-            token_url: process.env['OAUTH_TokenUrl'],
-            logout_url: process.env['OAUTH_LogoutUrl'],
-            jwks : process.env['OAUTH_JWKS'],
-            scopes: ['openid','email','profile','groups','offline_access']
-        },
-    }
-}
+const AuthConfig = require('../config/auth.js');
 
 class AuthManager{
-    constructor(expressapp){
+    constructor(expressapp,configs=null){
         this.modules = []
         this.app = expressapp
+
+        this.configs = configs ?? (new AuthConfig()).loadConfig()
+        this.addModules()
+        this.registerAuths()
+    }
+
+    async addModules(){
+        for(const module in this.configs.auth){
+            this.addModule(module)
+        }
     }
 
     async addModule(name){
@@ -28,23 +22,21 @@ class AuthManager{
 
         if(fs.existsSync(modulePath)){
             const Module = require(modulePath);
-            this.modules.push(new Module(this,settings[name]));
-            console.debug(`Auth module ${name} added`)
+            this.modules.push(new Module(this,this.configs.auth[name]));
+            console.info(`Module d'authentification '${name}' ajouté`)
+        } else{
+            console.error(`Le module d'authentification ${name} n'as pas été chargé car il est introuvable`)
         }
     }
 
     async registerAuths(){
         for(const module of this.modules){
-            module.registerAuth(this.app)
+            try{
+                module.registerAuth(this.app)
+            } catch(error){
+                console.error(`L'enregistrement du module ${module} a échoué.`)
+            }
         }
-    }
-
-    async showAuths(){
-        let authsData = []
-        for(const module in this.modules){
-            authsData.push(module.showAuth())
-        }
-        return authsData;
     }
 
     async login(userInfos){

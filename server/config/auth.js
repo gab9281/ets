@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const pathAuthConfig = './auth_config.json';
 
-const configPath = path.join(__dirname, pathAuthConfig);
+const configPath = path.join(process.cwd(), pathAuthConfig);
 
 class AuthConfig {
 
@@ -14,6 +14,7 @@ class AuthConfig {
     try {
       const configData = fs.readFileSync(configPath, 'utf-8');
       this.config = JSON.parse(configData);
+      return this.config
     } catch (error) {
       console.error("Erreur lors de la lecture du fichier de configuration :", error);
       return null;
@@ -89,11 +90,11 @@ class AuthConfig {
   // Méthode pour vérifier si tous les providers ont les variables nécessaires
   validateProvidersConfig() {
     const requiredOAuthFields = [
-      'OAUTH_AUTHORIZATION_URL', 'OAUTH_TOKEN_URL', 'OAUTH_CLIENT_ID', 'OAUTH_CLIENT_SECRET', 'OAUTH_CALLBACK_URL'
+      'OAUTH_AUTHORIZATION_URL', 'OAUTH_TOKEN_URL','OAUTH_USERINFO_URL', 'OAUTH_CLIENT_ID', 'OAUTH_CLIENT_SECRET', 'OAUTH_ROLE_TEACHER_VALUE', 'OAUTH_ROLE_STUDENT_VALUE'
     ];
 
     const requiredOIDCFields = [
-      'OIDC_CLIENT_ID', 'OIDC_CLIENT_SECRET', 'OIDC_ISSUER_URL', 'OIDC_CALLBACK_URL'
+      'OIDC_CLIENT_ID', 'OIDC_CLIENT_SECRET', 'OIDC_ISSUER_URL', 'OIDC_ROLE_TEACHER_VALUE', 'OIDC_ROLE_STUDENT_VALUE'
     ];
 
     const missingFieldsReport = [];
