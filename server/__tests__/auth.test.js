@@ -139,6 +139,18 @@ describe(
                     OAUTH_ROLE_TEACHER_VALUE: "teacher-claim-value",
                     OAUTH_ROLE_STUDENT_VALUE: "student-claim-value",
               },
+              provider2: {
+                type: "oauth",
+                OAUTH_AUTHORIZATION_URL:
+                "https://www.testurl.com/oauth2/authorize",
+                OAUTH_TOKEN_URL: "https://www.testurl.com/oauth2/token",
+                OAUTH_USERINFO_URL: "https://www.testurl.com/oauth2/userinfo/",
+                OAUTH_CLIENT_ID: "your_oauth_client_id",
+                OAUTH_CLIENT_SECRET: "your_oauth_client_secret",
+                OAUTH_ADD_SCOPE: "scopes",
+                OAUTH_ROLE_TEACHER_VALUE: "teacher-claim-value",
+                OAUTH_ROLE_STUDENT_VALUE: "student-claim-value",
+          },
             },
           ],
         },
@@ -146,6 +158,7 @@ describe(
       authConfigInstance.loadConfigTest(validModule); // On injecte la configuration mockée
       authmanagerInstance = new AuthManager(expressMock,authConfigInstance.config);
       expect(logSpy).toHaveBeenCalledTimes(0);
+      logSpy.mockClear();
     });
 
     it("should not load invalid modules", () => {
@@ -158,10 +171,10 @@ describe(
         authConfigInstance.loadConfigTest(invalidModule); // On injecte la configuration mockée
         authmanagerInstance = new AuthManager(expressMock,authConfigInstance.config);
         expect(logSpy).toHaveBeenCalledTimes(1);
+        logSpy.mockClear();
       });  
 
 
-    /*
     it("should not load invalid provider from passport", () => {
         const logSpy = jest.spyOn(global.console, "error");
         const validModuleInvalidProvider = {
@@ -187,7 +200,7 @@ describe(
         authConfigInstance.loadConfigTest(validModuleInvalidProvider); // On injecte la configuration mockée
         authmanagerInstance = new AuthManager(expressMock,authConfigInstance.config);
         expect(logSpy).toHaveBeenCalledTimes(2);
+        logSpy.mockClear();
       });  
-      */
   })
 );
