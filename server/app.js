@@ -52,7 +52,12 @@ app.use('/api/image', imagesRouter);
 
 // Add Auths methods
 const session = require('express-session');
-app.use(session({secret: process.env['SESSION_Secret']}));
+app.use(session({
+  secret: process.env['SESSION_Secret'],
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: process.env.NODE_ENV === 'production' }
+}));
 
 authManager = new AuthManager(app)
 authManager.addModule('passport-js')
