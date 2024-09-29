@@ -14,6 +14,7 @@ class PassportOpenIDConnect {
     async register(app, passport,endpoint, name, provider) {
 
         const config = await this.getConfigFromConfigURL(name,provider)
+        const cb_url =`${process.env['BACKEND_URL']}${endpoint}/${name}/callback`
 
         passport.use(name, new OpenIDConnectStrategy({
             issuer: config.issuer,
@@ -22,8 +23,7 @@ class PassportOpenIDConnect {
             userInfoURL: config.userinfo_endpoint,
             clientID: provider.OIDC_CLIENT_ID,
             clientSecret: provider.OIDC_CLIENT_SECRET,
-            // callbackURL: `http://localhost:4400/api/auth/${name}/callback`,
-            callbackURL: `{endpoint}/${name}/callback`,
+            callbackURL: cb_url,
             passReqToCallback: true,
             scope: 'openid profile email ' + `${provider.OIDC_ADD_SCOPE}`,
         },
@@ -35,8 +35,9 @@ class PassportOpenIDConnect {
                     email: profile.emails[0].value,
                     name: profile.name.givenName,
                 };
-                return cb(null, user);
+                return done(null, user);
             } catch (error) {
+                
             }
         }));
 
