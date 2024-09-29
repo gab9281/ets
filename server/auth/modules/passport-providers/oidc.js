@@ -1,65 +1,62 @@
 var OpenIDConnectStrategy = require('passport-openidconnect')
 
 class PassportOpenIDConnect {
-    register(app, passport, name, provider) {
+
+    async getConfigFromConfigURL(name,provider){
+        try{
+            const config = await fetch(provider.OIDC_CONFIG_URL)
+            return await config.json()
+        } catch (error) {
+            console.error(`Les informations de connexions de la connexion OIDC ${name} n'ont pu être chargées.`)
+        }
+    }
+
+    async register(app, passport,endpoint, name, provider) {
+
+        const config = await this.getConfigFromConfigURL(name,provider)
+
         passport.use(name, new OpenIDConnectStrategy({
-            issuer: provider.issuer_url,
-            authorizationURL: provider.authorization_url,
-            tokenURL: provider.token_url,
-            userInfoURL: provider.userinfo_url,
-            clientID: provider.client_id,
-            clientSecret: provider.client_secret,
-            callbackURL: `http://localhost/api/auth/${name}/callback`,
-            passReqToCallback: true
+            issuer: config.issuer,
+            authorizationURL: config.authorization_endpoint,
+            tokenURL: config.token_endpoint,
+            userInfoURL: config.userinfo_endpoint,
+            clientID: provider.OIDC_CLIENT_ID,
+            clientSecret: provider.OIDC_CLIENT_SECRET,
+            // callbackURL: `http://localhost:4400/api/auth/${name}/callback`,
+            callbackURL: `{endpoint}/${name}/callback`,
+            passReqToCallback: true,
+            scope: 'openid profile email ' + `${provider.OIDC_ADD_SCOPE}`,
         },
-        async function(req, issuer, accessToken, refreshToken, params, profile, done) {
+        // patch pour la librairie permet d'obtenir les groupes, PR en cours mais "morte" : https://github.com/jaredhanson/passport-openidconnect/pull/101
+        async function(req, issuer, profile, times, tok, done) {
             try {
-                const userInfo = (await fetch(provider.userinfo_url, {
-                    headers: { 'Authorization': `Bearer ${accessToken}` }
-                }))
-                .json();
-
                 const user = {
-                    id: userInfo.sub,
-                    email: userInfo.email,
-                    name: userInfo.name,
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
-                    expiresIn: params.expires_in
+                    id: profile.id,
+                    email: profile.emails[0].value,
+                    name: profile.name.givenName,
                 };
-
-                // Store the tokens in the session
-                req.session.oauth2Tokens = {
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
-                    expiresIn: params.expires_in
-                };
-
-                return done(null, user);
+                return cb(null, user);
             } catch (error) {
             }
         }));
 
-        app.get(`/api/auth/${name}`, (req, res, next) => {
+        app.get(`${endpoint}/${name}`, (req, res, next) => {
             passport.authenticate(name, {
-                scope: provider.scopes.join(' ') ?? 'openid profile email offline_access',
+                scope: 'openid profile email offline_access'+ ` ${provider.OAUTH_ADD_SCOPE}`,
                 prompt: 'consent'
-            }) (req, res, next);
+            })(req, res, next);
         });
 
-        app.get(`/api/auth/${name}/callback`, (req, res, next) => {
-            passport.authenticate(name, {
-                failureRedirect: '/login'
-            }) (req, res, next);
+        app.get(`${endpoint}/${name}/callback`, 
+            (req, res, next) => {
+                passport.authenticate(name, { failureRedirect: '/login' })(req, res, next);
             },
-
             (req, res) => {
                 if (req.user) {
-                    res.json(req.user);
-                }
-                else {
-                    // create error in errorCodes.js
-                    res.status(401).json({ error: 'Authentication failed' });
+                    res.json(req.user)
+                    console.info(`L'utilisateur '${req.user.name}' vient de se connecter`)
+                } else {
+                    res.status(401).json({ error: "L'authentification a échoué" });
                 }
             }
         );
