@@ -21,6 +21,7 @@ class PassportOAuth {
                     id: userInfo.sub,
                     email: userInfo.email,
                     name: userInfo.name,
+                    groups: userInfo.groups ?? [],
                     accessToken: accessToken,
                     refreshToken: refreshToken,
                     expiresIn: params.expires_in
