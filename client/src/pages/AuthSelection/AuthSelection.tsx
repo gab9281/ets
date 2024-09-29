@@ -28,6 +28,10 @@ const AuthSelection: React.FC = () => {
         // Logique d'authentification pour Simple Login
         console.log('Simple Login Data:', simpleLoginData);
     };
+    const handleAuthLogin = (provider: string) => {
+        window.location.href = 'http://localhost:3000/api/auth/' + provider;
+    };
+
     return (
         <div className="auth-selection-page">
             <h1>Connexion</h1>
@@ -60,7 +64,7 @@ const AuthSelection: React.FC = () => {
                     const provider = authData[providerKey];
                     if (provider.type === 'oauth') {
                         return (
-                            <button key={providerKey} className="provider-btn oauth-btn" onClick={() => console.log(`${providerKey} OAuth Login Clicked`)}>
+                            <button key={providerKey} className="provider-btn oauth-btn" onClick={() => handleAuthLogin(providerKey)}>
                                 Continuer avec {providerKey}
                             </button>
                         );
@@ -75,7 +79,7 @@ const AuthSelection: React.FC = () => {
                     const provider = authData[providerKey];
                     if (provider.type === 'oidc') {
                         return (
-                            <button key={providerKey} className="provider-btn oidc-btn" onClick={() => console.log(`${providerKey} OIDC Login Clicked`)}>
+                            <button key={providerKey} className="provider-btn oauth-btn" onClick={() => handleAuthLogin(providerKey)}>
                                 Continuer avec {providerKey}
                             </button>
                         );
