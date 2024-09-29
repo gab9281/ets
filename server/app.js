@@ -17,6 +17,12 @@ const authRouter = require('./routers/auth.js')
 
 // Setup environement
 dotenv.config();
+
+// Setup urls from configs
+const use_ports = (process.env['USE_PORTS']).toLocaleLowerCase() == "true"
+process.env['FRONTEND_URL'] = process.env['SITE_URL']  + (use_ports ? `:${process.env['FRONTEND_PORT']}`:"")
+process.env['BACKEND_URL'] = process.env['SITE_URL']  + (use_ports ? `:${process.env['PORT']}`:"")
+
 const db = require('./config/db.js');
 const errorHandler = require("./middleware/errorHandler.js");
 

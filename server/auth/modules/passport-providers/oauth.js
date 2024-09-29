@@ -2,12 +2,13 @@ var OAuth2Strategy = require('passport-oauth2')
 
 class PassportOAuth {
     register(app, passport,endpoint, name, provider) {
+        const cb_url =`${process.env['BACKEND_URL']}${endpoint}/${name}/callback`
         passport.use(name, new OAuth2Strategy({
             authorizationURL: provider.OAUTH_AUTHORIZATION_URL,
             tokenURL: provider.OAUTH_TOKEN_URL,
             clientID: provider.OAUTH_CLIENT_ID,
             clientSecret: provider.OAUTH_CLIENT_SECRET,
-            callbackURL: `${endpoint}/${name}/callback`,
+            callbackURL: cb_url,
             passReqToCallback: true
         },
         async function(req, accessToken, refreshToken, params, profile, done) {
