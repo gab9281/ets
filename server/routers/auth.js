@@ -4,6 +4,6 @@ const jwt = require('../middleware/jwtToken.js');
 
 const authController = require('../controllers/auth.js')
 
-router.get("/getActiveAuth",jwt.authenticate, authController.getActive);
+router.get("/getActiveAuth",authController.getActive);
 
 module.exports = router;
