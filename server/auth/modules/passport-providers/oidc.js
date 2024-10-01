@@ -34,6 +34,7 @@ class PassportOpenIDConnect {
                     id: profile.id,
                     email: profile.emails[0].value,
                     name: profile.name.givenName,
+                    groups: profile.groups[0].value ?? []
                 };
                 return done(null, user);
             } catch (error) {
