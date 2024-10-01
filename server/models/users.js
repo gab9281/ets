@@ -42,7 +42,8 @@ class Users {
         };
 
         const result = await userCollection.insertOne(newUser);
-        const userId = result._id.toString();
+        console.log("userCollection.insertOne() result", result);
+        const userId = result.insertedId.toString();
 
         const folderTitle = 'Dossier par Défaut'; 
         await Folders.create(folderTitle, userId);
