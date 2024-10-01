@@ -2,7 +2,7 @@ var OAuth2Strategy = require('passport-oauth2')
 var authUserAssoc = require('../../../models/authUserAssociation')
 var users = require('../../../models/users')
 var { hasNestedValue } = require('../../../utils')
-
+var jwt = require('../../../middleware/jwtToken')
 
 class PassportOAuth {
     constructor(passportjs,auth_name){
@@ -83,10 +83,14 @@ class PassportOAuth {
             },
             (req, res) => {
                 if (req.user) {
-                    res.json(req.user)
+                    // res.json(req.user)
 
                     //const redirectUrl = `http://your-frontend-url.com/oauth/callback?user=${encodeURIComponent(req.user)}`;
                     //res.redirect(redirectUrl);
+
+                    const tokenToSave = jwt.create(req.user.email, req.user._id);
+                    res.redirect('/oauth/callback?user=' + tokenToSave);
+
                     console.info(`L'utilisateur '${req.user.name}' vient de se connecter`)
                 } else {
                     res.status(401).json({ error: "L'authentification a échoué" });
