@@ -32,7 +32,7 @@ class ApiService {
     }
 
     // Helpers
-    private saveToken(token: string): void {
+    public saveToken(token: string): void {
         const now = new Date();
 
         const object = {

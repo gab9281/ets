@@ -33,7 +33,7 @@ const SimpleLogin: React.FC = () => {
             return;
         }
         else {
-            navigate("/teacher/Dashboard")
+            navigate("/")
         }
 
     };

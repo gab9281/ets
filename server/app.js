@@ -68,7 +68,6 @@ app.use(session({
 }));
 
 authManager = new AuthManager(app)
-
 app.use(errorHandler)
 
 // Start server

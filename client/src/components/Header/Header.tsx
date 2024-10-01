@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as React from 'react';
 import './header.css';
 import { Button } from '@mui/material';
@@ -31,6 +31,14 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, handleLogout }) => {
                 >
                     Logout
                 </Button>
+            )}
+
+            {!isLoggedIn() && (
+                <div className="auth-selection-btn">
+                    <Link to="/auth-selection">
+                        <button className="auth-btn">Connexion</button>
+                    </Link>
+                </div>
             )}
         </div>
     );
