@@ -19,7 +19,7 @@ class PassportJs{
                 const auth_id = `passportjs_${provider.type}_${name}`
 
                 if(!(provider.type in this.registeredProviders)){
-                    this.registerProvider(provider.typename,auth_id)
+                    this.registerProvider(provider.type,auth_id)
                 }
                 try{
                     this.registeredProviders[provider.type].register(expressapp,passport,this.endpoint,name,provider)
@@ -56,7 +56,7 @@ class PassportJs{
     }
 
     authenticate(userinfos){
-        this.authenticate(userinfos)
+        this.authmanager.login(userinfos)
     }
     
 }

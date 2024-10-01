@@ -7,6 +7,20 @@ class AuthProvider {
       this.name = name;
     }
 
+    async getId(name){
+      await db.connect()
+      const conn = db.getConnection();
+
+      const collection = conn.collection('authprovider');
+
+      const existingauth = await collection.findOne({ name:name });
+
+      if(existingauth){
+        return existingauth._id
+      }
+      return null
+    }
+
     async create(name) {
       await db.connect()
       const conn = db.getConnection();

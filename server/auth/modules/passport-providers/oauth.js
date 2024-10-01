@@ -1,21 +1,24 @@
 var OAuth2Strategy = require('passport-oauth2')
+var authProvider = require('../../../models/authProvider')
 var authUserAssoc = require('../../../models/authUserAssociation')
 var users = require('../../../models/users')
-var {hasNestedValue} = require('../../../utils')
+var { hasNestedValue } = require('../../../utils')
 
 
 class PassportOAuth {
-    constructor(passportjs,auth_id){
+    constructor(passportjs,auth_name){
         this.passportjs = passportjs
-        this.auth_id = auth_id
+        this.auth_name = auth_name
     }
 
-    updateUser(userinfos){
-
+    async getProviderInfo(auth_name){
+        return await authProvider.find(auth_name)
     }
 
     register(app, passport,endpoint, name, provider) {
         const cb_url =`${process.env['BACKEND_URL']}${endpoint}/${name}/callback`
+        const self = this
+
         passport.use(name, new OAuth2Strategy({
             authorizationURL: provider.OAUTH_AUTHORIZATION_URL,
             tokenURL: provider.OAUTH_TOKEN_URL,
@@ -32,30 +35,31 @@ class PassportOAuth {
                 const userInfo = await userInfoResponse.json();
 
                 let received_user = {
+                    auth_id: userInfo.sub,
                     email: userInfo.email,
                     name: userInfo.name,
                     roles: []
                 };
-                if(hasNestedValue(userInfo,provider.OIDC_ROLE_TEACHER_VALUE)) received_user.roles.push('teacher')
-                if(hasNestedValue(userInfo,provider.OIDC_ROLE_STUDENT_VALUE)) received_user.roles.push('student')
+                
+                if(hasNestedValue(userInfo,provider.OAUTH_ROLE_TEACHER_VALUE)) received_user.roles.push('teacher')
+                if(hasNestedValue(userInfo,provider.OAUTH_ROLE_STUDENT_VALUE)) received_user.roles.push('student')
 
-                const user_association = await authUserAssoc.find_user_association(userInfo.sub)
+                const user_association = await authUserAssoc.find_user_association(self.auth_name._id,userInfo.sub)
 
-                if(user_linked){
-                    let user = await users.getById(user_association.user_id)
-                    user.name = received_user.name
-                    user.email = received_user.email
-                    user.roles = received_user.roles
-                    users.editUser(user)
-                    this.passportjs.authenticate(user)
+                let user_account = null
+                if(user_association){
+                    user_account = await users.getById(user_association.user_id)
                 } 
                 else {
                     let user_id = await users.getId(userInfo.email)
-                    if(!user_id){
-                        await users.register(received_user.email,"");
-                        users.editUser
-                    }
+                    user_account = user_id ? await users.getById(user_id) : await users.register(received_user.email,"")
+                    await authUserAssoc.link(self.auth_name,received_user.auth_id,user_account._id)
                 }
+
+                user_account.name = received_user.name
+                user_account.roles = received_user.roles
+                await users.editUser(user_account)
+                self.passportjs.authenticate(user_account)
 
                 // Store the tokens in the session
                 req.session.oauth2Tokens = {
@@ -64,7 +68,7 @@ class PassportOAuth {
                     expiresIn: params.expires_in
                 };
 
-                return done(null, user);
+                return done(null, user_account);
             } catch (error) {
                 console.error(`Erreur dans la strategie OAuth2 '${name}' : ${error}`);
                 return done(error);
