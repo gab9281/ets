@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './authselection.css';
+import SimpleLogin from './SimpleLogin';
 
 const AuthSelection: React.FC = () => {
-    const [simpleLoginData, setSimpleLoginData] = useState({ username: '', password: '' });
     const [authData, setAuthData] = useState<any>(null); // Stocke les données d'auth
     const navigate = useNavigate();
 
@@ -22,17 +22,6 @@ const AuthSelection: React.FC = () => {
         fetchAuthData(); // Appel de la fonction pour récupérer les données
     }, []);
 
-    const handleSimpleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setSimpleLoginData((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleSimpleLoginSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Logique d'authentification pour Simple Login
-        console.log('Simple Login Data:', simpleLoginData);
-    };
-
     const handleAuthLogin = (provider: string) => {
         window.location.href = 'http://localhost:3000/api/auth/' + provider;
     };
@@ -44,25 +33,7 @@ const AuthSelection: React.FC = () => {
             {/* Formulaire de connexion Simple Login */}
             {authData && authData['simple-login'] && (
                 <div className="form-container">
-                    <form onSubmit={handleSimpleLoginSubmit}>
-                        <input
-                            type="text"
-                            name="username"
-                            placeholder="Nom d'utilisateur"
-                            value={simpleLoginData.username}
-                            onChange={handleSimpleLoginChange}
-                            required
-                        />
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Mot de passe"
-                            value={simpleLoginData.password}
-                            onChange={handleSimpleLoginChange}
-                            required
-                        />
-                        <button type="submit">Se connecter</button>
-                    </form>
+                    <SimpleLogin/>
                 </div>
             )}
             
