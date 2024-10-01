@@ -1,11 +1,17 @@
 const emailer = require('../config/email.js');
 const model = require('../models/users.js');
 const jwt = require('../middleware/jwtToken.js');
+const db = require('../config/db.js');
 
 const AppError = require('../middleware/AppError.js');
 const { MISSING_REQUIRED_PARAMETER, LOGIN_CREDENTIALS_ERROR, GENERATE_PASSWORD_ERROR, UPDATE_PASSWORD_ERROR, DELETE_USER_ERROR } = require('../constants/errorCodes');
 
 class UsersController {
+
+    constructor() {
+        this.db = db;
+        this.users = new model(this.db);
+    }
 
     async register(req, res, next) {
         try {
