@@ -23,13 +23,16 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 
 import ApiService from './services/ApiService';
+import OAuthCallback from './pages/AuthSelection/AuthCallback';
 
 const handleLogout = () => {
     ApiService.logout();
 };
 
 const isLoggedIn = () => {
-    return ApiService.isLoggedIn();
+    const test = ApiService.isLoggedIn();
+    console.log("App.tsx: " + test);
+    return test;
 };
 
 function App() {
@@ -71,6 +74,9 @@ function App() {
 
                         {/* Pages authentification sélection */}
                         <Route path="/auth-selection" element={<AuthSelection />} />
+                        
+                        {/* Pages authentification sélection */}
+                        <Route path="/oauth/callback" element={<OAuthCallback />} />
                     </Routes>
                 </main>
             </div>

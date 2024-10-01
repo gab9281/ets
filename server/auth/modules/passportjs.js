@@ -1,5 +1,6 @@
 const fs = require('fs');
 var passport = require('passport')
+var authprovider = require('../../models/authProvider')
 
 class PassportJs{
     constructor(authmanager,settings){
@@ -9,17 +10,20 @@ class PassportJs{
         this.endpoint = "/api/auth"
     }
 
-    registerAuth(expressapp){
+    async registerAuth(expressapp){
         expressapp.use(passport.initialize());
         expressapp.use(passport.session());
-
+        
         for(const p of this.providers){
             for(const [name,provider] of Object.entries(p)){
+                const auth_id = `passportjs_${provider.type}_${name}`
+
                 if(!(provider.type in this.registeredProviders)){
-                    this.registerProvider(provider.type)
+                    this.registerProvider(provider.type,auth_id)
                 }
                 try{
                     this.registeredProviders[provider.type].register(expressapp,passport,this.endpoint,name,provider)
+                    authprovider.create(auth_id)
                 } catch(error){
                     console.error(`La connexion ${name} de type ${provider.type} n'as pu être chargé.`)
                 }
@@ -35,15 +39,24 @@ class PassportJs{
           });
     }
 
-    registerProvider(providerType){
+    async registerProvider(providerType,auth_id){
         try{
             const providerPath = `${process.cwd()}/auth/modules/passport-providers/${providerType}.js`
             const Provider = require(providerPath);
-            this.registeredProviders[providerType]= new Provider()
+            this.registeredProviders[providerType]= new Provider(this,auth_id)
             console.info(`Le type de connexion '${providerType}' a été ajouté dans passportjs.`)
         } catch(error){
             console.error(`Le type de connexion '${providerType}' n'as pas pu être chargé dans passportjs.`)
         }
+    }
+
+
+    register(userinfos){
+        return this.authmanager.register(userinfos)
+    }
+
+    authenticate(userinfos){
+        return this.authmanager.login(userinfos)
     }
     
 }
