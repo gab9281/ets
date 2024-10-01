@@ -15,14 +15,14 @@ class AuthProvider {
 
       const existingauth = await collection.findOne({ name:name });
 
-      if(foldersCollection){
+      if(existingauth){
         return existingauth._id;
       }
 
       const newProvider = {
         name:name
       }
-      const result = await foldersCollection.insertOne(newProvider);
+      const result = await collection.insertOne(newProvider);
       return result.insertedId;
   }
 }

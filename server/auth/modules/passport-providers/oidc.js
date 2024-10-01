@@ -1,6 +1,10 @@
 var OpenIDConnectStrategy = require('passport-openidconnect')
 
 class PassportOpenIDConnect {
+    constructor(passportjs,auth_id){
+        this.passportjs = passportjs
+        this.auth_id = auth_id
+    }
 
     async getConfigFromConfigURL(name,provider){
         try{

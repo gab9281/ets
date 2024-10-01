@@ -6,7 +6,6 @@ const { USER_ALREADY_EXISTS } = require('../constants/errorCodes');
 const Folders = require('../models/folders.js');
 
 class Users {
-    
     async hashPassword(password) {
         return await bcrypt.hash(password, 10)
     }
@@ -34,7 +33,7 @@ class Users {
         const newUser = {
             email: email,
             password: await this.hashPassword(password),
-            created_at: new Date()
+            created_at: new Date(),
         };
 
         await userCollection.insertOne(newUser);
@@ -116,6 +115,37 @@ class Users {
         return user._id;
     }
 
+    async getById(id){
+        await db.connect()
+        const conn = db.getConnection();
+
+        const userCollection = conn.collection('users');
+
+        const user = await userCollection.findOne({ _id: id });
+
+        if (!user) {
+            return false;
+        }
+
+        return user;
+    }
+
+    async editUser(userInfo){
+        await db.connect()
+        const conn = db.getConnection();
+
+        const userCollection = conn.collection('users');
+
+        const user = await userCollection.findOne({ _id: userInfo.id });
+
+        if (!user) {
+            return false;
+        }
+
+        const updatedFields = { ...userInfo };
+        
+        return user;
+    }
 }
 
 module.exports = new Users;

@@ -1,6 +1,19 @@
 var OAuth2Strategy = require('passport-oauth2')
+var authUserAssoc = require('../../../models/authUserAssociation')
+var users = require('../../../models/users')
+var {hasNestedValue} = require('../../../utils')
+
 
 class PassportOAuth {
+    constructor(passportjs,auth_id){
+        this.passportjs = passportjs
+        this.auth_id = auth_id
+    }
+
+    updateUser(userinfos){
+
+    }
+
     register(app, passport,endpoint, name, provider) {
         const cb_url =`${process.env['BACKEND_URL']}${endpoint}/${name}/callback`
         passport.use(name, new OAuth2Strategy({
@@ -18,15 +31,31 @@ class PassportOAuth {
                 });
                 const userInfo = await userInfoResponse.json();
 
-                const user = {
-                    id: userInfo.sub,
+                let received_user = {
                     email: userInfo.email,
                     name: userInfo.name,
-                    groups: userInfo.groups ?? [],
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
-                    expiresIn: params.expires_in
+                    roles: []
                 };
+                if(hasNestedValue(userInfo,provider.OIDC_ROLE_TEACHER_VALUE)) received_user.roles.push('teacher')
+                if(hasNestedValue(userInfo,provider.OIDC_ROLE_STUDENT_VALUE)) received_user.roles.push('student')
+
+                const user_association = await authUserAssoc.find_user_association(userInfo.sub)
+
+                if(user_linked){
+                    let user = await users.getById(user_association.user_id)
+                    user.name = received_user.name
+                    user.email = received_user.email
+                    user.roles = received_user.roles
+                    users.editUser(user)
+                    this.passportjs.authenticate(user)
+                } 
+                else {
+                    let user_id = await users.getId(userInfo.email)
+                    if(!user_id){
+                        await users.register(received_user.email,"");
+                        users.editUser
+                    }
+                }
 
                 // Store the tokens in the session
                 req.session.oauth2Tokens = {
@@ -56,6 +85,7 @@ class PassportOAuth {
             (req, res) => {
                 if (req.user) {
                     res.json(req.user)
+
                     //const redirectUrl = `http://your-frontend-url.com/oauth/callback?user=${encodeURIComponent(req.user)}`;
                     //res.redirect(redirectUrl);
                     console.info(`L'utilisateur '${req.user.name}' vient de se connecter`)
