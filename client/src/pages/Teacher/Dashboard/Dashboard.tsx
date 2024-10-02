@@ -98,8 +98,9 @@ const Dashboard: React.FC = () => {
                 setQuizzes(quizzes as QuizType[]);
             }
             else {
-                console.log("show some quizes")
+                console.log("show some quizzes")
                 const folderQuizzes = await ApiService.getFolderContent(selectedFolder);
+                console.log("folderQuizzes: ", folderQuizzes);
                 setQuizzes(folderQuizzes as QuizType[]);
 
             }
@@ -147,7 +148,7 @@ const Dashboard: React.FC = () => {
                 setQuizzes(quizzes as QuizType[]);
             }
             else {
-                console.log("show some quizes")
+                console.log("show some quizzes")
                 const folderQuizzes = await ApiService.getFolderContent(selectedFolder);
                 setQuizzes(folderQuizzes as QuizType[]);
 

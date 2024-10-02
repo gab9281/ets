@@ -8,10 +8,11 @@ const { MISSING_REQUIRED_PARAMETER, NOT_IMPLEMENTED, FOLDER_NOT_FOUND, FOLDER_AL
 // controllers must use arrow functions to bind 'this' to the class instance in order to access class properties as callbacks in Express
 class FoldersController {
 
-    constructor() {
+    constructor(foldersModel) {
         console.log("FoldersController constructor: db", db)
         this.db = db;
-        this.folders = new model(this.db);
+        this.folders = foldersModel;
+        // this.quizzes = quizModel;
         console.log("FoldersController constructor: folders", this.folders);
     }
 
@@ -266,4 +267,4 @@ class FoldersController {
 
 
 
-module.exports = new FoldersController;
+module.exports = FoldersController;

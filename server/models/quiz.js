@@ -1,11 +1,15 @@
-const db = require('../config/db.js')
 const { ObjectId } = require('mongodb');
 
 class Quiz {
 
+    constructor(db) {
+        console.log("Quiz constructor: db", db)
+        this.db = db;
+    }
+
     async create(title, content, folderId, userId) {
-        await db.connect()
-        const conn = db.getConnection();
+        await this.db.connect()
+        const conn = this.db.getConnection();
 
         const quizCollection = conn.collection('files');
 
@@ -28,8 +32,8 @@ class Quiz {
     }
 
     async getOwner(quizId) {
-        await db.connect()
-        const conn = db.getConnection();
+        await this.db.connect()
+        const conn = this.db.getConnection();
 
         const quizCollection = conn.collection('files');
 
@@ -39,8 +43,8 @@ class Quiz {
     }
 
     async getContent(quizId) {
-        await db.connect()
-        const conn = db.getConnection();
+        await this.db.connect()
+        const conn = this.db.getConnection();
 
         const quizCollection = conn.collection('files');
 
@@ -50,8 +54,8 @@ class Quiz {
     }
 
     async delete(quizId) {
-        await db.connect()
-        const conn = db.getConnection();
+        await this.db.connect()
+        const conn = this.db.getConnection();
 
         const quizCollection = conn.collection('files');
 
@@ -62,8 +66,8 @@ class Quiz {
         return true;
     }
     async deleteQuizzesByFolderId(folderId) {
-        await db.connect();
-        const conn = db.getConnection();
+        await this.db.connect();
+        const conn = this.db.getConnection();
 
         const quizzesCollection = conn.collection('files');
 
@@ -72,8 +76,8 @@ class Quiz {
     }
 
     async update(quizId, newTitle, newContent) {
-        await db.connect()
-        const conn = db.getConnection();
+        await this.db.connect()
+        const conn = this.db.getConnection();
 
         const quizCollection = conn.collection('files');
 
@@ -85,8 +89,8 @@ class Quiz {
     }
 
     async move(quizId, newFolderId) {
-        await db.connect()
-        const conn = db.getConnection();
+        await this.db.connect()
+        const conn = this.db.getConnection();
 
         const quizCollection = conn.collection('files');
 
@@ -119,8 +123,8 @@ class Quiz {
     }
 
     async quizExists(title, userId) {
-        await db.connect();
-        const conn = db.getConnection();
+        await this.db.connect();
+        const conn = this.db.getConnection();
     
         const filesCollection = conn.collection('files');           
         const existingFolder = await filesCollection.findOne({ title: title, userId: userId });        
@@ -130,4 +134,4 @@ class Quiz {
 
 }
 
-module.exports = new Quiz;
+module.exports = Quiz;

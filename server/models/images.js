@@ -1,7 +1,11 @@
-const db = require('../config/db.js')
+//const db = require('../config/db.js')
 const { ObjectId } = require('mongodb');
 
 class Images {
+
+    constructor(db) {
+        this.db = db;
+    }
 
     async upload(file, userId) {
         await db.connect()
@@ -41,4 +45,4 @@ class Images {
 
 }
 
-module.exports = new Images;
+module.exports = Images;

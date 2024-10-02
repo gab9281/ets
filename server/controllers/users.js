@@ -1,7 +1,5 @@
 const emailer = require('../config/email.js');
-const userModel = require('../models/users.js');
 const jwt = require('../middleware/jwtToken.js');
-const db = require('../config/db.js');
 
 const AppError = require('../middleware/AppError.js');
 const { MISSING_REQUIRED_PARAMETER, LOGIN_CREDENTIALS_ERROR, GENERATE_PASSWORD_ERROR, UPDATE_PASSWORD_ERROR, DELETE_USER_ERROR } = require('../constants/errorCodes');
@@ -9,10 +7,8 @@ const { MISSING_REQUIRED_PARAMETER, LOGIN_CREDENTIALS_ERROR, GENERATE_PASSWORD_E
 // controllers must use arrow functions to bind 'this' to the class instance in order to access class properties as callbacks in Express
 class UsersController {
 
-    constructor() {
-        console.log("UsersController constructor: db", db)
-        this.db = db;
-        this.users = new userModel(this.db);
+    constructor(userModel) {
+        this.users = userModel;
         console.log("UsersController constructor: users", this.users);
     }
 

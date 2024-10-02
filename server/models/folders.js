@@ -1,11 +1,12 @@
 //model
 // const db = require('../config/db.js')
 const ObjectId = require('mongodb').ObjectId;
-const Quiz = require('./quiz.js'); 
+// need to access the Quiz model from the Folders model
 
 class Folders {
-    constructor(db) {
+    constructor(db, quizModel) {
         this.db = db;
+        this.quizModel = quizModel;
     }
 
     async create(title, userId) {
