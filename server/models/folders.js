@@ -1,7 +1,5 @@
 //model
-// const db = require('../config/db.js')
 const ObjectId = require('mongodb').ObjectId;
-// need to access the Quiz model from the Folders model
 
 class Folders {
     constructor(db, quizModel) {
@@ -72,7 +70,7 @@ class Folders {
         const folderResult = await foldersCollection.deleteOne({ _id: new ObjectId(folderId) });
 
         if (folderResult.deletedCount != 1) return false;
-        await Quiz.deleteQuizzesByFolderId(folderId);
+        await this.quizModel.deleteQuizzesByFolderId(folderId);
 
         return true;
     }
@@ -114,7 +112,7 @@ class Folders {
             const { title, content } = quiz;
             //console.log(title);
             //console.log(content);
-            await Quiz.create(title, content, newFolderId.toString(), userId); 
+            await this.quizModel.create(title, content, newFolderId.toString(), userId); 
         }
 
         return newFolderId;
@@ -141,7 +139,7 @@ class Folders {
             throw new Error('Failed to create a new folder.');
         }
         for (const quiz of sourceFolder.content) {
-            await Quiz.create(quiz.title, quiz.content, newFolderId, userId);
+            await this.quizModel.create(quiz.title, quiz.content, newFolderId, userId);
         }
 
         return newFolderId;
