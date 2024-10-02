@@ -1,13 +1,16 @@
 //model
-const db = require('../config/db.js')
-const { ObjectId } = require('mongodb');
+// const db = require('../config/db.js')
+const ObjectId = require('mongodb').ObjectId;
 const Quiz = require('./quiz.js'); 
 
 class Folders {
+    constructor(db) {
+        this.db = db;
+    }
 
     async create(title, userId) {
-        await db.connect()
-        const conn = db.getConnection();
+        await this.db.connect()
+        const conn = this.db.getConnection();
 
         const foldersCollection = conn.collection('folders');
 
@@ -27,8 +30,8 @@ class Folders {
     }
 
     async getUserFolders(userId) {
-        await db.connect()
-        const conn = db.getConnection();
+        await this.db.connect()
+        const conn = this.db.getConnection();
 
         const foldersCollection = conn.collection('folders');
 
@@ -38,8 +41,8 @@ class Folders {
     }
 
     async getOwner(folderId) {
-        await db.connect()
-        const conn = db.getConnection();
+        await this.db.connect()
+        const conn = this.db.getConnection();
 
         const foldersCollection = conn.collection('folders');
 
@@ -49,8 +52,8 @@ class Folders {
     }
 
     async getContent(folderId) {
-        await db.connect()
-        const conn = db.getConnection();
+        await this.db.connect()
+        const conn = this.db.getConnection();
 
         const filesCollection = conn.collection('files');
 
@@ -60,8 +63,8 @@ class Folders {
     }
 
     async delete(folderId) {
-        await db.connect()
-        const conn = db.getConnection();
+        await this.db.connect()
+        const conn = this.db.getConnection();
 
         const foldersCollection = conn.collection('folders');
 
@@ -74,8 +77,8 @@ class Folders {
     }
 
     async rename(folderId, newTitle) {
-        await db.connect()
-        const conn = db.getConnection();
+        await this.db.connect()
+        const conn = this.db.getConnection();
 
         const foldersCollection = conn.collection('folders');
 
@@ -118,18 +121,18 @@ class Folders {
     }
 
     async folderExists(title, userId) {
-        await db.connect();
-        const conn = db.getConnection();
+        console.log("LOG: folderExists", title, userId);
+        await this.db.connect();
+        const conn = this.db.getConnection();
     
         const foldersCollection = conn.collection('folders');           
         const existingFolder = await foldersCollection.findOne({ title: title, userId: userId });        
         
-        return existingFolder !== null;
+        return !!existingFolder;
     }
 
 
     async copy(folderId, userId) {
-
 
         const sourceFolder = await this.getFolderWithContent(folderId);
         const newFolderId = await this.create(sourceFolder.title, userId);
@@ -137,19 +140,21 @@ class Folders {
             throw new Error('Failed to create a new folder.');
         }
         for (const quiz of sourceFolder.content) {
-            await this.createQuiz(quiz.title, quiz.content, newFolderId, userId);
+            await Quiz.create(quiz.title, quiz.content, newFolderId, userId);
         }
 
         return newFolderId;
-
     }
+
     async getFolderById(folderId) {
-        await db.connect();
-        const conn = db.getConnection();
+        await this.db.connect();
+        const conn = this.db.getConnection();
 
         const foldersCollection = conn.collection('folders');
 
         const folder = await foldersCollection.findOne({ _id: new ObjectId(folderId) });
+
+        if (!folder) return new Error(`Folder ${folderId} not found`);
 
         return folder;
     }
@@ -171,4 +176,4 @@ class Folders {
 
 }
 
-module.exports = new Folders;
+module.exports = Folders;
