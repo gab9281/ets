@@ -1,7 +1,4 @@
-// const model = require('../models/quiz.js');
 const emailer = require('../config/email.js');
-//const foldersController = require('./folders.js');
-// const db = require('../config/db.js');
 
 const AppError = require('../middleware/AppError.js');
 const { MISSING_REQUIRED_PARAMETER, NOT_IMPLEMENTED, QUIZ_NOT_FOUND, FOLDER_NOT_FOUND, QUIZ_ALREADY_EXISTS, GETTING_QUIZ_ERROR, DELETE_QUIZ_ERROR, UPDATE_QUIZ_ERROR, MOVING_QUIZ_ERROR, DUPLICATE_QUIZ_ERROR, COPY_QUIZ_ERROR } = require('../constants/errorCodes');

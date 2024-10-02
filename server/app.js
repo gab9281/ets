@@ -10,12 +10,12 @@ const { Server } = require("socket.io");
 // instantiate the db
 const db = require('./config/db.js');
 // instantiate the models
-const users = require('./models/users.js');
-const userModel = new users(db);
 const quiz = require('./models/quiz.js');
 const quizModel = new quiz(db);
 const folders = require('./models/folders.js');
 const foldersModel = new folders(db, quizModel);
+const users = require('./models/users.js');
+const userModel = new users(db, foldersModel);
 const images = require('./models/images.js');
 const imageModel = new images(db);
 

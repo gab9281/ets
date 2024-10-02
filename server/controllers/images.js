@@ -1,5 +1,3 @@
-const model = require('../models/images.js');
-
 const AppError = require('../middleware/AppError.js');
 const { MISSING_REQUIRED_PARAMETER, IMAGE_NOT_FOUND } = require('../constants/errorCodes');
 

@@ -2,12 +2,12 @@
 const bcrypt = require('bcrypt');
 const AppError = require('../middleware/AppError.js');
 const { USER_ALREADY_EXISTS } = require('../constants/errorCodes');
-const Folders = require('../models/folders.js');
 
 class Users {
-    constructor(db) {
+    constructor(db, foldersModel) {
         console.log("Users constructor: db", db)
         this.db = db;
+        this.folders = foldersModel;
     }
     
     async hashPassword(password) {
@@ -45,7 +45,7 @@ class Users {
         const userId = result.insertedId.toString();
 
         const folderTitle = 'Dossier par Défaut'; 
-        await Folders.create(folderTitle, userId);
+        await this.folders.create(folderTitle, userId);
 
         return result;
     }
