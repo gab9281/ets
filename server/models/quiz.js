@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 class Quiz {
 
     constructor(db) {
-        console.log("Quiz constructor: db", db)
+        // console.log("Quiz constructor: db", db)
         this.db = db;
     }
 

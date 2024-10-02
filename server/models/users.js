@@ -5,7 +5,7 @@ const { USER_ALREADY_EXISTS } = require('../constants/errorCodes');
 
 class Users {
     constructor(db, foldersModel) {
-        console.log("Users constructor: db", db)
+        // console.log("Users constructor: db", db)
         this.db = db;
         this.folders = foldersModel;
     }

@@ -1,6 +1,6 @@
 const Folders = require('../models/folders');
 const ObjectId = require('mongodb').ObjectId;
-const Quiz = require('../models/quiz');
+const Quizzes = require('../models/quiz');
 
 describe('Folders', () => {
     let folders;
@@ -24,8 +24,9 @@ describe('Folders', () => {
             collection: jest.fn().mockReturnValue(collection),
         };
 
-        // Initialize the Folders model with the mocked db
-        folders = new Folders(db);
+        quizzes = new Quizzes(db);
+        folders = new Folders(db, quizzes);
+
     });
 
     describe('folderExists', () => {
@@ -81,7 +82,7 @@ describe('Folders', () => {
             jest.spyOn(folders, 'getFolderWithContent').mockResolvedValue(sourceFolder);
             jest.spyOn(folders, 'create').mockResolvedValue(newFolderId);
             // Mock the response from Quiz.createQuiz
-            jest.spyOn(Quiz, 'create').mockImplementation(() => {});
+            jest.spyOn(quizzes, 'create').mockImplementation(() => {});
 
             const result = await folders.copy(folderId, userId);
 
