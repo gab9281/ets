@@ -261,18 +261,17 @@ describe('Quizzes', () => {
                 content: 'This is a test quiz.',
             };
     
-            // Mock the response from getContent
-            const getContentMock = jest.spyOn(quizzes, 'getContent').mockResolvedValue(sourceQuiz);
             const createMock = jest.spyOn(quizzes, 'create').mockResolvedValue(newQuizId);
-            // mock the response from quizExists
-            jest.spyOn(quizzes, 'quizExists').mockResolvedValue(false);
+            // mock the findOne method
+            jest.spyOn(collection, 'findOne')
+                .mockResolvedValueOnce(sourceQuiz) // source quiz exists
+                .mockResolvedValueOnce(null); // new name is not found
 
             const result = await quizzes.duplicate(quizId, userId);
     
             expect(result).toBe(newQuizId);
     
             // Ensure mocks were called correctly
-            expect(getContentMock).toHaveBeenCalledWith(quizId);
             expect(createMock).toHaveBeenCalledWith(
                 sourceQuiz.title + ' (1)',
                 sourceQuiz.content,
@@ -291,18 +290,17 @@ describe('Quizzes', () => {
                 content: 'This is a test quiz.',
             };
     
-            // Mock the response from getContent
-            const getContentMock = jest.spyOn(quizzes, 'getContent').mockResolvedValue(sourceQuiz);
             const createMock = jest.spyOn(quizzes, 'create').mockResolvedValue(newQuizId);
-            // mock the response from quizExists
-            jest.spyOn(quizzes, 'quizExists').mockResolvedValueOnce(false);
+            // mock the findOne method
+            jest.spyOn(collection, 'findOne')
+                .mockResolvedValueOnce(sourceQuiz) // source quiz exists
+                .mockResolvedValueOnce(null); // new name is not found
     
             const result = await quizzes.duplicate(quizId, userId);
     
             expect(result).toBe(newQuizId);
     
             // Ensure mocks were called correctly
-            expect(getContentMock).toHaveBeenCalledWith(quizId);
             expect(createMock).toHaveBeenCalledWith(
                 'Test Quiz (2)',
                 sourceQuiz.content,
@@ -321,18 +319,19 @@ describe('Quizzes', () => {
                 content: 'This is a test quiz.',
             };
     
-            // Mock the response from getContent
-            const getContentMock = jest.spyOn(quizzes, 'getContent').mockResolvedValue(sourceQuiz);
             const createMock = jest.spyOn(quizzes, 'create').mockResolvedValue(newQuizId);
-            // mock the response from quizExists
-            jest.spyOn(quizzes, 'quizExists').mockResolvedValueOnce(true).mockResolvedValueOnce(false);
+
+            // mock the findOne method
+            jest.spyOn(collection, 'findOne')
+                .mockResolvedValueOnce(sourceQuiz) // source quiz exists
+                .mockResolvedValueOnce({ title: 'Test Quiz (2)' }) // new name collision
+                .mockResolvedValueOnce(null); // final new name is not found
     
             const result = await quizzes.duplicate(quizId, userId);
     
             expect(result).toBe(newQuizId);
     
             // Ensure mocks were called correctly
-            expect(getContentMock).toHaveBeenCalledWith(quizId);
             expect(createMock).toHaveBeenCalledWith(
                 'Test Quiz (3)',
                 sourceQuiz.content,

@@ -1,4 +1,5 @@
 const { ObjectId } = require('mongodb');
+const { generateUniqueTitle } = require('./utils');
 
 class Quiz {
 
@@ -113,41 +114,26 @@ class Quiz {
     }
 
     async duplicate(quizId, userId) {
-        
-        const sourceQuiz = await this.getContent(quizId);
+        const conn = this.db.getConnection();
+        const quizCollection = conn.collection('files');
+
+        const sourceQuiz = await quizCollection.findOne({ _id: ObjectId.createFromHexString(quizId), userId: userId });
         if (!sourceQuiz) {
             throw new Error('Quiz not found for quizId: ' + quizId);
         }
-        
-        // detect if quiz name ends with a number in parentheses
-        // if so, increment the number and append to the new quiz name
-        let newQuizTitle;
-        let counter = 1;
 
-        if (sourceQuiz.title.match(/\(\d+\)$/)) {
-            const parts = sourceQuiz.title.split(' (');
-            parts[1] = parts[1].replace(')', '');
-            counter = parseInt(parts[1]) + 1;
-            newQuizTitle = `${parts[0]} (${counter})`;
-        } else {
-            newQuizTitle = `${sourceQuiz.title} (1)`;
-        }
+        // Use the utility function to generate a unique title
+        const newQuizTitle = await generateUniqueTitle(sourceQuiz.title, async (title) => {
+            return await quizCollection.findOne({ title: title, folderId: sourceQuiz.folderId, userId: userId });
+        });
 
-        // Need to make sure no quiz exists with the new name, otherwise increment the counter until a unique name is found
-        while (await this.quizExists(newQuizTitle, userId)) {
-            counter++;
-            // take off the last number in parentheses and add it back with the new counter
-            newQuizTitle = newQuizTitle.replace(/\(\d+\)$/, `(${counter})`);
-        }
-
-        const newQuizId = await this.create(newQuizTitle, sourceQuiz.content,sourceQuiz.folderId, userId);
+        const newQuizId = await this.create(newQuizTitle, sourceQuiz.content, sourceQuiz.folderId, userId);
 
         if (!newQuizId) {
-            throw new Error('Failed to create a duplicate quiz.');
+            throw new Error('Failed to create duplicate quiz');
         }
 
         return newQuizId;
-
     }
 
     async quizExists(title, userId) {

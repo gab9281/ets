@@ -1,5 +1,6 @@
 //model
 const ObjectId = require('mongodb').ObjectId;
+const { generateUniqueTitle } = require('./utils');
 
 class Folders {
     constructor(db, quizModel) {
@@ -95,32 +96,28 @@ class Folders {
     }
 
     async duplicate(folderId, userId) {
+        console.log("LOG: duplicate", folderId, userId);
+        const conn = this.db.getConnection();
+        const foldersCollection = conn.collection('folders');
 
-        const sourceFolder = await this.getFolderWithContent(folderId);
-
-        // Check if the new title already exists
-        let newFolderTitle = sourceFolder.title + "-copie";
-        let counter = 1;
-        
-        while (await this.folderExists(newFolderTitle, userId)) {
-            newFolderTitle = `${sourceFolder.title}-copie(${counter})`;
-            counter++;
+        const sourceFolder = await foldersCollection.findOne({ _id: ObjectId.createFromHexString(folderId), userId: userId });
+        if (!sourceFolder) {
+            throw new Error(`Folder ${folderId} not found`);
         }
-        
-        
-        const newFolderId = await this.create(newFolderTitle, userId);
+
+        // Use the utility function to generate a unique title
+        const newFolderTitle = await generateUniqueTitle(sourceFolder.title, async (title) => {
+            return await foldersCollection.findOne({ title: title, userId: userId });
+        });
+
+        console.log(`duplicate: userId`, userId);
+        const newFolderId = await this.create(newFolderTitle, sourceFolder.content, userId);
 
         if (!newFolderId) {
-            throw new Error('Failed to create a duplicate folder.');
-        }
-
-        for (const quiz of sourceFolder.content) {            
-            const { title, content } = quiz;
-            await this.quizModel.create(title, content, newFolderId.toString(), userId); 
+            throw new Error('Failed to create duplicate folder');
         }
 
         return newFolderId;
-
     }
 
     async folderExists(title, userId) {
