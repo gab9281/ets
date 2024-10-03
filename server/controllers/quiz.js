@@ -7,9 +7,7 @@ class QuizController {
 
     constructor(quizModel, foldersModel) {
         this.folders = foldersModel;
-        console.log("QuizController constructor: folders", this.folders);
         this.quizzes = quizModel;
-        console.log("QuizController constructor: quizzes", this.quizzes);
     }
 
     create = async (req, res, next) => {

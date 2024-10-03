@@ -15,7 +15,12 @@ class Folders {
 
         const existingFolder = await foldersCollection.findOne({ title: title, userId: userId });
 
-        if (existingFolder) return new Error('Folder already exists');
+        console.log(`Folders.create: existingFolder`, existingFolder);
+
+        if (existingFolder) {
+            console.log('Folder already exists, throwing Error');
+            throw new Error('Folder already exists');
+        }
 
         const newFolder = {
             userId: userId,
@@ -50,6 +55,7 @@ class Folders {
         return folder.userId;
     }
 
+    // finds all quizzes in a folder
     async getContent(folderId) {
         await this.db.connect()
         const conn = this.db.getConnection();
@@ -110,8 +116,6 @@ class Folders {
 
         for (const quiz of sourceFolder.content) {            
             const { title, content } = quiz;
-            //console.log(title);
-            //console.log(content);
             await this.quizModel.create(title, content, newFolderId.toString(), userId); 
         }
 

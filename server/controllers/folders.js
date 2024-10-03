@@ -7,8 +7,6 @@ class FoldersController {
 
     constructor(foldersModel) {
         this.folders = foldersModel;
-        // this.quizzes = quizModel;
-        console.log("FoldersController constructor: folders", this.folders);
     }
 
     /***

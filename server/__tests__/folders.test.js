@@ -17,6 +17,7 @@ describe('Folders', () => {
             find: jest.fn().mockReturnValue({ toArray: jest.fn() }), // Mock the find method
         };
 
+
         // Mock the database connection
         db = {
             connect: jest.fn(),
@@ -29,6 +30,47 @@ describe('Folders', () => {
 
     });
 
+    // create
+    describe('create', () => {
+        it('should create a new folder and return the new folder ID', async () => {
+            const title = 'Test Folder';
+
+            // Mock the database response
+            collection.findOne.mockResolvedValue(null);
+            collection.insertOne.mockResolvedValue({ insertedId: new ObjectId() });
+
+            const result = await folders.create(title, '12345');
+
+            expect(db.connect).toHaveBeenCalled();
+            expect(db.collection).toHaveBeenCalledWith('folders');
+            expect(collection.findOne).toHaveBeenCalledWith({ title, userId: '12345' });
+            expect(collection.insertOne).toHaveBeenCalledWith(expect.objectContaining({ title, userId: '12345' }));
+            expect(result).toBeDefined();
+        });
+
+        it('should throw an error if the folder already exists', async () => {
+            const title = 'Existing Folder';
+            const userId = '66fc70bea1b9e87655cf17c9';
+
+            // Mock the database response of a found folder
+            collection.findOne.mockResolvedValue(
+                // real result from mongosh
+                {
+                    _id: ObjectId.createFromHexString('66fd33fd81758a882ce99aae'),
+                    userId: userId,
+                    title: title,
+                    created_at: new Date('2024-10-02T11:52:29.797Z')
+                }
+            );
+
+            await expect(folders.create(title, userId)).rejects.toThrow('Folder already exists');
+
+            expect(db.connect).toHaveBeenCalled();
+            expect(db.collection).toHaveBeenCalledWith('folders');
+            expect(collection.findOne).toHaveBeenCalledWith({ title, userId: userId });
+        });
+    });
+
     describe('folderExists', () => {
         it('should return true if folder exists', async () => {
             const title = 'Test Folder';
@@ -36,9 +78,6 @@ describe('Folders', () => {
 
             // Mock the database response
             collection.findOne.mockResolvedValue({ title, userId });
-
-            // Spy on console.log
-            const consoleSpy = jest.spyOn(console, 'log');
 
             const result = await folders.folderExists(title, userId);
 

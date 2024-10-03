@@ -9,7 +9,6 @@ class UsersController {
 
     constructor(userModel) {
         this.users = userModel;
-        console.log("UsersController constructor: users", this.users);
     }
 
     register = async (req, res, next) => {

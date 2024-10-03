@@ -5,7 +5,6 @@ class ImagesController {
 
     constructor(imagesModel) {
         this.images = imagesModel;
-        console.log("ImagesController constructor: images", this.images);
     }
 
     upload = async (req, res, next) => {
