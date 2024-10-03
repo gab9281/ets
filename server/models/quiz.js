@@ -37,7 +37,7 @@ class Quiz {
 
         const quizCollection = conn.collection('files');
 
-        const quiz = await quizCollection.findOne({ _id: ObjectId.createFromTime(quizId) });
+        const quiz = await quizCollection.findOne({ _id: ObjectId.createFromHexString(quizId) });
 
         return quiz.userId;
     }
@@ -48,7 +48,7 @@ class Quiz {
 
         const quizCollection = conn.collection('files');
 
-        const quiz = await quizCollection.findOne({ _id: ObjectId.createFromTime(quizId) });
+        const quiz = await quizCollection.findOne({ _id: ObjectId.createFromHexString(quizId) });
 
         return quiz;
     }
@@ -59,7 +59,7 @@ class Quiz {
 
         const quizCollection = conn.collection('files');
 
-        const result = await quizCollection.deleteOne({ _id: ObjectId.createFromTime(quizId) });
+        const result = await quizCollection.deleteOne({ _id: ObjectId.createFromHexString(quizId) });
 
         if (result.deletedCount != 1) return false;
 
@@ -72,7 +72,8 @@ class Quiz {
         const quizzesCollection = conn.collection('files');
 
         // Delete all quizzes with the specified folderId
-        await quizzesCollection.deleteMany({ folderId: folderId });
+        const result = await quizzesCollection.deleteMany({ folderId: folderId });
+        return result.deletedCount > 0;
     }
 
     async update(quizId, newTitle, newContent) {
@@ -81,11 +82,18 @@ class Quiz {
 
         const quizCollection = conn.collection('files');
 
-        const result = await quizCollection.updateOne({ _id: ObjectId.createFromTime(quizId) }, { $set: { title: newTitle, content: newContent } });
-        //Ne fonctionne pas si rien n'est chngé dans le quiz 
-        //if (result.modifiedCount != 1) return false;
+        const result = await quizCollection.updateOne(
+            { _id: ObjectId.createFromHexString(quizId) },
+            { 
+                $set: {
+                    title: newTitle, 
+                    content: newContent, 
+                    updated_at: new Date() 
+                } 
+            }
+        );
 
-        return true
+        return result.modifiedCount === 1;
     }
 
     async move(quizId, newFolderId) {
@@ -94,7 +102,10 @@ class Quiz {
 
         const quizCollection = conn.collection('files');
 
-        const result = await quizCollection.updateOne({ _id: ObjectId.createFromTime(quizId) }, { $set: { folderId: newFolderId } });
+        const result = await quizCollection.updateOne(
+            { _id: ObjectId.createFromHexString(quizId) }, 
+            { $set: { folderId: newFolderId } }
+        );
 
         if (result.modifiedCount != 1) return false;
 
@@ -104,14 +115,31 @@ class Quiz {
     async duplicate(quizId, userId) {
         
         const sourceQuiz = await this.getContent(quizId);
-        
-        let newQuizTitle = `${sourceQuiz.title}-copy`;
-        let counter = 1;        
-        while (await this.quizExists(newQuizTitle, userId)) {
-            newQuizTitle = `${sourceQuiz.title}-copy(${counter})`;
-            counter++;
+        if (!sourceQuiz) {
+            throw new Error('Quiz not found for quizId: ' + quizId);
         }
-        //console.log(newQuizTitle);
+        
+        // detect if quiz name ends with a number in parentheses
+        // if so, increment the number and append to the new quiz name
+        let newQuizTitle;
+        let counter = 1;
+
+        if (sourceQuiz.title.match(/\(\d+\)$/)) {
+            const parts = sourceQuiz.title.split(' (');
+            parts[1] = parts[1].replace(')', '');
+            counter = parseInt(parts[1]) + 1;
+            newQuizTitle = `${parts[0]} (${counter})`;
+        } else {
+            newQuizTitle = `${sourceQuiz.title} (1)`;
+        }
+
+        // Need to make sure no quiz exists with the new name, otherwise increment the counter until a unique name is found
+        while (await this.quizExists(newQuizTitle, userId)) {
+            counter++;
+            // take off the last number in parentheses and add it back with the new counter
+            newQuizTitle = newQuizTitle.replace(/\(\d+\)$/, `(${counter})`);
+        }
+
         const newQuizId = await this.create(newQuizTitle, sourceQuiz.content,sourceQuiz.folderId, userId);
 
         if (!newQuizId) {

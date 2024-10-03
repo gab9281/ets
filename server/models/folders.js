@@ -45,7 +45,7 @@ class Folders {
 
         const foldersCollection = conn.collection('folders');
 
-        const folder = await foldersCollection.findOne({ _id: ObjectId.createFromTime(folderId) });
+        const folder = await foldersCollection.findOne({ _id: new ObjectId(folderId) });
 
         return folder.userId;
     }
@@ -67,7 +67,7 @@ class Folders {
 
         const foldersCollection = conn.collection('folders');
 
-        const folderResult = await foldersCollection.deleteOne({ _id: ObjectId.createFromTime(folderId) });
+        const folderResult = await foldersCollection.deleteOne({ _id: ObjectId.createFromHexString(folderId) });
 
         if (folderResult.deletedCount != 1) return false;
         await this.quizModel.deleteQuizzesByFolderId(folderId);
@@ -81,7 +81,7 @@ class Folders {
 
         const foldersCollection = conn.collection('folders');
 
-        const result = await foldersCollection.updateOne({ _id: ObjectId.createFromTime(folderId) }, { $set: { title: newTitle } })
+        const result = await foldersCollection.updateOne({ _id: ObjectId.createFromHexString(folderId) }, { $set: { title: newTitle } })
 
         if (result.modifiedCount != 1) return false;
 
@@ -151,7 +151,7 @@ class Folders {
 
         const foldersCollection = conn.collection('folders');
 
-        const folder = await foldersCollection.findOne({ _id: ObjectId.createFromTime(folderId) });
+        const folder = await foldersCollection.findOne({ _id: ObjectId.createFromHexString(folderId) });
 
         if (!folder) return new Error(`Folder ${folderId} not found`);
 

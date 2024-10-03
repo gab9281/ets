@@ -1,7 +1,8 @@
 const Users = require('../models/users');
 const bcrypt = require('bcrypt');
-const AppError = require('../middleware/AppError');
+const Quizzes = require('../models/quiz');
 const Folders = require('../models/folders');
+const AppError = require('../middleware/AppError');
 const { ObjectId } = require('mongodb');
 
 jest.mock('bcrypt');
@@ -21,19 +22,22 @@ describe('Users', () => {
             getConnection: jest.fn().mockReturnThis(), // Add getConnection method
             collection: jest.fn().mockReturnThis(),
             findOne: jest.fn(),
-            insertOne: jest.fn().mockResolvedValue({ insertedId: ObjectId.createFromTime() }), // Mock insertOne to return an ObjectId
+            insertOne: jest.fn().mockResolvedValue({ insertedId: new ObjectId() }), // Mock insertOne to return an ObjectId
             updateOne: jest.fn(),
             deleteOne: jest.fn(),
         };
 
-        users = new Users(db);
+        const quizModel = new Quizzes(db);
+        const foldersModel = new Folders(db, quizModel);
+
+        users = new Users(db, foldersModel);
     });
 
     it('should register a new user', async () => {
         db.collection().findOne.mockResolvedValue(null); // No user found
-        db.collection().insertOne.mockResolvedValue({ insertedId: ObjectId.createFromTime() });
+        db.collection().insertOne.mockResolvedValue({ insertedId: new ObjectId() });
         bcrypt.hash.mockResolvedValue('hashedPassword');
-        Folders.create.mockResolvedValue(true);
+        users.folders.create.mockResolvedValue(true);
 
         const email = 'test@example.com';
         const password = 'password123';
@@ -47,7 +51,7 @@ describe('Users', () => {
             password: 'hashedPassword',
             created_at: expect.any(Date),
         });
-        expect(Folders.create).toHaveBeenCalledWith('Dossier par Défaut', expect.any(String));
+        expect(users.folders.create).toHaveBeenCalledWith('Dossier par Défaut', expect.any(String));
         expect(result.insertedId).toBeDefined(); // Ensure result has insertedId
     });
 

@@ -32,7 +32,7 @@ class Images {
 
         const imagesCollection = conn.collection('images');
 
-        const result = await imagesCollection.findOne({ _id: ObjectId.createFromTime(id) });
+        const result = await imagesCollection.findOne({ _id: ObjectId.createFromHexString(id) });
 
         if (!result) return null;
 
