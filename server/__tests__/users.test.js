@@ -21,7 +21,7 @@ describe('Users', () => {
             getConnection: jest.fn().mockReturnThis(), // Add getConnection method
             collection: jest.fn().mockReturnThis(),
             findOne: jest.fn(),
-            insertOne: jest.fn().mockResolvedValue({ insertedId: new ObjectId() }), // Mock insertOne to return an ObjectId
+            insertOne: jest.fn().mockResolvedValue({ insertedId: ObjectId.createFromTime() }), // Mock insertOne to return an ObjectId
             updateOne: jest.fn(),
             deleteOne: jest.fn(),
         };
@@ -31,7 +31,7 @@ describe('Users', () => {
 
     it('should register a new user', async () => {
         db.collection().findOne.mockResolvedValue(null); // No user found
-        db.collection().insertOne.mockResolvedValue({ insertedId: new ObjectId() });
+        db.collection().insertOne.mockResolvedValue({ insertedId: ObjectId.createFromTime() });
         bcrypt.hash.mockResolvedValue('hashedPassword');
         Folders.create.mockResolvedValue(true);
 

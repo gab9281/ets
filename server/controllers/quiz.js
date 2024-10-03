@@ -181,7 +181,7 @@ class QuizController {
         // try {
         //     //Trouver le quiz a dupliquer 
         //     const conn = db.getConnection();
-        //     const quiztoduplicate = await conn.collection('quiz').findOne({ _id: new ObjectId(quizId) });
+        //     const quiztoduplicate = await conn.collection('quiz').findOne({ _id: ObjectId.createFromTime(quizId) });
         //     if (!quiztoduplicate) {
         //         throw new Error("Quiz non trouvé");
         //     }
@@ -189,7 +189,7 @@ class QuizController {
         //     //Suppression du id du quiz pour ne pas le répliquer 
         //     delete quiztoduplicate._id;
         //     //Ajout du duplicata
-        //     await conn.collection('quiz').insertOne({ ...quiztoduplicate, userId: new ObjectId(newUserId) });
+        //     await conn.collection('quiz').insertOne({ ...quiztoduplicate, userId: ObjectId.createFromTime(newUserId) });
         //     res.json(Response.ok("Dossier dupliqué avec succès pour un autre utilisateur"));
     
         // } catch (error) {

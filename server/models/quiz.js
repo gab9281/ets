@@ -37,7 +37,7 @@ class Quiz {
 
         const quizCollection = conn.collection('files');
 
-        const quiz = await quizCollection.findOne({ _id: new ObjectId(quizId) });
+        const quiz = await quizCollection.findOne({ _id: ObjectId.createFromTime(quizId) });
 
         return quiz.userId;
     }
@@ -48,7 +48,7 @@ class Quiz {
 
         const quizCollection = conn.collection('files');
 
-        const quiz = await quizCollection.findOne({ _id: new ObjectId(quizId) });
+        const quiz = await quizCollection.findOne({ _id: ObjectId.createFromTime(quizId) });
 
         return quiz;
     }
@@ -59,7 +59,7 @@ class Quiz {
 
         const quizCollection = conn.collection('files');
 
-        const result = await quizCollection.deleteOne({ _id: new ObjectId(quizId) });
+        const result = await quizCollection.deleteOne({ _id: ObjectId.createFromTime(quizId) });
 
         if (result.deletedCount != 1) return false;
 
@@ -81,7 +81,7 @@ class Quiz {
 
         const quizCollection = conn.collection('files');
 
-        const result = await quizCollection.updateOne({ _id: new ObjectId(quizId) }, { $set: { title: newTitle, content: newContent } });
+        const result = await quizCollection.updateOne({ _id: ObjectId.createFromTime(quizId) }, { $set: { title: newTitle, content: newContent } });
         //Ne fonctionne pas si rien n'est chngé dans le quiz 
         //if (result.modifiedCount != 1) return false;
 
@@ -94,7 +94,7 @@ class Quiz {
 
         const quizCollection = conn.collection('files');
 
-        const result = await quizCollection.updateOne({ _id: new ObjectId(quizId) }, { $set: { folderId: newFolderId } });
+        const result = await quizCollection.updateOne({ _id: ObjectId.createFromTime(quizId) }, { $set: { folderId: newFolderId } });
 
         if (result.modifiedCount != 1) return false;
 

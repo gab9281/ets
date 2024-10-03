@@ -68,7 +68,7 @@ describe('Folders', () => {
         it('should copy a folder and return the new folder ID', async () => {
             const folderId = '60c72b2f9b1d8b3a4c8e4d3b';
             const userId = '12345';
-            const newFolderId = new ObjectId();
+            const newFolderId = ObjectId.createFromTime();
             // Mock some quizzes that are in folder.content
             const sourceFolder = {
                 title: 'Test Folder',
@@ -88,7 +88,7 @@ describe('Folders', () => {
 
             // expect(db.connect).toHaveBeenCalled();
             // expect(db.collection).toHaveBeenCalledWith('folders');
-            // expect(collection.findOne).toHaveBeenCalledWith({ _id: new ObjectId(folderId) });
+            // expect(collection.findOne).toHaveBeenCalledWith({ _id: ObjectId.createFromTime(folderId) });
             // expect(collection.insertOne).toHaveBeenCalledWith(expect.objectContaining({ userId }));
             expect(result).toBe(newFolderId);
         });
@@ -106,7 +106,7 @@ describe('Folders', () => {
 
             // expect(db.connect).toHaveBeenCalled();
             // expect(db.collection).toHaveBeenCalledWith('folders');
-            // expect(collection.findOne).toHaveBeenCalledWith({ _id: new ObjectId(folderId) });
+            // expect(collection.findOne).toHaveBeenCalledWith({ _id: ObjectId.createFromTime(folderId) });
         });
     });
 
@@ -115,7 +115,7 @@ describe('Folders', () => {
         it('should return a folder with content', async () => {
             const folderId = '60c72b2f9b1d8b3a4c8e4d3b';
             const folder = {
-                _id: new ObjectId(folderId),
+                _id: ObjectId.createFromTime(folderId),
                 title: 'Test Folder',
             };
             const content = {
@@ -134,7 +134,7 @@ describe('Folders', () => {
 
             // expect(db.connect).toHaveBeenCalled();
             // expect(db.collection).toHaveBeenCalledWith('folders');
-            // expect(collection.findOne).toHaveBeenCalledWith({ _id: new ObjectId(folderId) });
+            // expect(collection.findOne).toHaveBeenCalledWith({ _id: ObjectId.createFromTime(folderId) });
             expect(result).toEqual({
                 ...folder,
                 content: content
@@ -156,7 +156,7 @@ describe('Folders', () => {
 
             // expect(db.connect).toHaveBeenCalled();
             // expect(db.collection).toHaveBeenCalledWith('folders');
-            // expect(collection.findOne).toHaveBeenCalledWith({ _id: new ObjectId(folderId) });
+            // expect(collection.findOne).toHaveBeenCalledWith({ _id: ObjectId.createFromTime(folderId) });
         });
     });
 
@@ -200,7 +200,7 @@ describe('Folders', () => {
         it('should return a folder by ID', async () => {
             const folderId = '60c72b2f9b1d8b3a4c8e4d3b';
             const folder = {
-                _id: new ObjectId(folderId),
+                _id: ObjectId.createFromTime(folderId),
                 title: 'Test Folder',
             };
 
@@ -211,7 +211,7 @@ describe('Folders', () => {
 
             expect(db.connect).toHaveBeenCalled();
             expect(db.collection).toHaveBeenCalledWith('folders');
-            expect(collection.findOne).toHaveBeenCalledWith({ _id: new ObjectId(folderId) });
+            expect(collection.findOne).toHaveBeenCalledWith({ _id: ObjectId.createFromTime(folderId) });
             expect(result).toEqual(folder);
         });
 
@@ -225,7 +225,7 @@ describe('Folders', () => {
 
             expect(db.connect).toHaveBeenCalled();
             expect(db.collection).toHaveBeenCalledWith('folders');
-            expect(collection.findOne).toHaveBeenCalledWith({ _id: new ObjectId(folderId) });
+            expect(collection.findOne).toHaveBeenCalledWith({ _id: ObjectId.createFromTime(folderId) });
         });
     });
 });
