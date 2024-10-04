@@ -52,6 +52,15 @@ describe('Folders', () => {
             expect(result).toBeDefined();
         });
 
+        // throw an error if userId is undefined
+        it('should throw an error if userId is undefined', async () => {
+            const title = 'Test Folder';
+
+            await expect(folders.create(title, undefined)).rejects.toThrow('Missing required parameter(s)');
+
+            expect(db.connect).not.toHaveBeenCalled();
+        });
+
         it('should throw an error if the folder already exists', async () => {
             const title = 'Existing Folder';
             const userId = '66fc70bea1b9e87655cf17c9';

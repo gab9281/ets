@@ -9,6 +9,7 @@ class Quiz {
     }
 
     async create(title, content, folderId, userId) {
+        console.log(`quizzes: create title: ${title}, folderId: ${folderId}, userId: ${userId}`);
         await this.db.connect()
         const conn = this.db.getConnection();
 
@@ -16,7 +17,9 @@ class Quiz {
 
         const existingQuiz = await quizCollection.findOne({ title: title, folderId: folderId, userId: userId })
 
-        if (existingQuiz) return null;
+        if (existingQuiz) {
+            throw new Error(`Quiz already exists with title: ${title}, folderId: ${folderId}, userId: ${userId}`);
+        }
 
         const newQuiz = {
             folderId: folderId,
@@ -28,6 +31,7 @@ class Quiz {
         }
 
         const result = await quizCollection.insertOne(newQuiz);
+        console.log("quizzes: create insertOne result", result);
 
         return result.insertedId;
     }

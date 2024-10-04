@@ -9,6 +9,13 @@ class Folders {
     }
 
     async create(title, userId) {
+
+        console.log("LOG: create", title, userId);
+
+        if (!title || !userId) {
+            throw new Error('Missing required parameter(s)');
+        }
+        
         await this.db.connect()
         const conn = this.db.getConnection();
 
@@ -16,10 +23,7 @@ class Folders {
 
         const existingFolder = await foldersCollection.findOne({ title: title, userId: userId });
 
-        console.log(`Folders.create: existingFolder`, existingFolder);
-
         if (existingFolder) {
-            console.log('Folder already exists, throwing Error');
             throw new Error('Folder already exists');
         }
 
@@ -51,7 +55,7 @@ class Folders {
 
         const foldersCollection = conn.collection('folders');
 
-        const folder = await foldersCollection.findOne({ _id: new ObjectId(folderId) });
+        const folder = await foldersCollection.findOne({ _id: ObjectId.createFromHexString(folderId) });
 
         return folder.userId;
     }
@@ -105,16 +109,28 @@ class Folders {
             throw new Error(`Folder ${folderId} not found`);
         }
 
+        const theUserId = userId;
         // Use the utility function to generate a unique title
         const newFolderTitle = await generateUniqueTitle(sourceFolder.title, async (title) => {
-            return await foldersCollection.findOne({ title: title, userId: userId });
+            console.log(`generateUniqueTitle(${title}): userId`, theUserId);
+            return await foldersCollection.findOne({ title: title, userId: theUserId });
         });
 
-        console.log(`duplicate: userId`, userId);
-        const newFolderId = await this.create(newFolderTitle, sourceFolder.content, userId);
+        const newFolderId = await this.create(newFolderTitle, userId);
 
         if (!newFolderId) {
             throw new Error('Failed to create duplicate folder');
+        }
+
+        // copy the quizzes from source folder to destination folder
+        const content = await this.getContent(folderId);
+        console.log("folders.duplicate: found content", content);
+        for (const quiz of content) {
+            console.log("folders.duplicate: creating quiz (copy)", quiz);
+            const result = await this.quizModel.create(quiz.title, quiz.content, newFolderId.toString(), userId);
+            if (!result) {
+                throw new Error('Failed to create duplicate quiz');
+            }
         }
 
         return newFolderId;
