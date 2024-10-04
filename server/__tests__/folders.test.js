@@ -240,15 +240,25 @@ describe('Folders', () => {
                 .mockResolvedValueOnce(sourceFolder) // source file exists
                 .mockResolvedValueOnce(null); // new name is not found
 
-            // Mock the create method
+            // Mock the folder create method
             const createSpy = jest.spyOn(folders, 'create').mockResolvedValue(new ObjectId());
+
+            // mock the folder.getContent method
+            jest.spyOn(folders, 'getContent').mockResolvedValue([{ title: 'Quiz 1', content: [] }]);
+
+            // Mock the quizzes.create method
+            jest.spyOn(quizzes, 'create').mockResolvedValue(new ObjectId());
 
             const result = await folders.duplicate(folderId, userId);
 
             expect(db.collection).toHaveBeenCalledWith('folders');
 
-            // expect create method was called
-            expect(createSpy).toHaveBeenCalledWith(duplicatedFolder.title, [], userId);
+            // expect folders.create method was called
+            expect(createSpy).toHaveBeenCalledWith(duplicatedFolder.title, userId);
+            // expect the getContent method was called
+            expect(folders.getContent).toHaveBeenCalledWith(folderId);
+            // expect the quizzes.create method was called
+            expect(quizzes.create).toHaveBeenCalledWith('Quiz 1', [], expect.any(String), userId);
             
             expect(result).toBeDefined();
         });
