@@ -59,22 +59,16 @@ describe('Quizzes', () => {
             expect(result).not.toBeNull();
         });
 
-        it('should return null if the quiz already exists', async () => {
-            const title = 'Existing Quiz';
-            const content = 'This is an existing quiz.';
+        it('should throw exception if the quiz already exists', async () => {
+            const title = 'Test Quiz';
+            const content = 'This is a test quiz.';
             const folderId = '507f1f77bcf86cd799439011';
             const userId = '12345';
 
             // Mock the database response
-            collection.findOne.mockResolvedValue({ title, folderId, userId });
+            collection.findOne.mockResolvedValue({ title });
 
-            const result = await quizzes.create(title, content, folderId, userId);
-
-            expect(db.connect).toHaveBeenCalled();
-            expect(db.getConnection).toHaveBeenCalled();
-            expect(collection.findOne).toHaveBeenCalledWith({ title, folderId, userId });
-            expect(collection.insertOne).not.toHaveBeenCalled();
-            expect(result).toBeNull();
+            await expect(quizzes.create(title, content, folderId, userId)).rejects.toThrow(`Quiz already exists with title: ${title}, folderId: ${folderId}, userId: ${userId}`);
         });
     });
 
