@@ -293,7 +293,7 @@ const Dashboard: React.FC = () => {
             }
 
             setQuizzes(quizzes as QuizType[]);
-
+            setSelectedFolder('');
 
         } catch (error) {
             console.error('Error deleting folder:', error);
@@ -318,9 +318,11 @@ const Dashboard: React.FC = () => {
         try {
             // folderId: string GET THIS FROM CURRENT FOLDER
             await ApiService.duplicateFolder(selectedFolder);
+            // TODO set the selected folder to be the duplicated folder
             const userFolders = await ApiService.getUserFolders();
             setFolders(userFolders as FolderType[]);
-
+            const newlyCreatedFolder = userFolders[userFolders.length - 1] as FolderType;
+            setSelectedFolder(newlyCreatedFolder._id);
         } catch (error) {
             console.error('Error duplicating folder:', error);
         }
@@ -402,7 +404,6 @@ const Dashboard: React.FC = () => {
                 </div>
 
                 <div className='actions'>
-
                     <Tooltip title="Ajouter dossier" placement="top">
                         <IconButton
                             color="primary"
@@ -426,7 +427,7 @@ const Dashboard: React.FC = () => {
                         > <ContentCopy /> </IconButton>
                     </Tooltip>
 
-                    <Tooltip title="Suprimer dossier" placement="top">
+                    <Tooltip title="Supprimer dossier" placement="top">
                         <IconButton
                             aria-label="delete"
                             color="primary"
