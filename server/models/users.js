@@ -1,121 +1,180 @@
 //user
-const db = require('../config/db.js');
-const bcrypt = require('bcrypt');
-const AppError = require('../middleware/AppError.js');
-const { USER_ALREADY_EXISTS } = require('../constants/errorCodes');
-const Folders = require('../models/folders.js');
+const db = require("../config/db.js");
+const bcrypt = require("bcrypt");
+const AppError = require("../middleware/AppError.js");
+const { USER_ALREADY_EXISTS } = require("../constants/errorCodes");
+const Folders = require("../models/folders.js");
 
 class Users {
-    
-    async hashPassword(password) {
-        return await bcrypt.hash(password, 10)
+  async hashPassword(password) {
+    return await bcrypt.hash(password, 10);
+  }
+
+  generatePassword() {
+    return Math.random().toString(36).slice(-8);
+  }
+
+  async verify(password, hash) {
+    return await bcrypt.compare(password, hash);
+  }
+
+  async register(email, password) {
+    await db.connect();
+    const conn = db.getConnection();
+
+    const userCollection = conn.collection("users");
+
+    const existingUser = await userCollection.findOne({ email: email });
+
+    if (existingUser) {
+      throw new AppError(USER_ALREADY_EXISTS);
     }
 
-    generatePassword() {
-        return Math.random().toString(36).slice(-8);
+    const newUser = {
+      email: email,
+      password: await this.hashPassword(password),
+      created_at: new Date(),
+    };
+
+    let created_user = await userCollection.insertOne(newUser);
+    let user = await this.getById(created_user.insertedId)
+
+    const folderTitle = "Dossier par Défaut";
+    const userId = newUser._id.toString();
+    await Folders.create(folderTitle, userId);
+
+    // TODO: verif if inserted properly...
+    return user;
+  }
+
+  async login(userid) {
+    await db.connect();
+    const conn = db.getConnection();
+
+    const userCollection = conn.collection("users");
+    const user = await userCollection.findOne({ _id: userid });
+
+    if (!user) {
+      return false;
     }
 
-    async verify(password, hash) {
-        return await bcrypt.compare(password, hash)
+    return user;
+  }
+
+  async login(email, password) {
+    await db.connect();
+    const conn = db.getConnection();
+
+    const userCollection = conn.collection("users");
+
+    const user = await userCollection.findOne({ email: email });
+
+    if (!user) {
+      return false;
     }
 
-    async register(email, password) {
-        await db.connect()
-        const conn = db.getConnection();
-        
-        const userCollection = conn.collection('users');
+    const passwordMatch = await this.verify(password, user.password);
 
-        const existingUser = await userCollection.findOne({ email: email });
-
-        if (existingUser) {
-            throw new AppError(USER_ALREADY_EXISTS);
-        }
-
-        const newUser = {
-            email: email,
-            password: await this.hashPassword(password),
-            created_at: new Date()
-        };
-
-        await userCollection.insertOne(newUser);
-
-        const folderTitle = 'Dossier par Défaut'; 
-        const userId = newUser._id.toString(); 
-        await Folders.create(folderTitle, userId);
-
-        // TODO: verif if inserted properly...
+    if (!passwordMatch) {
+      return false;
     }
 
-    async login(email, password) {
-        await db.connect()
-        const conn = db.getConnection();
+    return user;
+  }
 
-        const userCollection = conn.collection('users');
+  async resetPassword(email) {
+    const newPassword = this.generatePassword();
 
-        const user = await userCollection.findOne({ email: email });
+    return await this.changePassword(email, newPassword);
+  }
 
-        if (!user) {
-            return false;
-        }
+  async changePassword(email, newPassword) {
+    await db.connect();
+    const conn = db.getConnection();
 
-        const passwordMatch = await this.verify(password, user.password);
+    const userCollection = conn.collection("users");
 
-        if (!passwordMatch) {
-            return false;
-        }
+    const hashedPassword = await this.hashPassword(newPassword);
 
-        return user;
+    const result = await userCollection.updateOne(
+      { email },
+      { $set: { password: hashedPassword } }
+    );
+
+    if (result.modifiedCount != 1) return null;
+
+    return newPassword;
+  }
+
+  async delete(email) {
+    await db.connect();
+    const conn = db.getConnection();
+
+    const userCollection = conn.collection("users");
+
+    const result = await userCollection.deleteOne({ email });
+
+    if (result.deletedCount != 1) return false;
+
+    return true;
+  }
+
+  async getId(email) {
+    await db.connect();
+    const conn = db.getConnection();
+
+    const userCollection = conn.collection("users");
+
+    const user = await userCollection.findOne({ email: email });
+
+    if (!user) {
+      return false;
     }
 
-    async resetPassword(email) {
-        const newPassword = this.generatePassword();
+    return user._id;
+  }
 
-        return await this.changePassword(email, newPassword);
+  async getById(id) {
+    await db.connect();
+    const conn = db.getConnection();
+
+    const userCollection = conn.collection("users");
+
+    const user = await userCollection.findOne({ _id: id });
+
+    if (!user) {
+      return false;
     }
 
-    async changePassword(email, newPassword) {
-        await db.connect()
-        const conn = db.getConnection();
+    return user;
+  }
 
-        const userCollection = conn.collection('users');
+  async editUser(userInfo) {
+    await db.connect();
+    const conn = db.getConnection();
 
-        const hashedPassword = await this.hashPassword(newPassword);
+    const userCollection = conn.collection("users");
 
-        const result = await userCollection.updateOne({ email }, { $set: { password: hashedPassword } });
+    const user = await userCollection.findOne({ _id: userInfo.id });
 
-        if (result.modifiedCount != 1) return null;
-
-        return newPassword
+    if (!user) {
+      return false;
     }
 
-    async delete(email) {
-        await db.connect()
-        const conn = db.getConnection();
+    const updatedFields = { ...userInfo };
+    delete updatedFields.id;
 
-        const userCollection = conn.collection('users');
+    const result = await userCollection.updateOne(
+      { _id: userInfo.id },
+      { $set: updatedFields }
+    );
 
-        const result = await userCollection.deleteOne({ email });
-
-        if (result.deletedCount != 1) return false;
-
-        return true;
+    if (result.modifiedCount === 1) {
+      return true;
     }
 
-    async getId(email) {
-        await db.connect()
-        const conn = db.getConnection();
-
-        const userCollection = conn.collection('users');
-
-        const user = await userCollection.findOne({ email: email });
-
-        if (!user) {
-            return false;
-        }
-
-        return user._id;
-    }
-
+    return false;
+  }
 }
 
-module.exports = new Users;
+module.exports = new Users();
