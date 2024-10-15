@@ -4,7 +4,7 @@ import './header.css';
 import { Button } from '@mui/material';
 
 interface HeaderProps {
-    isLoggedIn: () => boolean;
+    isLoggedIn: boolean;
     handleLogout: () => void;
 }
 
@@ -20,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, handleLogout }) => {
                 onClick={() => navigate('/')}
             />
 
-            {isLoggedIn() && (
+            {isLoggedIn && (
                 <Button
                     variant="outlined"
                     color="primary"
@@ -33,9 +33,9 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, handleLogout }) => {
                 </Button>
             )}
 
-            {!isLoggedIn() && (
+            {!isLoggedIn && (
                 <div className="auth-selection-btn">
-                    <Link to="/auth-selection">
+                    <Link to="/login">
                         <button className="auth-btn">Connexion</button>
                     </Link>
                 </div>

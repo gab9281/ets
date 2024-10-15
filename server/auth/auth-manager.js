@@ -44,7 +44,7 @@ class AuthManager{
 
     async login(userInfo,req,res,next){
         const tokenToSave = jwt.create(userInfo.email, userInfo._id);
-        res.redirect(`/oauth/callback?user=${tokenToSave}`);
+        res.redirect(`http://localhost:${process.env['FRONTEND_PORT']}/auth/callback?user=${tokenToSave}`);
         console.info(`L'utilisateur '${userInfo.name}' vient de se connecter`)
     }
 

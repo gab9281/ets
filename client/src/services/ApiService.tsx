@@ -66,6 +66,8 @@ class ApiService {
     public isLoggedIn(): boolean {
         const token = this.getToken()
 
+        console.log("Check if loggedIn : " + token);
+        
         if (token == null) {
             return false;
         }

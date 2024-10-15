@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import apiService from '../../services/ApiService';
+import apiService from '../../../services/ApiService';
 
 const OAuthCallback: React.FC = () => {
     const navigate = useNavigate();
@@ -12,14 +12,15 @@ const OAuthCallback: React.FC = () => {
 
         if (user) {
             // Save user data to localStorage or sessionStorage
+            console.log(user);
             apiService.saveToken(user);
 
             // Navigate to the dashboard or another page
             navigate('/');
         } else {
-            navigate('/auth-selection');
+            navigate('/login');
         }
-    }, [location, navigate]);
+    }, []);
 
     return <div>Loading...</div>;
 };
