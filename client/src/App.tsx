@@ -7,8 +7,8 @@ import Home from './pages/Home/Home';
 // Pages espace enseignant
 import Dashboard from './pages/Teacher/Dashboard/Dashboard';
 import Share from './pages/Teacher/Share/Share';
-import Register from './pages/AuthSelection/providers/SimpleLogin/Register';
-import ResetPassword from './pages/AuthSelection/providers/SimpleLogin/ResetPassword';
+import Register from './pages/AuthManager/providers/SimpleLogin/Register';
+import ResetPassword from './pages/AuthManager/providers/SimpleLogin/ResetPassword';
 import ManageRoom from './pages/Teacher/ManageRoom/ManageRoom';
 import QuizForm from './pages/Teacher/EditorQuiz/EditorQuiz';
 
@@ -16,14 +16,14 @@ import QuizForm from './pages/Teacher/EditorQuiz/EditorQuiz';
 import JoinRoom from './pages/Student/JoinRoom/JoinRoom';
 
 // Pages authentification selection
-import AuthDrawer from './pages/AuthSelection/AuthDrawer';
+import AuthDrawer from './pages/AuthManager/AuthDrawer';
 
 // Header/Footer import
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 
 import ApiService from './services/ApiService';
-import OAuthCallback from './pages/AuthSelection/callback/AuthCallback';
+import OAuthCallback from './pages/AuthManager/callback/AuthCallback';
 
 const App: React.FC = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(ApiService.isLoggedIn()); // Initial check
