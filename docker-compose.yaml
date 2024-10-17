@@ -4,7 +4,7 @@ services:
 
   frontend:
     build:
-      context: ./server
+      context: ./client
       dockerfile: Dockerfile
     container_name: frontend
     ports:

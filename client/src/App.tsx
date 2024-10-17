@@ -26,23 +26,24 @@ import ApiService from './services/ApiService';
 import OAuthCallback from './pages/AuthManager/callback/AuthCallback';
 
 const App: React.FC = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(ApiService.isLoggedIn()); // Initial check
-    const location = useLocation(); // Hook to detect route changes
+    const [isAuthenticated, setIsAuthenticated] = useState(ApiService.isLoggedIn());
+    const [isTeacherAuthenticated, setIsTeacherAuthenticated] = useState(ApiService.isLoggedInTeacher());
+    const location = useLocation();
 
     // Check login status every time the route changes
     useEffect(() => {
         const checkLoginStatus = () => {
-            const loggedIn = ApiService.isLoggedIn();
-            setIsAuthenticated(loggedIn); // Update state if login status changes
-            console.log('App.tsx - Login status:', loggedIn);
+            setIsAuthenticated(ApiService.isLoggedIn());
+            setIsTeacherAuthenticated(ApiService.isLoggedInTeacher());
         };
 
-        checkLoginStatus(); // Check login status whenever the route changes
-    }, [location]); // Re-run when the location (route) changes
+        checkLoginStatus();
+    }, [location]);
 
     const handleLogout = () => {
         ApiService.logout();
-        setIsAuthenticated(false); // Ensure we log out the user in the state as well
+        setIsAuthenticated(false);
+        setIsTeacherAuthenticated(false);
     };
 
     return (
@@ -57,19 +58,19 @@ const App: React.FC = () => {
                         {/* Pages espace enseignant */}
                         <Route
                             path="/teacher/dashboard"
-                            element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
+                            element={isTeacherAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
                         />
                         <Route
                             path="/teacher/share/:id"
-                            element={isAuthenticated ? <Share /> : <Navigate to="/login" />}
+                            element={isTeacherAuthenticated ? <Share /> : <Navigate to="/login" />}
                         />
                         <Route
                             path="/teacher/editor-quiz/:id"
-                            element={isAuthenticated ? <QuizForm /> : <Navigate to="/login" />}
+                            element={isTeacherAuthenticated ? <QuizForm /> : <Navigate to="/login" />}
                         />
                         <Route
                             path="/teacher/manage-room/:id"
-                            element={isAuthenticated ? <ManageRoom /> : <Navigate to="/login" />}
+                            element={isTeacherAuthenticated ? <ManageRoom /> : <Navigate to="/login" />}
                         />
 
                         {/* Pages espace étudiant */}

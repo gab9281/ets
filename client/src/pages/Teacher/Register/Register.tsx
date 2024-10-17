@@ -26,7 +26,7 @@ const Register: React.FC = () => {
     }, []);
 
     const register = async () => {
-        const result = await ApiService.register(email, password);
+        const result = await ApiService.register(email, password, "temp"); // "temp", car ce fichier n'est plus utilisé. il est déplacer dans /AuthManager
 
         if (result != true) {
             setConnectionError(result);

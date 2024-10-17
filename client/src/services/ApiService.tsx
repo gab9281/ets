@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import {jwtDecode} from 'jwt-decode';
 import { ENV_VARIABLES } from '../constants';
 
 import { QuizType } from '../Types/QuizType';
@@ -66,8 +67,6 @@ class ApiService {
     public isLoggedIn(): boolean {
         const token = this.getToken()
 
-        console.log("Check if loggedIn : " + token);
-        
         if (token == null) {
             return false;
         }
@@ -76,6 +75,35 @@ class ApiService {
         this.saveToken(token);
 
         return true;
+    }
+
+    public isLoggedInTeacher(): boolean {
+        const token = this.getToken();
+
+        console.log("Check if loggedIn : " + token);
+
+        if (token == null) {
+            return false;
+        }
+
+        try {
+            const decodedToken = jwtDecode(token) as { role: string };
+
+            const userRole = decodedToken.role;
+            const requiredRole = 'professeur';
+
+            if (userRole !== requiredRole) {
+                return false;
+            }
+
+            // Update token expiry
+            this.saveToken(token);
+
+            return true;
+        } catch (error) {
+            console.error("Error decoding token:", error);
+            return false;
+        }
     }
 
     public logout(): void {
@@ -88,7 +116,7 @@ class ApiService {
      * @returns true if  successful 
      * @returns A error string if unsuccessful,
      */
-    public async register(email: string, password: string): Promise<any> {
+    public async register(email: string, password: string, role: string): Promise<any> {
         try {
 
             if (!email || !password) {
@@ -97,7 +125,7 @@ class ApiService {
 
             const url: string = this.constructRequestUrl(`/user/register`);
             const headers = this.constructRequestHeaders();
-            const body = { email, password };
+            const body = { email, password, role };
 
             const result: AxiosResponse = await axios.post(url, body, { headers: headers });
 
