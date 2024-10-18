@@ -79,26 +79,26 @@ class ApiService {
 
     public isLoggedInTeacher(): boolean {
         const token = this.getToken();
-
+    
         console.log("Check if loggedIn : " + token);
-
+    
         if (token == null) {
             return false;
         }
-
+    
         try {
-            const decodedToken = jwtDecode(token) as { role: string };
-
-            const userRole = decodedToken.role;
-            const requiredRole = 'professeur';
-
-            if (userRole !== requiredRole) {
+            const decodedToken = jwtDecode(token) as { roles: string[] };
+    
+            const userRoles = decodedToken.roles;
+            const requiredRole = 'teacher';
+    
+            if (!userRoles || !userRoles.includes(requiredRole)) {
                 return false;
             }
-
+    
             // Update token expiry
             this.saveToken(token);
-
+    
             return true;
         } catch (error) {
             console.error("Error decoding token:", error);
@@ -116,16 +116,16 @@ class ApiService {
      * @returns true if  successful 
      * @returns A error string if unsuccessful,
      */
-    public async register(email: string, password: string, role: string): Promise<any> {
+    public async register(name: string, email: string, password: string, roles: string[]): Promise<any> {
         try {
 
             if (!email || !password) {
                 throw new Error(`L'email et le mot de passe sont requis.`);
             }
 
-            const url: string = this.constructRequestUrl(`/user/register`);
+            const url: string = this.constructRequestUrl(`/auth/simple-auth/register`);
             const headers = this.constructRequestHeaders();
-            const body = { email, password, role };
+            const body = { name, email, password, roles };
 
             const result: AxiosResponse = await axios.post(url, body, { headers: headers });
 
@@ -159,7 +159,7 @@ class ApiService {
                 throw new Error(`L'email et le mot de passe sont requis.`);
             }
 
-            const url: string = this.constructRequestUrl(`/user/login`);
+            const url: string = this.constructRequestUrl(`/auth/simple-auth/login`);
             const headers = this.constructRequestHeaders();
             const body = { email, password };
 
@@ -197,7 +197,7 @@ class ApiService {
                 throw new Error(`L'email est requis.`);
             }
 
-            const url: string = this.constructRequestUrl(`/user/reset-password`);
+            const url: string = this.constructRequestUrl(`/auth/simple-auth/reset-password`);
             const headers = this.constructRequestHeaders();
             const body = { email };
 
@@ -233,7 +233,7 @@ class ApiService {
                 throw new Error(`L'email, l'ancien et le nouveau mot de passe sont requis.`);
             }
 
-            const url: string = this.constructRequestUrl(`/user/change-password`);
+            const url: string = this.constructRequestUrl(`/auth/simple-auth/change-password`);
             const headers = this.constructRequestHeaders();
             const body = { email, oldPassword, newPassword };
 

@@ -26,9 +26,10 @@ class SimpleAuth{
 
     async register(self,req, res) {
         let userInfos = {
-            name: req.body.email,
+            name: req.body.name,
             email: req.body.email,
             password: req.body.password,
+            roles: req.body.roles
         }
         let user = await self.authmanager.register(userInfos)
         if(user) res.redirect("/")

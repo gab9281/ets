@@ -8,9 +8,14 @@ class AuthService {
         this.BASE_URL = ENV_VARIABLES.VITE_BACKEND_URL;
     }
 
+    private constructRequestUrl(endpoint: string): string {
+        return `${this.BASE_URL}/api${endpoint}`;
+    }
+
     async fetchAuthData(){
         try {
-            const response = await fetch(`${this.BASE_URL}/api/auth/getActiveAuth`);
+            const response = await fetch(this.constructRequestUrl('/auth/getActiveAuth'));
+            console.log("base url: " + this.BASE_URL);
             const data = await response.json();
             return data.authActive;
         } catch (error) {

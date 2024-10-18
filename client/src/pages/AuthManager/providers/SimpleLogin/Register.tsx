@@ -12,9 +12,10 @@ import ApiService from '../../../../services/ApiService';
 const Register: React.FC = () => {
     const navigate = useNavigate();
 
+    const [name, setName] = useState(''); // State for name
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('etudiant');
+    const [roles, setRoles] = useState<string[]>(['student']); // Set 'student' as the default role
 
     const [connectionError, setConnectionError] = useState<string>('');
     const [isConnecting] = useState<boolean>(false);
@@ -23,8 +24,23 @@ const Register: React.FC = () => {
         return () => { };
     }, []);
 
+    const handleRoleChange = (role: string) => {
+        setRoles([role]); // Update the roles array to contain the selected role
+    };
+
+    const isValidEmail = (email: string) => {
+        // Basic email format validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
     const register = async () => {
-        const result = await ApiService.register(email, password, role);
+        if (!isValidEmail(email)) {
+            setConnectionError("Veuillez entrer une adresse email valide.");
+            return;
+        }
+
+        const result = await ApiService.register(name, email, password, roles);
 
         if (result !== true) {
             setConnectionError(result);
@@ -40,6 +56,16 @@ const Register: React.FC = () => {
             error={connectionError}
         >
             <TextField
+                label="Nom"
+                variant="outlined"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Votre nom"
+                sx={{ marginBottom: '1rem' }}
+                fullWidth
+            />
+
+            <TextField
                 label="Email"
                 variant="outlined"
                 value={email}
@@ -47,6 +73,9 @@ const Register: React.FC = () => {
                 placeholder="Adresse courriel"
                 sx={{ marginBottom: '1rem' }}
                 fullWidth
+                type="email" 
+                error={!!connectionError && !isValidEmail(email)} 
+                helperText={connectionError && !isValidEmail(email) ? "Adresse email invalide." : ""}
             />
 
             <TextField
@@ -66,11 +95,11 @@ const Register: React.FC = () => {
                     row
                     aria-label="role"
                     name="role"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
+                    value={roles[0]}
+                    onChange={(e) => handleRoleChange(e.target.value)}
                 >
-                    <FormControlLabel value="etudiant" control={<Radio />} label="Étudiant" />
-                    <FormControlLabel value="professeur" control={<Radio />} label="Professeur" />
+                    <FormControlLabel value="student" control={<Radio />} label="Étudiant" />
+                    <FormControlLabel value="teacher" control={<Radio />} label="Professeur" />
                 </RadioGroup>
             </Box>
 
@@ -79,7 +108,7 @@ const Register: React.FC = () => {
                 onClick={register}
                 variant="contained"
                 sx={{ marginBottom: `${connectionError && '2rem'}` }}
-                disabled={!email || !password}
+                disabled={!name || !email || !password}
             >
                 S'inscrire
             </LoadingButton>

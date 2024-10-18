@@ -15,6 +15,7 @@ const AuthSelection: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await authService.fetchAuthData();
+            console.log(data);
             setAuthData(data);
         };
 
@@ -26,7 +27,7 @@ const AuthSelection: React.FC = () => {
             <h1>Connexion</h1>
 
             {/* Formulaire de connexion Simple Login */}
-            {authData && authData['simple-login'] && (
+            {authData && authData['simpleauth'] && (
                 <div className="form-container">
                     <SimpleLogin />
                 </div>

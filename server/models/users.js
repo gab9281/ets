@@ -35,6 +35,7 @@ class Users {
       email: userInfos.email,
       password: await this.hashPassword(userInfos.password),
       created_at: new Date(),
+      roles: userInfos.roles
     };
 
     let created_user = await userCollection.insertOne(newUser);
