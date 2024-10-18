@@ -54,7 +54,9 @@ class SimpleAuth{
             self.authmanager.login(user,req,res,next)
         }
         catch (error) {
-            return next(error);
+            return res.status(400).json({
+                message: error.message
+            });
         }
     }
 
