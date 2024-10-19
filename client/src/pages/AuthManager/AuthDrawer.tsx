@@ -15,7 +15,6 @@ const AuthSelection: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await authService.fetchAuthData();
-            console.log(data);
             setAuthData(data);
         };
 

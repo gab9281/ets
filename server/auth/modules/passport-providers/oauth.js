@@ -5,13 +5,13 @@ var { hasNestedValue } = require('../../../utils')
 var jwt = require('../../../middleware/jwtToken')
 
 class PassportOAuth {
-    constructor(passportjs,auth_name){
+    constructor(passportjs, auth_name) {
         this.passportjs = passportjs
         this.auth_name = auth_name
     }
 
-    register(app, passport,endpoint, name, provider) {
-        const cb_url =`${process.env['BACKEND_URL']}${endpoint}/${name}/callback`
+    register(app, passport, endpoint, name, provider) {
+        const cb_url = `${process.env['BACKEND_URL']}${endpoint}/${name}/callback`
         const self = this
 
         passport.use(name, new OAuth2Strategy({
@@ -22,72 +22,72 @@ class PassportOAuth {
             callbackURL: cb_url,
             passReqToCallback: true
         },
-        async function(req, accessToken, refreshToken, params, profile, done) {
-            try {
-                const userInfoResponse = await fetch(provider.OAUTH_USERINFO_URL, {
-                    headers: { 'Authorization': `Bearer ${accessToken}` }
-                });
-                const userInfo = await userInfoResponse.json();
+            async function (req, accessToken, refreshToken, params, profile, done) {
+                try {
+                    const userInfoResponse = await fetch(provider.OAUTH_USERINFO_URL, {
+                        headers: { 'Authorization': `Bearer ${accessToken}` }
+                    });
+                    const userInfo = await userInfoResponse.json();
 
-                let received_user = {
-                    auth_id: userInfo.sub,
-                    email: userInfo.email,
-                    name: userInfo.name,
-                    roles: []
-                };
-                
-                if(hasNestedValue(userInfo,provider.OAUTH_ROLE_TEACHER_VALUE)) received_user.roles.push('teacher')
-                if(hasNestedValue(userInfo,provider.OAUTH_ROLE_STUDENT_VALUE)) received_user.roles.push('student')
+                    let received_user = {
+                        auth_id: userInfo.sub,
+                        email: userInfo.email,
+                        name: userInfo.name,
+                        roles: []
+                    };
 
-                const user_association = await authUserAssoc.find_user_association(self.auth_name,received_user.auth_id)
+                    if (hasNestedValue(userInfo, provider.OAUTH_ROLE_TEACHER_VALUE)) received_user.roles.push('teacher')
+                    if (hasNestedValue(userInfo, provider.OAUTH_ROLE_STUDENT_VALUE)) received_user.roles.push('student')
 
-                let user_account
-                if(user_association){
-                    user_account = await users.getById(user_association.user_id)
-                } 
-                else {
-                    let user_id = await users.getId(received_user.email)
-                    if(user_id){
-                        user_account = await users.getById(user_id);
-                    } else {
-                        received_user.password = users.generatePassword()
-                        user_account = await self.passportjs.register(received_user)
+                    const user_association = await authUserAssoc.find_user_association(self.auth_name, received_user.auth_id)
+
+                    let user_account
+                    if (user_association) {
+                        user_account = await users.getById(user_association.user_id)
                     }
-                    await authUserAssoc.link(self.auth_name,received_user.auth_id,user_account._id)
+                    else {
+                        let user_id = await users.getId(received_user.email)
+                        if (user_id) {
+                            user_account = await users.getById(user_id);
+                        } else {
+                            received_user.password = users.generatePassword()
+                            user_account = await self.passportjs.register(received_user)
+                        }
+                        await authUserAssoc.link(self.auth_name, received_user.auth_id, user_account._id)
+                    }
+
+                    user_account.name = received_user.name
+                    user_account.roles = received_user.roles
+                    await users.editUser(user_account)
+
+                    // Store the tokens in the session
+                    req.session.oauth2Tokens = {
+                        accessToken: accessToken,
+                        refreshToken: refreshToken,
+                        expiresIn: params.expires_in
+                    };
+
+                    return done(null, user_account);
+                } catch (error) {
+                    console.error(`Erreur dans la strategie OAuth2 '${name}' : ${error}`);
+                    return done(error);
                 }
-
-                user_account.name = received_user.name
-                user_account.roles = received_user.roles
-                await users.editUser(user_account)
-
-                // Store the tokens in the session
-                req.session.oauth2Tokens = {
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
-                    expiresIn: params.expires_in
-                };
-
-                return done(null, user_account);
-            } catch (error) {
-                console.error(`Erreur dans la strategie OAuth2 '${name}' : ${error}`);
-                return done(error);
-            }
-        }));
+            }));
 
         app.get(`${endpoint}/${name}`, (req, res, next) => {
             passport.authenticate(name, {
-                scope: 'openid profile email offline_access'+ ` ${provider.OAUTH_ADD_SCOPE}`,
+                scope: 'openid profile email offline_access' + ` ${provider.OAUTH_ADD_SCOPE}`,
                 prompt: 'consent'
             })(req, res, next);
         });
 
-        app.get(`${endpoint}/${name}/callback`, 
+        app.get(`${endpoint}/${name}/callback`,
             (req, res, next) => {
                 passport.authenticate(name, { failureRedirect: '/login' })(req, res, next);
             },
             (req, res) => {
                 if (req.user) {
-                    self.passportjs.authenticate(req.user,req,res)
+                    self.passportjs.authenticate(req.user, req, res)
                 } else {
                     res.status(401).json({ error: "L'authentification a échoué" });
                 }

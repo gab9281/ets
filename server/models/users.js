@@ -64,24 +64,32 @@ class Users {
   }
 
   async login(email, password) {
-    await db.connect();
-    const conn = db.getConnection();
+    try {
+      await db.connect();
+      const conn = db.getConnection();
+      const userCollection = conn.collection("users");
 
-    const userCollection = conn.collection("users");
+      const user = await userCollection.findOne({ email: email });
 
-    const user = await userCollection.findOne({ email: email });
+      if (!user) {
+        const error = new Error("User not found");
+        error.statusCode = 404; 
+        throw error;
+      }
 
-    if (!user) {
-      return false;
+      const passwordMatch = await this.verify(password, user.password);
+
+      if (!passwordMatch) {
+        const error = new Error("Password does not match");
+        error.statusCode = 401; 
+        throw error;
+      }
+
+      return user;
+    } catch (error) {
+      console.error(error);
+      throw error; 
     }
-
-    const passwordMatch = await this.verify(password, user.password);
-
-    if (!passwordMatch) {
-      return false;
-    }
-
-    return user;
   }
 
   async resetPassword(email) {

@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { ENV_VARIABLES } from '../constants';
 
 import { QuizType } from '../Types/QuizType';
@@ -79,26 +79,25 @@ class ApiService {
 
     public isLoggedInTeacher(): boolean {
         const token = this.getToken();
-    
-        console.log("Check if loggedIn : " + token);
-    
+
+
         if (token == null) {
             return false;
         }
-    
+
         try {
             const decodedToken = jwtDecode(token) as { roles: string[] };
-    
+
             const userRoles = decodedToken.roles;
             const requiredRole = 'teacher';
-    
+
             if (!userRoles || !userRoles.includes(requiredRole)) {
                 return false;
             }
-    
+
             // Update token expiry
             this.saveToken(token);
-    
+
             return true;
         } catch (error) {
             console.error("Error decoding token:", error);
@@ -129,8 +128,12 @@ class ApiService {
 
             const result: AxiosResponse = await axios.post(url, body, { headers: headers });
 
-            if (result.status !== 200) {
-                throw new Error(`L'enregistrement a échoué. Status: ${result.status}`);
+            console.log(result);
+            if (result.status == 200) {
+                window.location.href = result.request.responseURL;
+            }
+            else {
+                throw new Error(`La connexion a échoué. Status: ${result.status}`);
             }
 
             return true;
@@ -152,39 +155,52 @@ class ApiService {
      * @returns true if  successful 
      * @returns A error string if unsuccessful,
      */
-    public async login(email: string, password: string): Promise<any> {
-        try {
-
-            if (!email || !password) {
-                throw new Error(`L'email et le mot de passe sont requis.`);
-            }
-
-            const url: string = this.constructRequestUrl(`/auth/simple-auth/login`);
-            const headers = this.constructRequestHeaders();
-            const body = { email, password };
-
-            const result: AxiosResponse = await axios.post(url, body, { headers: headers });
-
-            if (result.status !== 200) {
-                throw new Error(`La connexion a échoué. Status: ${result.status}`);
-            }
-
-            this.saveToken(result.data.token);
-
-            return true;
-
-        } catch (error) {
-            console.log("Error details: ", error);
-
-            if (axios.isAxiosError(error)) {
-                const err = error as AxiosError;
-                const data = err.response?.data as { error: string } | undefined;
-                return data?.error || 'Erreur serveur inconnue lors de la requête.';
-            }
-
-            return `Une erreur inattendue s'est produite.`
+    /**
+ * @returns true if successful
+ * @returns An error string if unsuccessful
+ */
+public async login(email: string, password: string): Promise<any> {
+    try {
+        if (!email || !password) {
+            throw new Error("L'email et le mot de passe sont requis.");
         }
+
+        const url: string = this.constructRequestUrl(`/auth/simple-auth/login`);
+        const headers = this.constructRequestHeaders();
+        const body = { email, password };
+
+        const result: AxiosResponse = await axios.post(url, body, { headers: headers });
+
+        // If login is successful, redirect the user
+        if (result.status === 200) {
+            window.location.href = result.request.responseURL;
+            return true;
+        } else {
+            throw new Error(`La connexion a échoué. Statut: ${result.status}`);
+        }
+    } catch (error) {
+        console.log("Error details:", error);
+
+        // Handle Axios-specific errors
+        if (axios.isAxiosError(error)) {
+            const err = error as AxiosError;
+            const responseData = err.response?.data as { message?: string } | undefined;
+
+            // If there is a message field in the response, print it
+            if (responseData?.message) {
+                console.log("Backend error message:", responseData.message);
+                return responseData.message;
+            }
+
+            // If no message is found, return a fallback message
+            return "Erreur serveur inconnue lors de la requête.";
+        }
+
+        // Handle other non-Axios errors
+        return "Une erreur inattendue s'est produite.";
     }
+}
+
 
     /**
      * @returns true if  successful 

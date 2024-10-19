@@ -15,7 +15,6 @@ class AuthService {
     async fetchAuthData(){
         try {
             const response = await fetch(this.constructRequestUrl('/auth/getActiveAuth'));
-            console.log("base url: " + this.BASE_URL);
             const data = await response.json();
             return data.authActive;
         } catch (error) {

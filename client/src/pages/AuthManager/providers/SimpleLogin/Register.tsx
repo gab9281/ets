@@ -1,5 +1,3 @@
-import { useNavigate } from 'react-router-dom';
-
 // JoinRoom.tsx
 import React, { useEffect, useState } from 'react';
 
@@ -10,7 +8,6 @@ import LoginContainer from '../../../../components/LoginContainer/LoginContainer
 import ApiService from '../../../../services/ApiService';
 
 const Register: React.FC = () => {
-    const navigate = useNavigate();
 
     const [name, setName] = useState(''); // State for name
     const [email, setEmail] = useState('');
@@ -46,8 +43,6 @@ const Register: React.FC = () => {
             setConnectionError(result);
             return;
         }
-
-        navigate("/login");
     };
 
     return (
