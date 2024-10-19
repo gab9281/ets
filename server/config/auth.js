@@ -44,8 +44,8 @@ class AuthConfig {
 
   // Méthode pour retourner la configuration de Simple Login
   getSimpleLoginConfig() {
-    if (this.config && this.config.auth && this.config.auth["simple-login"]) {
-      return this.config.auth["simple-login"];
+    if (this.config && this.config.auth && this.config.auth["simpleauth"]) {
+      return this.config.auth["simpleauth"];
     } else {
       return { error: "Aucune configuration Simple Login disponible." };
     }
@@ -162,10 +162,10 @@ class AuthConfig {
       }
 
       // Gestion du Simple Login
-      if (this.config.auth["simple-login"] && this.config.auth["simple-login"].enabled) {
-        passportConfig['simple-login'] = {
-          type: "simple-login",
-          name: this.config.auth["simple-login"].name
+      if (this.config.auth["simpleauth"] && this.config.auth["simpleauth"].enabled) {
+        passportConfig['simpleauth'] = {
+          type: "simpleauth",
+          name: this.config.auth["simpleauth"].name
         };
       }
 

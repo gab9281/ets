@@ -1,17 +1,16 @@
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // JoinRoom.tsx
 import React, { useEffect, useState } from 'react';
 
-import './simpleLogin.css';
+import '../css/simpleLogin.css';
 import { TextField } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import LoginContainer from '../../components/LoginContainer/LoginContainer'
-import ApiService from '../../services/ApiService';
+import LoginContainer from '../../../../components/LoginContainer/LoginContainer'
+import ApiService from '../../../../services/ApiService';
 
 const SimpleLogin: React.FC = () => {
-    const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -27,15 +26,10 @@ const SimpleLogin: React.FC = () => {
 
     const login = async () => {
         const result = await ApiService.login(email, password);
-
-        if (result != true) {
+        if (result !== true) {
             setConnectionError(result);
             return;
         }
-        else {
-            navigate("/")
-        }
-
     };
 
 
@@ -77,11 +71,11 @@ const SimpleLogin: React.FC = () => {
 
             <div className="login-links">
 
-                <Link to="/teacher/resetPassword">
+                <Link to="/resetPassword">
                     Réinitialiser le mot de passe
                 </Link>
 
-                <Link to="/teacher/register">
+                <Link to="/register">
                     Créer un compte
                 </Link>
 
