@@ -13,6 +13,7 @@ class PassportOAuth {
     register(app, passport, endpoint, name, provider) {
         const cb_url = `${process.env['BACKEND_URL']}${endpoint}/${name}/callback`
         const self = this
+        const scope = 'openid profile email offline_access' + ` ${provider.OAUTH_ADD_SCOPE}`;
 
         passport.use(name, new OAuth2Strategy({
             authorizationURL: provider.OAUTH_AUTHORIZATION_URL,
@@ -76,7 +77,7 @@ class PassportOAuth {
 
         app.get(`${endpoint}/${name}`, (req, res, next) => {
             passport.authenticate(name, {
-                scope: 'openid profile email offline_access' + ` ${provider.OAUTH_ADD_SCOPE}`,
+                scope: scope,
                 prompt: 'consent'
             })(req, res, next);
         });
@@ -93,6 +94,7 @@ class PassportOAuth {
                 }
             }
         );
+        console.info(`Ajout de la connexion : ${name}(OAuth)`)
     }
 }
 

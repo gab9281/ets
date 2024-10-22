@@ -13,6 +13,13 @@
             ],
             "program": "${workspaceFolder}/server/app.js",
             "cwd":"${workspaceFolder}/server/"
-        }
+        },
+        {
+            "type": "msedge",
+            "request": "launch",
+            "name": "Debug frontend",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}/client/"
+          }
     ]
 }

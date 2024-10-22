@@ -24,6 +24,7 @@ class PassportOpenIDConnect {
         const config = await this.getConfigFromConfigURL(name, provider)
         const cb_url = `${process.env['BACKEND_URL']}${endpoint}/${name}/callback`
         const self = this
+        const scope = 'openid profile email ' + `${provider.OIDC_ADD_SCOPE}`
 
         passport.use(name, new OpenIDConnectStrategy({
             issuer: config.issuer,
@@ -34,7 +35,7 @@ class PassportOpenIDConnect {
             clientSecret: provider.OIDC_CLIENT_SECRET,
             callbackURL: cb_url,
             passReqToCallback: true,
-            scope: 'openid profile email ' + `${provider.OIDC_ADD_SCOPE}`,
+            scope: scope,
         },
             // patch pour la librairie permet d'obtenir les groupes, PR en cours mais "morte" : https://github.com/jaredhanson/passport-openidconnect/pull/101
             async function (req, issuer, profile, times, tok, done) {
@@ -78,7 +79,7 @@ class PassportOpenIDConnect {
 
         app.get(`${endpoint}/${name}`, (req, res, next) => {
             passport.authenticate(name, {
-                scope: 'openid profile email offline_access' + ` ${provider.OAUTH_ADD_SCOPE}`,
+                scope: scope,
                 prompt: 'consent'
             })(req, res, next);
         });
@@ -95,6 +96,7 @@ class PassportOpenIDConnect {
                 }
             }
         );
+        console.info(`Ajout de la connexion : ${name}(OIDC)`)
     }
 }
 

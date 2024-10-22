@@ -1,4 +1,5 @@
 import React from 'react';
+import { ENV_VARIABLES } from '../../../../constants';
 import '../css/buttonAuth.css';
 
 interface ButtonAuthContainerProps {
@@ -7,7 +8,7 @@ interface ButtonAuthContainerProps {
 }
 
 const handleAuthLogin = (provider: string) => {
-    window.location.href = `/api/auth/` + provider;
+    window.location.href = `${ENV_VARIABLES.BACKEND_URL}/api/auth/${provider}`;
 };
 
 const ButtonAuth: React.FC<ButtonAuthContainerProps> = ({ providerName, providerType }) => {
