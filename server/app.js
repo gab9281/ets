@@ -1,6 +1,7 @@
 // Import API
 const express = require("express");
 const http = require("http");
+const https = require("https");
 const dotenv = require('dotenv')
 
 // Import Sockets
@@ -61,8 +62,13 @@ const configureServer = (httpServer) => {
   });
 };
 
-// Start sockets
-const server = http.createServer(app);
+// Start sockets (depending on the dev or prod environment)
+let server;
+if (process.env.NODE_ENV === 'production') {
+  server = https.createServer(app);
+} else {
+  server = http.createServer(app);
+}
 const io = configureServer(server);
 
 setupWebsocket(io);
