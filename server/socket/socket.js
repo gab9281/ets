@@ -16,12 +16,12 @@ const setupWebsocket = (io) => {
     }
 
     totalConnections++;
-    console.log(
-      "A user connected:",
-      socket.id,
-      "| Total connections:",
-      totalConnections
-    );
+    // console.log(
+    //   "A user connected:",
+    //   socket.id,
+    //   "| Total connections:",
+    //   totalConnections
+    // );
 
     socket.on("create-room", (sentRoomName) => {
       if (sentRoomName) {
@@ -68,7 +68,7 @@ const setupWebsocket = (io) => {
     });
 
     socket.on("next-question", ({ roomName, question }) => {
-      console.log("next-question", roomName, question);
+      // console.log("next-question", roomName, question);
       socket.to(roomName).emit("next-question", question);
     });
 
