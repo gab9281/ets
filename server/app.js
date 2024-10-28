@@ -42,7 +42,7 @@ const folderRouter = require('./routers/folders.js');
 const quizRouter = require('./routers/quiz.js');
 const imagesRouter = require('./routers/images.js')
 
-// Setup environement
+// Setup environment
 dotenv.config();
 const errorHandler = require("./middleware/errorHandler.js");
 
@@ -64,10 +64,12 @@ const configureServer = (httpServer) => {
 
 // Start sockets (depending on the dev or prod environment)
 let server;
-if (process.env.NODE_ENV === 'production') {
-  server = https.createServer(app);
-} else {
+if (process.env.NODE_ENV === 'development') {
+  console.log('Démarrage en mode dev');
   server = http.createServer(app);
+} else {
+  console.log('Démarrage en mode prod');
+  server = https.createServer(app);
 }
 const io = configureServer(server);
 
