@@ -80,6 +80,7 @@ const ManageRoom: React.FC = () => {
     };
 
     const createWebSocketRoom = () => {
+        console.log('Creating WebSocket room...');
         setConnectingError('');
         const socket = webSocketService.connect(ENV_VARIABLES.VITE_BACKEND_URL);
 
@@ -88,7 +89,7 @@ const ManageRoom: React.FC = () => {
         });
         socket.on('connect_error', (error) => {
             setConnectingError('Erreur lors de la connexion... Veuillez réessayer');
-            console.error('WebSocket connection error:', error);
+            console.error('ManageRoom: WebSocket connection error:', error);
         });
         socket.on('create-success', (roomName: string) => {
             setRoomName(roomName);

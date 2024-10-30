@@ -69,8 +69,11 @@ let isDev = process.env.NODE_ENV === 'development';
 console.log(`Environnement: ${process.env.NODE_ENV} (${isDev ? 'dev' : 'prod'})`);
 
 const io = configureServer(server);
+console.log(`server.io configured: ${io.secure ? 'secure' : 'not secure'}`);
 
 setupWebsocket(io);
+console.log(`Websocket setup with on() listeners.`);
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

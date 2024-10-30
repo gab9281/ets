@@ -16,12 +16,12 @@ const setupWebsocket = (io) => {
     }
 
     totalConnections++;
-    // console.log(
-    //   "A user connected:",
-    //   socket.id,
-    //   "| Total connections:",
-    //   totalConnections
-    // );
+    console.log(
+      "A user connected:",
+      socket.id,
+      "| Total connections:",
+      totalConnections
+    );
 
     socket.on("create-room", (sentRoomName) => {
       if (sentRoomName) {
