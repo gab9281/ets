@@ -49,6 +49,7 @@ const ManageRoom: React.FC = () => {
                 setQuiz(quiz as QuizType);
 
                 if (!socket) {
+                    console.log(`no socket in ManageRoom, creating one.`);
                     createWebSocketRoom();
                 }
 
