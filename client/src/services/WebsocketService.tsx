@@ -23,9 +23,10 @@ class WebSocketService {
     connect(backendUrl: string): Socket {
         console.log(`WebSocketService.connect(${backendUrl})`);
 
-        // Ensure the URL uses wss: if the page is loaded over https:
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const url = backendUrl.replace(/^http:/, protocol);
+        // Ensure the URL uses wss: if the URL starts with https:
+        const protocol = backendUrl.startsWith('https:') ? 'wss:' : 'ws:';
+        console.log(`WebSocketService.connect: protocol=${protocol}`);
+        const url = backendUrl.replace(/^http(s):/, protocol);
         console.log(`WebSocketService.connect: changed url=${url}`);
 
         this.socket = io(url, {
