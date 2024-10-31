@@ -21,13 +21,14 @@ class WebSocketService {
     private socket: Socket | null = null;
 
     connect(backendUrl: string): Socket {
-        console.log(`WebSocketService.connect(${backendUrl})`);
+        console.log(`WebSocketService.connect('${backendUrl}')`);
 
-        // Ensure the URL uses wss: if the URL starts with https:
-        const protocol = backendUrl.startsWith('https:') ? 'wss:' : 'ws:';
-        console.log(`WebSocketService.connect: protocol=${protocol}`);
-        const url = backendUrl.replace(/^http(s):/, protocol);
-        console.log(`WebSocketService.connect: changed url=${url}`);
+        // // Ensure the URL uses wss: if the URL starts with https:
+        // const protocol = backendUrl.startsWith('https:') ? 'wss:' : 'ws:';
+        // console.log(`WebSocketService.connect: protocol=${protocol}`);
+        // const url = backendUrl.replace(/^http(s):/, protocol);
+        // console.log(`WebSocketService.connect: changed url=${url}`);
+        const url = backendUrl || window.location.host;
 
         this.socket = io(url, {
             transports: ['websocket'],
