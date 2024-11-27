@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Socket } from 'socket.io-client';
-import { ENV_VARIABLES } from '../../../constants';
+//import { ENV_VARIABLES } from '../../../constants';
 
 import StudentModeQuiz from '../../../components/StudentModeQuiz/StudentModeQuiz';
 import TeacherModeQuiz from '../../../components/TeacherModeQuiz/TeacherModeQuiz';
@@ -27,15 +27,14 @@ const JoinRoom: React.FC = () => {
     const [isConnecting, setIsConnecting] = useState<boolean>(false);
 
     useEffect(() => {
-        handleCreateSocket();
+        //handleCreateSocket();
         return () => {
             disconnect();
         };
     }, []);
 
     const handleCreateSocket = () => {
-        console.log(`JoinRoom: handleCreateSocket: ${ENV_VARIABLES.VITE_BACKEND_SOCKET_URL}`);
-        const socket = webSocketService.connect(ENV_VARIABLES.VITE_BACKEND_SOCKET_URL);
+        const socket = webSocketService.connect(`/api/room/${roomName}/socket`);
 
         socket.on('join-success', () => {
             setIsWaitingForTeacher(true);
@@ -64,10 +63,10 @@ const JoinRoom: React.FC = () => {
         socket.on('connect_error', (error) => {
             switch (error.message) {
                 case 'timeout':
-                    setConnectionError("JoinRoom: timeout: Le serveur n'est pas disponible");
+                    setConnectionError("Le serveur n'est pas disponible");
                     break;
                 case 'websocket error':
-                    setConnectionError("JoinRoom: websocket error: Le serveur n'est pas disponible");
+                    setConnectionError("Le serveur n'est pas disponible");
                     break;
             }
             setIsConnecting(false);

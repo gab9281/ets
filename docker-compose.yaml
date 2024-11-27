@@ -1,14 +1,12 @@
-services:
+version: '3'
+
+services: 
 
   frontend:
     image: fuhrmanator/evaluetonsavoir-frontend:latest
     container_name: frontend
     ports:
       - "5173:5173"
-    environment:
-      VITE_BACKEND_URL: "http://localhost:4400"
-      # don't define VITE_BACKEND_SOCKET_URL so it will default to window.location.host
-      # VITE_BACKEND_SOCKET_URL: "" 
     restart: always
 
   backend:
@@ -27,6 +25,17 @@ services:
       FRONTEND_URL: "http://localhost:5173"
     depends_on:
       - mongo
+    restart: always
+
+  quizroom:
+    build:
+      context: ./quizRoom
+      dockerfile: Dockerfile
+    container_name: quizroom
+    ports:
+      - "4500:4500"
+    depends_on:
+      - backend
     restart: always
 
   # Ce conteneur sert de routeur pour assurer le bon fonctionnement de l'application

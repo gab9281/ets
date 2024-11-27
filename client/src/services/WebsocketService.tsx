@@ -1,5 +1,6 @@
 // WebSocketService.tsx
 import { io, Socket } from 'socket.io-client';
+import apiService from './ApiService';
 
 // Must (manually) sync these types to server/socket/socket.js
 
@@ -21,23 +22,18 @@ class WebSocketService {
     private socket: Socket | null = null;
 
     connect(backendUrl: string): Socket {
-        console.log(`WebSocketService.connect('${backendUrl}')`);
-
-        // // Ensure the URL uses wss: if the URL starts with https:
-        // const protocol = backendUrl.startsWith('https:') ? 'wss:' : 'ws:';
-        // console.log(`WebSocketService.connect: protocol=${protocol}`);
-        // const url = backendUrl.replace(/^http(s):/, protocol);
-        // console.log(`WebSocketService.connect: changed url=${url}`);
-        const url = backendUrl || window.location.host;
-
-        this.socket = io(url, {
+        this.socket = io( '/',{
+            path: backendUrl,
             transports: ['websocket'],
-            reconnectionAttempts: 1
+            autoConnect: true,
+            reconnection: true,
+            reconnectionAttempts: 10,
+            reconnectionDelay: 10000,
+            timeout: 20000,
         });
-
         return this.socket;
     }
-
+    
 
     disconnect() {
         if (this.socket) {
@@ -46,9 +42,9 @@ class WebSocketService {
         }
     }
 
-    createRoom() {
+    createRoom(roomName: string) {
         if (this.socket) {
-            this.socket.emit('create-room');
+            this.socket.emit('create-room', roomName || undefined);
         }
     }
 
@@ -67,6 +63,8 @@ class WebSocketService {
     endQuiz(roomName: string) {
         if (this.socket) {
             this.socket.emit('end-quiz', { roomName });
+            //Delete room in mongoDb, roomContainer will be deleted in cleanup
+            apiService.deleteRoom(roomName);
         }
     }
 
@@ -83,15 +81,15 @@ class WebSocketService {
         // idQuestion: string
     ) {
         if (this.socket) {
-            this.socket?.emit('submit-answer',
-                //     {
-                //     answer: answer,
-                //     roomName: roomName,
-                //     username: username,
-                //     idQuestion: idQuestion
-                // }
-                answerData
-            );
+            this.socket?.emit('submit-answer', 
+            //     {
+            //     answer: answer,
+            //     roomName: roomName,
+            //     username: username,
+            //     idQuestion: idQuestion
+            // }
+            answerData
+        );
         }
     }
 }

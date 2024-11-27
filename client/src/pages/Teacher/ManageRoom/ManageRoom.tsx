@@ -10,7 +10,7 @@ import webSocketService, { AnswerReceptionFromBackendType } from '../../../servi
 import { QuizType } from '../../../Types/QuizType';
 
 import './manageRoom.css';
-import { ENV_VARIABLES } from '../../../constants';
+//import { ENV_VARIABLES } from '../../../constants';
 import { StudentType, Answer } from '../../../Types/StudentType';
 import { Button } from '@mui/material';
 import LoadingCircle from '../../../components/LoadingCircle/LoadingCircle';
@@ -49,7 +49,6 @@ const ManageRoom: React.FC = () => {
                 setQuiz(quiz as QuizType);
 
                 if (!socket) {
-                    console.log(`no socket in ManageRoom, creating one.`);
                     createWebSocketRoom();
                 }
 
@@ -80,17 +79,22 @@ const ManageRoom: React.FC = () => {
         }
     };
 
-    const createWebSocketRoom = () => {
-        console.log('Creating WebSocket room...');
+    const createWebSocketRoom = async () => {
         setConnectingError('');
-        const socket = webSocketService.connect(ENV_VARIABLES.VITE_BACKEND_SOCKET_URL);
+        const room = await ApiService.createRoom();
+        const socket = webSocketService.connect(`/api/room/${room.id}/socket`);
 
         socket.on('connect', () => {
-            webSocketService.createRoom();
+            webSocketService.createRoom(room.id);
         });
+
+        socket.on("error", (error) => {
+            console.error("WebSocket server error:", error);
+        });
+
         socket.on('connect_error', (error) => {
             setConnectingError('Erreur lors de la connexion... Veuillez réessayer');
-            console.error('ManageRoom: WebSocket connection error:', error);
+            console.error('WebSocket connection error:', error);
         });
         socket.on('create-success', (roomName: string) => {
             setRoomName(roomName);
@@ -144,7 +148,7 @@ const ManageRoom: React.FC = () => {
                     console.log('Quiz questions not found (cannot update answers without them).');
                     return;
                 }
-    
+
                 // Update the students state using the functional form of setStudents
                 setStudents((prevStudents) => {
                     // print the list of current student names
@@ -152,7 +156,7 @@ const ManageRoom: React.FC = () => {
                     prevStudents.forEach((student) => {
                         console.log(student.name);
                     });
-    
+
                     let foundStudent = false;
                     const updatedStudents = prevStudents.map((student) => {
                         console.log(`Comparing ${student.id} to ${idUser}`);
@@ -172,7 +176,7 @@ const ManageRoom: React.FC = () => {
                                 updatedAnswers = [...student.answers, newAnswer];
                             }
                             return { ...student, answers: updatedAnswers };
-                                    }
+                        }
                         return student;
                     });
                     if (!foundStudent) {
