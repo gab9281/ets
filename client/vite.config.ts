@@ -20,6 +20,11 @@ export default defineConfig({
         pluginChecker({ typescript: true }),
         EnvironmentPlugin(filteredEnv),
     ],
+    resolve: {
+        alias: {
+          'src': '/src'
+        }
+      },
     preview: {
         port: 5173,
         strictPort: true
