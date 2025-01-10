@@ -35,6 +35,17 @@ const moodleMock: TemplateOptions & TrueFalseType = {
     globalFeedback: { format: 'moodle', text: 'Sample Global Feedback' }
 };
 
+const imageMock: TemplateOptions & TrueFalseType = {
+    type: 'TF',
+    hasEmbeddedAnswers: false,
+    title: 'Sample Short Answer Title with Image',
+    stem: { format: 'plain', text: 'Sample Stem with Image' },
+    trueFeedback: { format: 'moodle', text: 'Correct!' },
+    isTrue: true,
+    falseFeedback: { format: 'moodle', text: 'Incorrect!' },
+    globalFeedback: { format: 'plain', text: '<img src="https://via.placeholder.com/150" alt="Sample Image" />'  }
+};
+
 test('TrueFalse snapshot test with plain text', () => {
     const { asFragment } = render(<TrueFalse {...plainTextMock} />);
     expect(asFragment()).toMatchSnapshot();
@@ -47,5 +58,10 @@ test('TrueFalse snapshot test with katex', () => {
 
 test('TrueFalse snapshot test with moodle', () => {
     const { asFragment } = render(<TrueFalse {...moodleMock} />);
+    expect(asFragment()).toMatchSnapshot();
+});
+
+test('TrueFalse snapshot test with image', () => {
+    const { asFragment } = render(<TrueFalse {...imageMock} />);
     expect(asFragment()).toMatchSnapshot();
 });
