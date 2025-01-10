@@ -30,6 +30,7 @@ import {
     FileDownload,
     Add,
     Upload,
+    FolderCopy,
     ContentCopy,
     Edit,
     Share,
@@ -413,8 +414,8 @@ const Dashboard: React.FC = () => {
                         <IconButton
                             color="primary"
                             onClick={handleDuplicateFolder}
-                            disabled={selectedFolderId == ''} // cannot action on all
-                        > <ContentCopy /> </IconButton>
+                            disabled={selectedFolder == ''} // cannot action on all
+                        > <FolderCopy /> </IconButton>
                     </Tooltip>
 
                     <Tooltip title="Supprimer dossier" placement="top">

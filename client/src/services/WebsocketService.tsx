@@ -21,14 +21,23 @@ class WebSocketService {
     private socket: Socket | null = null;
 
     connect(backendUrl: string): Socket {
-        // console.log(backendUrl);
-        this.socket = io(`${backendUrl}`, {
+        console.log(`WebSocketService.connect('${backendUrl}')`);
+
+        // // Ensure the URL uses wss: if the URL starts with https:
+        // const protocol = backendUrl.startsWith('https:') ? 'wss:' : 'ws:';
+        // console.log(`WebSocketService.connect: protocol=${protocol}`);
+        // const url = backendUrl.replace(/^http(s):/, protocol);
+        // console.log(`WebSocketService.connect: changed url=${url}`);
+        const url = backendUrl || window.location.host;
+
+        this.socket = io(url, {
             transports: ['websocket'],
             reconnectionAttempts: 1
         });
+
         return this.socket;
     }
-    
+
 
     disconnect() {
         if (this.socket) {
@@ -74,15 +83,15 @@ class WebSocketService {
         // idQuestion: string
     ) {
         if (this.socket) {
-            this.socket?.emit('submit-answer', 
-            //     {
-            //     answer: answer,
-            //     roomName: roomName,
-            //     username: username,
-            //     idQuestion: idQuestion
-            // }
-            answerData
-        );
+            this.socket?.emit('submit-answer',
+                //     {
+                //     answer: answer,
+                //     roomName: roomName,
+                //     username: username,
+                //     idQuestion: idQuestion
+                // }
+                answerData
+            );
         }
     }
 }

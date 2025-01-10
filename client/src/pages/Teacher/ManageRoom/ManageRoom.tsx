@@ -49,6 +49,7 @@ const ManageRoom: React.FC = () => {
                 setQuiz(quiz as QuizType);
 
                 if (!socket) {
+                    console.log(`no socket in ManageRoom, creating one.`);
                     createWebSocketRoom();
                 }
 
@@ -80,15 +81,16 @@ const ManageRoom: React.FC = () => {
     };
 
     const createWebSocketRoom = () => {
+        console.log('Creating WebSocket room...');
         setConnectingError('');
-        const socket = webSocketService.connect(ENV_VARIABLES.VITE_BACKEND_URL);
+        const socket = webSocketService.connect(ENV_VARIABLES.VITE_BACKEND_SOCKET_URL);
 
         socket.on('connect', () => {
             webSocketService.createRoom();
         });
         socket.on('connect_error', (error) => {
             setConnectingError('Erreur lors de la connexion... Veuillez réessayer');
-            console.error('WebSocket connection error:', error);
+            console.error('ManageRoom: WebSocket connection error:', error);
         });
         socket.on('create-success', (roomName: string) => {
             setRoomName(roomName);

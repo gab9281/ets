@@ -34,7 +34,8 @@ const JoinRoom: React.FC = () => {
     }, []);
 
     const handleCreateSocket = () => {
-        const socket = webSocketService.connect(ENV_VARIABLES.VITE_BACKEND_URL);
+        console.log(`JoinRoom: handleCreateSocket: ${ENV_VARIABLES.VITE_BACKEND_SOCKET_URL}`);
+        const socket = webSocketService.connect(ENV_VARIABLES.VITE_BACKEND_SOCKET_URL);
 
         socket.on('join-success', () => {
             setIsWaitingForTeacher(true);
@@ -63,10 +64,10 @@ const JoinRoom: React.FC = () => {
         socket.on('connect_error', (error) => {
             switch (error.message) {
                 case 'timeout':
-                    setConnectionError("Le serveur n'est pas disponible");
+                    setConnectionError("JoinRoom: timeout: Le serveur n'est pas disponible");
                     break;
                 case 'websocket error':
-                    setConnectionError("Le serveur n'est pas disponible");
+                    setConnectionError("JoinRoom: websocket error: Le serveur n'est pas disponible");
                     break;
             }
             setIsConnecting(false);

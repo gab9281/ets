@@ -68,7 +68,7 @@ const setupWebsocket = (io) => {
     });
 
     socket.on("next-question", ({ roomName, question }) => {
-      console.log("next-question", roomName, question);
+      // console.log("next-question", roomName, question);
       socket.to(roomName).emit("next-question", question);
     });
 

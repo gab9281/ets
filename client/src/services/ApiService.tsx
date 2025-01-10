@@ -246,7 +246,7 @@ class ApiService {
             const result: AxiosResponse = await axios.post(url, body, { headers: headers });
 
             if (result.status !== 200) {
-                throw new Error(`La supression du compte a échoué. Status: ${result.status}`);
+                throw new Error(`La suppression du compte a échoué. Status: ${result.status}`);
             }
 
             return true;
@@ -328,7 +328,8 @@ class ApiService {
             if (axios.isAxiosError(error)) {
                 const err = error as AxiosError;
                 const data = err.response?.data as { error: string } | undefined;
-                return data?.error || 'Erreur serveur inconnue lors de la requête.';
+                const url = err.config?.url || 'URL inconnue';
+                return data?.error || `Erreur serveur inconnue lors de la requête (${url}).`;
             }
 
             return `Une erreur inattendue s'est produite.`
