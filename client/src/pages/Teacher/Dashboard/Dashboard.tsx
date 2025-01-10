@@ -414,7 +414,7 @@ const Dashboard: React.FC = () => {
                         <IconButton
                             color="primary"
                             onClick={handleDuplicateFolder}
-                            disabled={selectedFolder == ''} // cannot action on all
+                            disabled={selectedFolderId == ''} // cannot action on all
                         > <FolderCopy /> </IconButton>
                     </Tooltip>
 
