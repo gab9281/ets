@@ -1,8 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { ENV_VARIABLES } from '../constants';
 
-import { QuizType } from '../Types/QuizType';
-import { FolderType } from '../Types/FolderType';
+import { FolderType } from 'src/Types/FolderType';
+import { QuizType } from 'src/Types/QuizType';
+import { ENV_VARIABLES } from 'src/constants';
 
 class ApiService {
     private BASE_URL: string;

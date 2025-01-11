@@ -11,7 +11,8 @@ module.exports = {
     //moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     setupFiles: ['./jest.setup.cjs'],
     moduleNameMapper: {
-        '\\.(css|less|scss|sass)$': 'identity-obj-proxy'
+        '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+        '^src/constants$': '<rootDir>/src/__mocks__/constantsMock.tsx',
     },
     transformIgnorePatterns: ['node_modules/(?!nanoid/)'],
 };
