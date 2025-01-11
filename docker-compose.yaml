@@ -3,12 +3,13 @@ services:
   frontend:
     image: fuhrmanator/evaluetonsavoir-frontend:latest
     container_name: frontend
+    environment:
+      # Define empty VITE_BACKEND_URL because it's production
+      - VITE_BACKEND_URL=
+      # Define empty VITE_BACKEND_SOCKET_URL so it will default to window.location.host
+      - VITE_BACKEND_SOCKET_URL=
     ports:
       - "5173:5173"
-    environment:
-      VITE_BACKEND_URL: "http://localhost:4400"
-      # don't define VITE_BACKEND_SOCKET_URL so it will default to window.location.host
-      # VITE_BACKEND_SOCKET_URL: "" 
     restart: always
 
   backend:
