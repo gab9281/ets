@@ -1,4 +1,5 @@
 // TrueFalseQuestion.test.tsx
+import React from 'react';
 import { render, fireEvent, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TrueFalseQuestion from '../../../../components/Questions/TrueFalseQuestion/TrueFalseQuestion';

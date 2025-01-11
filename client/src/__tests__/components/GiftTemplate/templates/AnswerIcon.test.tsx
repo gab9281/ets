@@ -1,3 +1,4 @@
+import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import AnswerIcon from '../../../../components/GiftTemplate/templates/AnswerIcon';

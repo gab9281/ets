@@ -1,4 +1,5 @@
 // NumericalQuestion.test.tsx
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import NumericalQuestion from '../../../../components/Questions/NumericalQuestion/NumericalQuestion';

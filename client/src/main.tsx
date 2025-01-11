@@ -1,3 +1,4 @@
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 
@@ -27,10 +28,16 @@ const theme = createTheme({
     }
 });
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-    <BrowserRouter>
-        <ThemeProvider theme={theme}>
-            <App />
-        </ThemeProvider>
-    </BrowserRouter>
-);
+const rootElement = document.getElementById('root');
+if (rootElement) {
+
+    ReactDOM.createRoot(document.getElementById('root')!).render(
+        <BrowserRouter>
+            <ThemeProvider theme={theme}>
+                <App />
+            </ThemeProvider>
+        </BrowserRouter>
+    );
+} else {
+    console.error('Root element not found');
+}

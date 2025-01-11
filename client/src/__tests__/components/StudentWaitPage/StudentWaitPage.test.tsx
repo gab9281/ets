@@ -1,4 +1,5 @@
 // Importez le type UserType s'il n'est pas déjà importé
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import StudentWaitPage from '../../../components/StudentWaitPage/StudentWaitPage';

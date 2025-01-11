@@ -1,4 +1,5 @@
 // ShortAnswerQuestion.test.tsx
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ShortAnswerQuestion from '../../../../components/Questions/ShortAnswerQuestion/ShortAnswerQuestion';
@@ -11,6 +12,7 @@ describe('ShortAnswerQuestion Component', () => {
         questionTitle: 'Sample Question',
         choices: [
             {
+                id: '1',
                 feedback: {
                     format: 'text',
                     text: 'Correct answer feedback'
@@ -22,6 +24,7 @@ describe('ShortAnswerQuestion Component', () => {
                 }
             },
             {
+                id: '2',
                 feedback: null,
                 isCorrect: false,
                 text: {
@@ -58,7 +61,7 @@ describe('ShortAnswerQuestion Component', () => {
         expect(submitButton).toBeDisabled();
     });
 
-    it('not submited answer if nothing is entered', () => {
+    it('not submitted answer if nothing is entered', () => {
         const submitButton = screen.getByText('Répondre');
 
         fireEvent.click(submitButton);

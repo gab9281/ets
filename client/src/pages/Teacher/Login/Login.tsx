@@ -28,7 +28,7 @@ const Login: React.FC = () => {
     const login = async () => {
         const result = await ApiService.login(email, password);
 
-        if (result != true) {
+        if (typeof result === "string") {
             setConnectionError(result);
             return;
         }

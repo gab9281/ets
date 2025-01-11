@@ -27,7 +27,7 @@ const ResetPassword: React.FC = () => {
     const reset = async () => {
         const result = await ApiService.resetPassword(email);
 
-        if (result != true) {
+        if (typeof result === 'string') {
             setConnectionError(result);
             return;
         }
