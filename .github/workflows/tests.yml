@@ -21,9 +21,10 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Dependencies and Run Tests
+      - name: Install Dependencies, lint and Run Tests
         run: |
           npm ci
+          npx eslint . 
           npm test
         working-directory: ${{ matrix.directory }}
 
