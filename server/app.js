@@ -43,6 +43,7 @@ const imagesRouter = require('./routers/images.js');
 
 // Setup environment
 dotenv.config();
+const isDev = process.env.NODE_ENV === 'development';
 const errorHandler = require("./middleware/errorHandler.js");
 
 // Start app
@@ -63,13 +64,12 @@ const configureServer = (httpServer, isDev) => {
 };
 
 // Start sockets (depending on the dev or prod environment)
-let server = http.createServer(app);
-let isDev = process.env.NODE_ENV === 'development';
+const server = http.createServer(app);
 
 console.log(`Environnement: ${process.env.NODE_ENV} (${isDev ? 'dev' : 'prod'})`);
 
 const io = configureServer(server);
-console.log(`server.io configured: ${io.secure ? 'secure' : 'not secure'}`);
+console.log(`Server configured with cors.origin: ${io.opts.cors.origin} and secure: ${io.opts.secure}`);
 
 setupWebsocket(io);
 console.log(`Websocket setup with on() listeners.`);
