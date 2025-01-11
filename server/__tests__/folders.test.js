@@ -1,4 +1,3 @@
-const { create } = require('../middleware/jwtToken');
 const Folders = require('../models/folders');
 const ObjectId = require('mongodb').ObjectId;
 const Quizzes = require('../models/quiz');
