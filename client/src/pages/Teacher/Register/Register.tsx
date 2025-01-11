@@ -28,7 +28,7 @@ const Register: React.FC = () => {
     const register = async () => {
         const result = await ApiService.register(email, password);
 
-        if (result != true) {
+        if (typeof result === 'string') {
             setConnectionError(result);
             return;
         }
@@ -70,7 +70,7 @@ const Register: React.FC = () => {
                 sx={{ marginBottom: `${connectionError && '2rem'}` }}
                 disabled={!email || !password}
             >
-                S'inscrire
+                S&apos;inscrire
             </LoadingButton>
 
         </LoginContainer>

@@ -42,7 +42,7 @@ const Question: React.FC<QuestionProps> = ({
             questionTypeComponent = (
                 <MultipleChoiceQuestion
                     questionStem={question.stem}
-                    choices={question.choices}
+                    choices={question.choices.map((choice, index) => ({ ...choice, id: index.toString() }))}
                     handleOnSubmitAnswer={handleOnSubmitAnswer}
                     showAnswer={showAnswer}
                     globalFeedback={question.globalFeedback?.text}
@@ -78,7 +78,7 @@ const Question: React.FC<QuestionProps> = ({
             questionTypeComponent = (
                 <ShortAnswerQuestion
                     questionContent={question.stem}
-                    choices={question.choices}
+                    choices={question.choices.map((choice, index) => ({ ...choice, id: index.toString() }))}
                     handleOnSubmitAnswer={handleOnSubmitAnswer}
                     showAnswer={showAnswer}
                     globalFeedback={question.globalFeedback?.text}

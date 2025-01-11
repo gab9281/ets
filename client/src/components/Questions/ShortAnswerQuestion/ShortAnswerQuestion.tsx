@@ -10,6 +10,7 @@ type Choices = {
     isCorrect: boolean;
     text: { format: string; text: string };
     weigth?: number;
+    id: string;
 };
 
 interface Props {
@@ -33,7 +34,9 @@ const ShortAnswerQuestion: React.FC<Props> = (props) => {
                 <>
                     <div className="correct-answer-text mb-1">
                         {choices.map((choice) => (
-                            <div className="mb-1">{choice.text.text}</div>
+                            <div key={choice.id} className="mb-1">
+                                {choice.text.text}
+                            </div>
                         ))}
                     </div>
                     {globalFeedback && <div className="global-feedback mb-2">{globalFeedback}</div>}

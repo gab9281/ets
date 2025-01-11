@@ -82,7 +82,7 @@ const Dashboard: React.FC = () => {
                 return;
             }
             else {
-                let userFolders = await ApiService.getUserFolders();
+                const userFolders = await ApiService.getUserFolders();
 
                 setFolders(userFolders as FolderType[]);
             }
@@ -102,7 +102,7 @@ const Dashboard: React.FC = () => {
             if (selectedFolderId == '') {
                 const folders = await ApiService.getUserFolders(); // HACK force user folders to load on first load
                 console.log("show all quizes")
-                var quizzes: QuizType[] = [];
+                let quizzes: QuizType[] = [];
 
                 for (const folder of folders as FolderType[]) {
                     const folderQuizzes = await ApiService.getFolderContent(folder._id);
@@ -155,8 +155,8 @@ const Dashboard: React.FC = () => {
             await ApiService.duplicateQuiz(quiz._id);
             if (selectedFolderId == '') {
                 const folders = await ApiService.getUserFolders(); // HACK force user folders to load on first load
-                console.log("show all quizes")
-                var quizzes: QuizType[] = [];
+                console.log("show all quizzes")
+                let quizzes: QuizType[] = [];
 
                 for (const folder of folders as FolderType[]) {
                     const folderQuizzes = await ApiService.getFolderContent(folder._id);
@@ -196,6 +196,7 @@ const Dashboard: React.FC = () => {
                 // questions[i] = QuestionService.ignoreImgTags(questions[i]);
                 const parsedItem = parse(questions[i]);
                 Template(parsedItem[0]);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (error) {
                 return false;
             }
@@ -216,7 +217,7 @@ const Dashboard: React.FC = () => {
 
             //const { title, content } = selectedQuiz;
             let quizContent = "";
-            let title = selectedQuiz.title;
+            const title = selectedQuiz.title;
             console.log(selectedQuiz.content);
             selectedQuiz.content.forEach((question, qIndex) => {
                 const formattedQuestion = question.trim();
@@ -273,7 +274,7 @@ const Dashboard: React.FC = () => {
 
             const folders = await ApiService.getUserFolders(); // HACK force user folders to load on first load
             console.log("show all quizzes")
-            var quizzes: QuizType[] = [];
+            let quizzes: QuizType[] = [];
 
             for (const folder of folders as FolderType[]) {
                 const folderQuizzes = await ApiService.getFolderContent(folder._id);

@@ -4,6 +4,8 @@ import { FolderType } from 'src/Types/FolderType';
 import { QuizType } from 'src/Types/QuizType';
 import { ENV_VARIABLES } from 'src/constants';
 
+type ApiResponse = boolean | string;
+
 class ApiService {
     private BASE_URL: string;
     private TTL: number;
@@ -17,7 +19,7 @@ class ApiService {
         return `${this.BASE_URL}/api${endpoint}`;
     }
 
-    private constructRequestHeaders(): any {
+    private constructRequestHeaders() {
         if (this.isLoggedIn()) {
             return {
                 Authorization: `Bearer ${this.getToken()}`,
@@ -86,7 +88,7 @@ class ApiService {
      * @returns true if  successful 
      * @returns A error string if unsuccessful,
      */
-    public async register(email: string, password: string): Promise<any> {
+    public async register(email: string, password: string): Promise<ApiResponse> {
         try {
 
             if (!email || !password) {
@@ -122,7 +124,7 @@ class ApiService {
      * @returns true if  successful 
      * @returns A error string if unsuccessful,
      */
-    public async login(email: string, password: string): Promise<any> {
+    public async login(email: string, password: string): Promise<ApiResponse> {
         try {
 
             if (!email || !password) {
@@ -146,8 +148,13 @@ class ApiService {
         } catch (error) {
             console.log("Error details: ", error);
 
+            console.log("axios.isAxiosError(error): ", axios.isAxiosError(error));
+
             if (axios.isAxiosError(error)) {
                 const err = error as AxiosError;
+                if (err.status === 401) {
+                    return 'Email ou mot de passe incorrect.';
+                }
                 const data = err.response?.data as { error: string } | undefined;
                 return data?.error || 'Erreur serveur inconnue lors de la requête.';
             }
@@ -157,10 +164,10 @@ class ApiService {
     }
 
     /**
-     * @returns true if  successful 
+     * @returns true if successful 
      * @returns A error string if unsuccessful,
      */
-    public async resetPassword(email: string): Promise<any> {
+    public async resetPassword(email: string): Promise<ApiResponse> {
         try {
 
             if (!email) {
@@ -196,7 +203,7 @@ class ApiService {
      * @returns true if  successful 
      * @returns A error string if unsuccessful,
      */
-    public async changePassword(email: string, oldPassword: string, newPassword: string): Promise<any> {
+    public async changePassword(email: string, oldPassword: string, newPassword: string): Promise<ApiResponse> {
         try {
 
             if (!email || !oldPassword || !newPassword) {
@@ -232,7 +239,7 @@ class ApiService {
      * @returns true if  successful 
      * @returns A error string if unsuccessful,
      */
-    public async deleteUser(email: string, password: string): Promise<any> {
+    public async deleteUser(email: string, password: string): Promise<ApiResponse> {
         try {
 
             if (!email || !password) {
@@ -270,7 +277,7 @@ class ApiService {
      * @returns true if successful 
      * @returns A error string if unsuccessful,
      */
-    public async createFolder(title: string): Promise<any> {
+    public async createFolder(title: string): Promise<ApiResponse> {
         try {
 
             if (!title) {
@@ -375,7 +382,7 @@ class ApiService {
      * @returns true if successful 
      * @returns A error string if unsuccessful,
      */
-    public async deleteFolder(folderId: string): Promise<any> {
+    public async deleteFolder(folderId: string): Promise<ApiResponse> {
         try {
 
             if (!folderId) {
@@ -410,7 +417,7 @@ class ApiService {
      * @returns true if successful 
      * @returns A error string if unsuccessful,
      */
-    public async renameFolder(folderId: string, newTitle: string): Promise<any> {
+    public async renameFolder(folderId: string, newTitle: string): Promise<ApiResponse> {
         try {
 
             if (!folderId || !newTitle) {
@@ -441,7 +448,7 @@ class ApiService {
         }
     }
 
-    public async duplicateFolder(folderId: string): Promise<any> {
+    public async duplicateFolder(folderId: string): Promise<ApiResponse> {
         try {
             if (!folderId) {
                 throw new Error(`Le folderId et le nouveau titre sont requis.`);
@@ -473,7 +480,7 @@ class ApiService {
         }
     }
 
-    public async copyFolder(folderId: string, newTitle: string): Promise<any> {
+    public async copyFolder(folderId: string, newTitle: string): Promise<ApiResponse> {
         try {
             if (!folderId || !newTitle) {
                 throw new Error(`Le folderId et le nouveau titre sont requis.`);
@@ -510,7 +517,7 @@ class ApiService {
      * @returns true if successful 
      * @returns A error string if unsuccessful,
      */
-    public async createQuiz(title: string, content: string[], folderId: string): Promise<any> {
+    public async createQuiz(title: string, content: string[], folderId: string): Promise<ApiResponse> {
         try {
 
             if (!title || !content || !folderId) {
@@ -581,7 +588,7 @@ class ApiService {
      * @returns true if successful 
      * @returns A error string if unsuccessful,
      */
-    public async deleteQuiz(quizId: string): Promise<any> {
+    public async deleteQuiz(quizId: string): Promise<ApiResponse> {
         try {
 
             if (!quizId) {
@@ -616,7 +623,7 @@ class ApiService {
      * @returns true if successful 
      * @returns A error string if unsuccessful,
      */
-    public async updateQuiz(quizId: string, newTitle: string, newContent: string[]): Promise<any> {
+    public async updateQuiz(quizId: string, newTitle: string, newContent: string[]): Promise<ApiResponse> {
         try {
 
             if (!quizId || !newTitle || !newContent) {
@@ -652,7 +659,7 @@ class ApiService {
      * @returns true if successful 
      * @returns A error string if unsuccessful,
      */
-    public async moveQuiz(quizId: string, newFolderId: string): Promise<any> {
+    public async moveQuiz(quizId: string, newFolderId: string): Promise<ApiResponse> {
         try {
 
             if (!quizId || !newFolderId) {
@@ -689,7 +696,7 @@ class ApiService {
      * @returns true if successful 
      * @returns A error string if unsuccessful,
      */
-    public async duplicateQuiz(quizId: string): Promise<any> {
+    public async duplicateQuiz(quizId: string): Promise<ApiResponse> {
 
 
         const url: string = this.constructRequestUrl(`/quiz/duplicate`);
@@ -703,7 +710,7 @@ class ApiService {
                 throw new Error(`La duplication du quiz a échoué. Status: ${result.status}`);
             }
 
-            return result;
+            return result.status === 200;
         } catch (error) {
             console.error("Error details: ", error);
 
@@ -723,9 +730,9 @@ class ApiService {
      * @returns true if successful 
      * @returns A error string if unsuccessful,
      */
-    public async copyQuiz(quizId: string, newTitle: string, folderId: string): Promise<any> {
+    public async copyQuiz(quizId: string, newTitle: string, folderId: string): Promise<ApiResponse> {
         try {
-            console.log(quizId, newTitle), folderId;
+            console.log(quizId, newTitle, folderId);
             return "Route not implemented yet!";
 
         } catch (error) {
@@ -741,7 +748,7 @@ class ApiService {
         }
     }
 
-    async ShareQuiz(quizId: string, email: string): Promise<any> {
+    async ShareQuiz(quizId: string, email: string): Promise<ApiResponse> {
         try {
             if (!quizId || !email) {
                 throw new Error(`quizId and email are required.`);
@@ -800,7 +807,7 @@ class ApiService {
         }
     }
 
-    async receiveSharedQuiz(quizId: string, folderId: string): Promise<any> {
+    async receiveSharedQuiz(quizId: string, folderId: string): Promise<ApiResponse> {
         try {
             if (!quizId || !folderId) {
                 throw new Error(`quizId and folderId are required.`);
@@ -869,7 +876,8 @@ class ApiService {
             if (axios.isAxiosError(error)) {
                 const err = error as AxiosError;
                 const data = err.response?.data as { error: string } | undefined;
-                return `ERROR : ${data?.error}` || 'ERROR : Erreur serveur inconnue lors de la requête.';
+                const msg = data?.error || 'Erreur serveur inconnue lors de la requête.';
+                return `ERROR : ${msg}`;
             }
 
             return `ERROR : Une erreur inattendue s'est produite.`

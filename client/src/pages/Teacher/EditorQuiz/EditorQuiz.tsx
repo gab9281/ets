@@ -162,8 +162,10 @@ const QuizForm: React.FC = () => {
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             window.alert(`Une erreur est survenue.\n Veuillez réessayer plus tard`)
+
         }
     };
 
@@ -245,7 +247,7 @@ const QuizForm: React.FC = () => {
                                 onClose={() => setDialogOpen(false)} >
                                 <DialogTitle>Erreur</DialogTitle>
                                 <DialogContent>
-                                    Veuillez d'abord choisir une image à téléverser.
+                                    Veuillez d&apos;abord choisir une image à téléverser.
                                 </DialogContent>
                                 <DialogActions>
                                     <Button onClick={() => setDialogOpen(false)} color="primary">

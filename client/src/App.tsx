@@ -1,3 +1,4 @@
+import React from 'react';
 // App.tsx
 import { Routes, Route } from 'react-router-dom';
 

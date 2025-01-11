@@ -2,7 +2,6 @@ const Users = require('../models/users');
 const bcrypt = require('bcrypt');
 const Quizzes = require('../models/quiz');
 const Folders = require('../models/folders');
-const AppError = require('../middleware/AppError');
 const { ObjectId } = require('mongodb');
 
 jest.mock('bcrypt');
