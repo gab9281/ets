@@ -26,7 +26,7 @@ jobs:
           echo "Installing dependencies..."
           npm ci
           echo "Running ESLint..."
-          npx eslint . --format stylish
+          npx eslint .
           echo "Running tests..."
           npm test
         working-directory: ${{ matrix.directory }}
