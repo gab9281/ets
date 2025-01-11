@@ -52,6 +52,7 @@ const cors = require("cors");
 const bodyParser = require('body-parser');
 
 const configureServer = (httpServer, isDev) => {
+  console.log(`Configuring server with isDev: ${isDev}`);
   return new Server(httpServer, {
     path: "/socket.io",
     cors: {
@@ -68,7 +69,7 @@ const server = http.createServer(app);
 
 console.log(`Environnement: ${process.env.NODE_ENV} (${isDev ? 'dev' : 'prod'})`);
 
-const io = configureServer(server);
+const io = configureServer(server, isDev);
 console.log(`Server configured with cors.origin: ${io.opts.cors.origin} and secure: ${io.opts.secure}`);
 
 setupWebsocket(io);
