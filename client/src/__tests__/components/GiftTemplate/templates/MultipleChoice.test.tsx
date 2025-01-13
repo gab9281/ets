@@ -2,12 +2,10 @@ import { render } from '@testing-library/react';
 import { MultipleChoice } from '../../../../components/GiftTemplate/templates';
 import { TemplateOptions, MultipleChoice as MultipleChoiceType } from '../../../../components/GiftTemplate/templates/types';
 
-
 // Mock the nanoid function
 jest.mock('nanoid', () => ({
     nanoid: jest.fn(() => 'mocked-id')
   }));
-  
 
 const mockProps: TemplateOptions & MultipleChoiceType = {
     type: 'MC',
