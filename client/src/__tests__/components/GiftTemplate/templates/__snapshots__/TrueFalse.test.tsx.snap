@@ -44,14 +44,14 @@ exports[`TrueFalse snapshot test with image 1`] = `
   color: hsl(0, 0%, 0%);
 "&gt;Choisir une réponse:&lt;/span&gt;
         &lt;div class='multiple-choice-answers-container'&gt;
-          &lt;input class="gift-input" type="radio" id="idgpc2Rm" name="idrK_AqV9h"&gt;
+          &lt;input class="gift-input" type="radio" id="idmocked-id" name="idmocked-id"&gt;
           
             &lt;label style="
           display: inline-block;
           padding: 0.2em 0 0.2em 0;
          
   color: hsl(0, 0%, 0%);
-" for="idgpc2Rm"&gt;
+" for="idmocked-id"&gt;
             Vrai
             &lt;/label&gt;
           &lt;svg style="
@@ -70,14 +70,14 @@ exports[`TrueFalse snapshot test with image 1`] = `
         &lt;/div&gt;
         
         &lt;div class='multiple-choice-answers-container'&gt;
-          &lt;input class="gift-input" type="radio" id="idQF-GNQ" name="idrK_AqV9h"&gt;
+          &lt;input class="gift-input" type="radio" id="idmocked-id" name="idmocked-id"&gt;
           
             &lt;label style="
           display: inline-block;
           padding: 0.2em 0 0.2em 0;
          
   color: hsl(0, 0%, 0%);
-" for="idQF-GNQ"&gt;
+" for="idmocked-id"&gt;
             Faux
             &lt;/label&gt;
           &lt;svg style="
@@ -153,14 +153,14 @@ exports[`TrueFalse snapshot test with katex 1`] = `
   color: hsl(0, 0%, 0%);
 "&gt;Choisir une réponse:&lt;/span&gt;
         &lt;div class='multiple-choice-answers-container'&gt;
-          &lt;input class="gift-input" type="radio" id="idHBTzQU" name="idA0BQMs9B"&gt;
+          &lt;input class="gift-input" type="radio" id="idmocked-id" name="idmocked-id"&gt;
           
             &lt;label style="
           display: inline-block;
           padding: 0.2em 0 0.2em 0;
          
   color: hsl(0, 0%, 0%);
-" for="idHBTzQU"&gt;
+" for="idmocked-id"&gt;
             Vrai
             &lt;/label&gt;
           &lt;svg style="
@@ -179,14 +179,14 @@ exports[`TrueFalse snapshot test with katex 1`] = `
         &lt;/div&gt;
         
         &lt;div class='multiple-choice-answers-container'&gt;
-          &lt;input class="gift-input" type="radio" id="idYE-crD" name="idA0BQMs9B"&gt;
+          &lt;input class="gift-input" type="radio" id="idmocked-id" name="idmocked-id"&gt;
           
             &lt;label style="
           display: inline-block;
           padding: 0.2em 0 0.2em 0;
          
   color: hsl(0, 0%, 0%);
-" for="idYE-crD"&gt;
+" for="idmocked-id"&gt;
             Faux
             &lt;/label&gt;
           &lt;svg style="
@@ -263,14 +263,14 @@ exports[`TrueFalse snapshot test with moodle 1`] = `
   color: hsl(0, 0%, 0%);
 "&gt;Choisir une réponse:&lt;/span&gt;
         &lt;div class='multiple-choice-answers-container'&gt;
-          &lt;input class="gift-input" type="radio" id="idf3UShS" name="idNOTYKGh8"&gt;
+          &lt;input class="gift-input" type="radio" id="idmocked-id" name="idmocked-id"&gt;
           
             &lt;label style="
           display: inline-block;
           padding: 0.2em 0 0.2em 0;
          
   color: hsl(0, 0%, 0%);
-" for="idf3UShS"&gt;
+" for="idmocked-id"&gt;
             Vrai
             &lt;/label&gt;
           &lt;svg style="
@@ -289,14 +289,14 @@ exports[`TrueFalse snapshot test with moodle 1`] = `
         &lt;/div&gt;
         
         &lt;div class='multiple-choice-answers-container'&gt;
-          &lt;input class="gift-input" type="radio" id="idtUEUUA" name="idNOTYKGh8"&gt;
+          &lt;input class="gift-input" type="radio" id="idmocked-id" name="idmocked-id"&gt;
           
             &lt;label style="
           display: inline-block;
           padding: 0.2em 0 0.2em 0;
          
   color: hsl(0, 0%, 0%);
-" for="idtUEUUA"&gt;
+" for="idmocked-id"&gt;
             Faux
             &lt;/label&gt;
           &lt;svg style="
@@ -372,14 +372,14 @@ exports[`TrueFalse snapshot test with plain text 1`] = `
   color: hsl(0, 0%, 0%);
 "&gt;Choisir une réponse:&lt;/span&gt;
         &lt;div class='multiple-choice-answers-container'&gt;
-          &lt;input class="gift-input" type="radio" id="idgBg2Sw" name="idWE_PEATF"&gt;
+          &lt;input class="gift-input" type="radio" id="idmocked-id" name="idmocked-id"&gt;
           
             &lt;label style="
           display: inline-block;
           padding: 0.2em 0 0.2em 0;
          
   color: hsl(0, 0%, 0%);
-" for="idgBg2Sw"&gt;
+" for="idmocked-id"&gt;
             Vrai
             &lt;/label&gt;
           &lt;svg style="
@@ -398,14 +398,14 @@ exports[`TrueFalse snapshot test with plain text 1`] = `
         &lt;/div&gt;
         
         &lt;div class='multiple-choice-answers-container'&gt;
-          &lt;input class="gift-input" type="radio" id="idSjCrHY" name="idWE_PEATF"&gt;
+          &lt;input class="gift-input" type="radio" id="idmocked-id" name="idmocked-id"&gt;
           
             &lt;label style="
           display: inline-block;
           padding: 0.2em 0 0.2em 0;
          
   color: hsl(0, 0%, 0%);
-" for="idSjCrHY"&gt;
+" for="idmocked-id"&gt;
             Faux
             &lt;/label&gt;
           &lt;svg style="

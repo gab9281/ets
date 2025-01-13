@@ -2,6 +2,11 @@ import { render } from '@testing-library/react';
 import TrueFalse from '../../../../components/GiftTemplate/templates';
 import { TemplateOptions, TrueFalse as TrueFalseType } from '../../../../components/GiftTemplate/templates/types';
 
+// Mock the nanoid function
+jest.mock('nanoid', () => ({
+    nanoid: jest.fn(() => 'mocked-id')
+  }));
+
 const plainTextMock: TemplateOptions & TrueFalseType = {
     type: 'TF',
     hasEmbeddedAnswers: false,

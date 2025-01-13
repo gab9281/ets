@@ -2,6 +2,11 @@ import { render } from '@testing-library/react';
 import ShortAnswer from '../../../../components/GiftTemplate/templates/ShortAnswer';
 import { TemplateOptions, ShortAnswer as ShortAnswerType } from '../../../../components/GiftTemplate/templates/types';
 
+// Mock the nanoid function
+jest.mock('nanoid', () => ({
+    nanoid: jest.fn(() => 'mocked-id')
+  }));
+
 const plainTextMock: TemplateOptions & ShortAnswerType = {
     type: 'Short',
     hasEmbeddedAnswers: false,
