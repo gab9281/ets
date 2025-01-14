@@ -153,7 +153,7 @@ const GiftCheatSheet: React.FC = () => {
                 </pre>
             </div>
 
-            <div className="question-type">
+            <div className="question-type" id="images-section">
                 <h4> 9. Images </h4>
                 <p>Pour insérer une image dans une question ou dans une réponse, vous devez utiliser la syntaxe suivante:</p>
                 <pre>
@@ -179,8 +179,7 @@ const GiftCheatSheet: React.FC = () => {
                     Attention: l&apos;ancienne fonctionnalité avec les balises <code>{'<img>'}</code> n&apos;est plus
                     supportée.
                 </p>
-            </div>
-
+                </div>
             <div className="question-type">
                 <h4> 10. Informations supplémentaires </h4>
                 <p>

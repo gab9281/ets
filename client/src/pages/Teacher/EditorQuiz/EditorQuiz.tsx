@@ -41,6 +41,14 @@ const QuizForm: React.FC = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [dialogOpen, setDialogOpen] = useState(false);
 
+    const scrollToImagesSection = (event: { preventDefault: () => void; }) => {
+        event.preventDefault();
+        const section = document.getElementById('images-section');
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             const userFolders = await ApiService.getUserFolders();
@@ -258,11 +266,13 @@ const QuizForm: React.FC = () => {
                         </div>
 
                         <h4>Mes images :</h4>
-
                         <div>
                                 <div>
-                                <div style={{ display: "inline" }}>(Voir section ci-dessous : </div>
-                                <h4 style={{ display: "inline" }}> 9. Images </h4>
+                                <div style={{ display: "inline" }}>(Voir section </div>
+                                    <a href="#images-section"style={{ textDecoration: "none" }} onClick={scrollToImagesSection}>
+                                        <u><em><h4 style={{ display: "inline" }}> 9. Images </h4></em></u>
+                                    </a>
+                                <div style={{ display: "inline" }}> ci-dessous</div>
                                 <div style={{ display: "inline" }}>)</div>
                                 <br />
                                 <em> - Cliquez sur un lien pour le copier</em>
