@@ -260,8 +260,14 @@ const QuizForm: React.FC = () => {
                         <h4>Mes images :</h4>
 
                         <div>
-                            <div>(Cliquez sur un lien pour le copier)</div>
-                            <ul>
+                                <div>
+                                <div style={{ display: "inline" }}>(Voir section ci-dessous : </div>
+                                <h4 style={{ display: "inline" }}> 9. Images </h4>
+                                <div style={{ display: "inline" }}>)</div>
+                                <br />
+                                <em> - Cliquez sur un lien pour le copier</em>
+                                </div>                            
+                                <ul>
                                 {imageLinks.map((link, index) => {
                                     const imgTag = `![alt_text](${escapeForGIFT(link)} "texte de l'infobulle")`;
                                     return (
