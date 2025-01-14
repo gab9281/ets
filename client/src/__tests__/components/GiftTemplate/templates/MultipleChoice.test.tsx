@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { MultipleChoice } from '../../../../components/GiftTemplate/templates';
 import { TemplateOptions, MultipleChoice as MultipleChoiceType } from '../../../../components/GiftTemplate/templates/types';
 

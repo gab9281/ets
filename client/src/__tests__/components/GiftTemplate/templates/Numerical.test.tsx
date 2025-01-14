@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import Numerical from '../../../../components/GiftTemplate/templates/Numerical';
 import { TemplateOptions, Numerical as NumericalType } from '../../../../components/GiftTemplate/templates/types';
 

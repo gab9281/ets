@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import TrueFalse from '../../../../components/GiftTemplate/templates';
 import { TemplateOptions, TrueFalse as TrueFalseType } from '../../../../components/GiftTemplate/templates/types';
 
