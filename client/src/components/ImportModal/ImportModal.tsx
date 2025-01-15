@@ -168,7 +168,7 @@ const DragAndDrop: React.FC<Props> = ({ handleOnClose, handleOnImport, open, sel
                         <DialogContentText sx={{ textAlign: 'center' }}>
                             Déposer des fichiers ici ou
                             <br />
-                            cliquez pour ouvrir l'explorateur des fichiers
+                            cliquez pour ouvrir l&apos;explorateur des fichiers
                         </DialogContentText>
                     </div>
                     <Download color="primary" />

@@ -1,4 +1,5 @@
 // GoBackButton.tsx
+import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
@@ -33,7 +34,7 @@ const DisconnectButton: React.FC<Props> = ({
     };
 
     const handleOnReturn = () => {
-        if (!!onReturn) {
+        if (onReturn) {
             onReturn();
         } else {
             navigate(-1);

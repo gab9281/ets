@@ -1,20 +1,16 @@
 import * as React from 'react';
 import './footer.css';
 
-interface FooterProps {
+type FooterProps = object; //empty object
 
-}
-
-const Footer: React.FC<FooterProps> = ({ }) => {
+const Footer: React.FC<FooterProps> = () => {
     return (
         <div className="footer">
             <div className="footer-content">
-                Réalisé avec ❤ à Montréal par des finissant•e•s de l'ETS
+                Réalisé avec ❤ à Montréal par des finissant•e•s de l&apos;ETS
             </div>
             <div className="footer-links">
-                <a href="https://github.com/louis-antoine-etsmtl/ETS-PFE042-EvalueTonSavoir-Frontend/tree/main">Frontend GitHub</a>
-                <span className="divider">|</span>
-                <a href="https://github.com/louis-antoine-etsmtl/ETS-PFE042-EvalueTonSavoir-Backend">Backend GitHub</a>
+                <a href="https://github.com/ets-cfuhrman-pfe/EvalueTonSavoir/">GitHub</a>
                 <span className="divider">|</span>
                 <a href="https://github.com/ets-cfuhrman-pfe/EvalueTonSavoir/wiki">Wiki GitHub</a>
             </div>

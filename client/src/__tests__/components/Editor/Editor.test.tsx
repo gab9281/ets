@@ -1,4 +1,5 @@
 // Editor.test.tsx
+import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Editor from '../../../components/Editor/Editor';

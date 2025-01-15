@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Socket } from 'socket.io-client';
-import { ENV_VARIABLES } from '../../../constants';
+import { ENV_VARIABLES } from 'src/constants';
 
 import StudentModeQuiz from '../../../components/StudentModeQuiz/StudentModeQuiz';
 import TeacherModeQuiz from '../../../components/TeacherModeQuiz/TeacherModeQuiz';

@@ -18,7 +18,7 @@ exports.USER_ALREADY_EXISTS = {
 }
 exports.LOGIN_CREDENTIALS_ERROR = {
     message: 'L\'email et le mot de passe ne correspondent pas.',
-    code: 400
+    code: 401
 }
 exports.GENERATE_PASSWORD_ERROR = {
     message: 'Une erreur s\'est produite lors de la création d\'un nouveau mot de passe.',

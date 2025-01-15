@@ -30,7 +30,7 @@ export function formatLatex(text: string): string {
  */
 export default function textType({ text }: TextTypeOptions) {
     const formatText = formatLatex(text.text.trim());  // latex needs pure "&", ">", etc. Must not be escaped
-
+    let parsedText = ''; 
     switch (text.format) {
         case 'moodle':
         case 'plain':
@@ -40,7 +40,7 @@ export default function textType({ text }: TextTypeOptions) {
             // Strip outer paragraph tags (not a great approach with regex)
             return formatText.replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2');
         case 'markdown':
-            const parsedText = marked.parse(formatText, { breaks: true }) as string; // https://github.com/markedjs/marked/discussions/3219
+            parsedText = marked.parse(formatText, { breaks: true }) as string; // https://github.com/markedjs/marked/discussions/3219
             return parsedText.replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2');
         default:
             throw new Error(`Unsupported text format: ${text.format}`);

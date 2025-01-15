@@ -56,7 +56,7 @@ const MultipleChoiceQuestion: React.FC<Props> = (props) => {
                                     (choice.isCorrect ? '✅' : '❌')}
                                 <div className={`circle ${selected}`}>{alphabet[i]}</div>
                                 <div className={`answer-text ${selected}`}>
-                                    {formatLatex(choice.text.text)}
+                                    <div dangerouslySetInnerHTML={{ __html: formatLatex(choice.text.text) }} />
                                 </div>
                             </Button>
                             {choice.feedback && showAnswer && (

@@ -300,7 +300,7 @@ const LiveResults: React.FC<LiveResultsProps> = ({ questions, showSelectedQuesti
                         <TableHead>
                             <TableRow>
                                 <TableCell className="sticky-column">
-                                    <div className="text-base text-bold">Nom d'utilisateur</div>
+                                    <div className="text-base text-bold">Nom d&apos;utilisateur</div>
                                 </TableCell>
                                 {Array.from({ length: maxQuestions }, (_, index) => (
                                     <TableCell

@@ -28,9 +28,9 @@ const GiftCheatSheet: React.FC = () => {
     const QuestionNum ="Question {#=Nombre\n} //OU \nQuestion {#=Nombre:Tolérance\n} // OU \nQuestion {#=PetitNombre..GrandNombre\n}\n// La tolérance est un pourcentage.\n// La réponse doit être comprise entre PetitNombre et GrandNombre";
     return (
         <div className="gift-cheat-sheet">
-            <h2 className="subtitle">Informations pratiques sur l'éditeur</h2>
+            <h2 className="subtitle">Informations pratiques sur l&apos;éditeur</h2>
             <span>
-                L'éditeur utilise le format GIFT (General Import Format Template) créé pour la
+                L&apos;éditeur utilise le format GIFT (General Import Format Template) créé pour la
                 plateforme Moodle afin de générer les mini-tests. Ci-dessous vous pouvez retrouver la
                 syntaxe pour chaque type de question&nbsp;:
             </span>
@@ -126,7 +126,7 @@ const GiftCheatSheet: React.FC = () => {
                 <h4> 7. Paramètres optionnels </h4>
                 <p>
                     Si vous souhaitez utiliser certains caractères spéciaux dans vos énoncés,
-                    réponses ou feedback, vous devez 'échapper' ces derniers en ajoutant un \
+                    réponses ou feedback, vous devez «échapper» ces derniers en ajoutant un \
                     devant:
                 </p>
                 <pre>
@@ -140,9 +140,9 @@ const GiftCheatSheet: React.FC = () => {
                 <h4> 8. LaTeX et Markdown</h4>
                 <p>
                     Les formats LaTeX et Markdown sont supportés dans cette application. Vous devez cependant penser
-                    à 'échapper' les caractères spéciaux mentionnés plus haut.
+                    à «échapper» les caractères spéciaux mentionnés plus haut.
                 </p>
-                <p>Exemple d'équation:</p>
+                <p>Exemple d&apos;équation:</p>
                 <pre>
                     <code className="question-code-block selectable-text">{'$$x\\= \\frac\\{y^2\\}\\{4\\}$$'}</code>
                     <code className="question-code-block selectable-text">{'\n$x\\= \\frac\\{y^2\\}\\{4\\}$'}</code>
@@ -167,16 +167,16 @@ const GiftCheatSheet: React.FC = () => {
                         {'")'}
                     </code>
                 </pre>
-                <p>Exemple d'une question Vrai/Faux avec l'image d'un chat:</p>
+                <p>Exemple d&apos;une question Vrai/Faux avec l&apos;image d&apos;un chat:</p>
                 <pre>
                     <code className="question-code-block">
                         {'[markdown]Ceci est un chat: \n![Image de chat](https\\://www.example.com\\:8000/chat.jpg "Chat mignon")\n{T}'}
                     </code>
                 </pre>
-                <p>Note&nbsp;: les images étant spécifiées avec la syntaxe Markdown dans GIFT, on doit échapper les caractères spéciales (:) dans l'URL de l'image.</p>
+                <p>Note&nbsp;: les images étant spécifiées avec la syntaxe Markdown dans GIFT, on doit échapper les caractères spéciales (:) dans l&apos;URL de l&apos;image.</p>
                 <p>Note&nbsp;: On ne peut utiliser les images dans les messages de rétroaction (GIFT), car les rétroactions ne supportent pas le texte avec formatage (Markdown).</p>
                 <p style={{ color: 'red' }}>
-                    Attention: l'ancienne fonctionnalité avec les balises <code>{'<img>'}</code> n'est plus
+                    Attention: l&apos;ancienne fonctionnalité avec les balises <code>{'<img>'}</code> n&apos;est plus
                     supportée.
                 </p>
             </div>
@@ -184,7 +184,7 @@ const GiftCheatSheet: React.FC = () => {
             <div className="question-type">
                 <h4> 10. Informations supplémentaires </h4>
                 <p>
-                    GIFT supporte d'autres formats de questions que nous ne gérons pas sur cette
+                    GIFT supporte d&apos;autres formats de questions que nous ne gérons pas sur cette
                     application.
                 </p>
                 <p>Vous pouvez retrouver la Documentation de GIFT (en anglais):</p>

@@ -1,15 +1,9 @@
 //WebsocketService.test.tsx
 import WebsocketService from '../../services/WebsocketService';
 import { io, Socket } from 'socket.io-client';
-import { ENV_VARIABLES } from '../../constants';
+import { ENV_VARIABLES } from 'src/constants';
 
 jest.mock('socket.io-client');
-
-// jest.mock('../../constants', () => ({
-//     ENV_VARIABLES: {
-//         VITE_BACKEND_SOCKET_URL: 'https://ets-glitch-backend.glitch.me/'
-//     }
-// }));
 
 describe('WebSocketService', () => {
     let mockSocket: Partial<Socket>;

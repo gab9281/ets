@@ -1,13 +1,13 @@
 const emailer = require('../config/email.js');
 
 const AppError = require('../middleware/AppError.js');
-const { MISSING_REQUIRED_PARAMETER, NOT_IMPLEMENTED, QUIZ_NOT_FOUND, FOLDER_NOT_FOUND, QUIZ_ALREADY_EXISTS, GETTING_QUIZ_ERROR, DELETE_QUIZ_ERROR, UPDATE_QUIZ_ERROR, MOVING_QUIZ_ERROR, DUPLICATE_QUIZ_ERROR, COPY_QUIZ_ERROR } = require('../constants/errorCodes');
+const { MISSING_REQUIRED_PARAMETER, NOT_IMPLEMENTED, QUIZ_NOT_FOUND, FOLDER_NOT_FOUND, QUIZ_ALREADY_EXISTS, GETTING_QUIZ_ERROR, DELETE_QUIZ_ERROR, UPDATE_QUIZ_ERROR, MOVING_QUIZ_ERROR } = require('../constants/errorCodes');
 
 class QuizController {
 
     constructor(quizModel, foldersModel) {
-        this.folders = foldersModel;
         this.quizzes = quizModel;
+        this.folders = foldersModel;
     }
 
     create = async (req, res, next) => {
@@ -165,7 +165,7 @@ class QuizController {
         }
     };
     
-    copy = async (req, res, next) => {
+    copy = async (req, _res, _next) => {
         const { quizId, newTitle, folderId } = req.body;
     
         if (!quizId || !newTitle || !folderId) {
@@ -207,7 +207,7 @@ class QuizController {
             }
     
             // Call the method from the Quiz model to delete quizzes by folder ID
-            await Quiz.deleteQuizzesByFolderId(folderId);
+            await this.quizzes.deleteQuizzesByFolderId(folderId);
     
             return res.status(200).json({
                 message: 'Quizzes deleted successfully.'
@@ -232,7 +232,7 @@ class QuizController {
         try {
             const existingFile = await this.quizzes.quizExists(title, userId);
             return existingFile !== null;
-        } catch (error) {
+        } catch (_error) {
             throw new AppError(GETTING_QUIZ_ERROR);
         }
     };

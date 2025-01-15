@@ -28,7 +28,7 @@ const Login: React.FC = () => {
     const login = async () => {
         const result = await ApiService.login(email, password);
 
-        if (result != true) {
+        if (typeof result === "string") {
             setConnectionError(result);
             return;
         }
@@ -49,7 +49,7 @@ const Login: React.FC = () => {
                 variant="outlined"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Nom d'utilisateur"
+                placeholder="Adresse courriel"
                 sx={{ marginBottom: '1rem' }}
                 fullWidth
             />
@@ -60,7 +60,7 @@ const Login: React.FC = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Nom de la salle"
+                placeholder="Mot de passe"
                 sx={{ marginBottom: '1rem' }}
                 fullWidth
             />

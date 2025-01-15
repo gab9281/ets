@@ -10,7 +10,7 @@ import webSocketService, { AnswerReceptionFromBackendType } from '../../../servi
 import { QuizType } from '../../../Types/QuizType';
 
 import './manageRoom.css';
-import { ENV_VARIABLES } from '../../../constants';
+import { ENV_VARIABLES } from 'src/constants';
 import { StudentType, Answer } from '../../../Types/StudentType';
 import { Button } from '@mui/material';
 import LoadingCircle from '../../../components/LoadingCircle/LoadingCircle';
@@ -124,8 +124,8 @@ const ManageRoom: React.FC = () => {
         // This is here to make sure the correct value is sent when user join
         if (socket) {
             console.log(`Listening for user-joined in room ${roomName}`);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             socket.on('user-joined', (_student: StudentType) => {
-
                 if (quizMode === 'teacher') {
                     webSocketService.nextQuestion(roomName, currentQuestion);
                 } else if (quizMode === 'student') {

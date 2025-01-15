@@ -1,4 +1,3 @@
-//const db = require('../config/db.js')
 const { ObjectId } = require('mongodb');
 
 class Images {
@@ -8,8 +7,8 @@ class Images {
     }
 
     async upload(file, userId) {
-        await db.connect()
-        const conn = db.getConnection();
+        await this.db.connect()
+        const conn = this.db.getConnection();
 
         const imagesCollection = conn.collection('images');
 
@@ -27,8 +26,8 @@ class Images {
     }
 
     async get(id) {
-        await db.connect()
-        const conn = db.getConnection();
+        await this.db.connect()
+        const conn = this.db.getConnection();
 
         const imagesCollection = conn.collection('images');
 
