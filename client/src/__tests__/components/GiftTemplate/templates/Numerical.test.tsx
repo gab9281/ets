@@ -1,4 +1,4 @@
-// @ts-expect-error
+// @ts-expect-error : Required for pipeline compatibility
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
