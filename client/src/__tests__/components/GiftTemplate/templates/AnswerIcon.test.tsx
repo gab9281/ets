@@ -2,10 +2,11 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import AnswerIcon from '../../../../components/GiftTemplate/templates/AnswerIcon';
+import DOMPurify from 'dompurify';
 
 describe('AnswerIcon', () => {
   test('renders correct icon when correct is true', () => {
-    const { container } = render(<div dangerouslySetInnerHTML={{ __html: AnswerIcon({ correct: true }) }} />);
+    const { container } = render(<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(AnswerIcon({ correct: true })) }} />);
     const svgElement = container.querySelector('svg');
 
     expect(svgElement).toBeInTheDocument();
@@ -20,7 +21,7 @@ describe('AnswerIcon', () => {
   });
 
   test('renders incorrect icon when correct is false', () => {
-    const { container } = render(<div dangerouslySetInnerHTML={{ __html: AnswerIcon({ correct: false }) }} />);
+    const { container } = render(<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(AnswerIcon({ correct: false })) }} />);
     const svgElement = container.querySelector('svg');
 
     expect(svgElement).toBeInTheDocument();
