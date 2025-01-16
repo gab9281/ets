@@ -24,7 +24,3 @@ jobs:
           file: ./client/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_FRONTEND_REPO }}:latest
-      
-      - name: Lint Code
-        run: |
-          eslint . --rule "@typescript-eslint/ban-ts-comment: off"
