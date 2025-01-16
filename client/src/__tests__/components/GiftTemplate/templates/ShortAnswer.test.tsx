@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ShortAnswer from '../../../../components/GiftTemplate/templates/ShortAnswer';
-import { TemplateOptions, ShortAnswer as ShortAnswerType } from '../../../../components/GiftTemplate/templates/types';
+import ShortAnswer from 'src/components/GiftTemplate/templates/ShortAnswer';
+import { TemplateOptions, ShortAnswer as ShortAnswerType } from 'src/components/GiftTemplate/templates/types';
 
 // Mock the nanoid function
 jest.mock('nanoid', () => ({

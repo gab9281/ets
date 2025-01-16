@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { MultipleChoice } from '../../../../components/GiftTemplate/templates';
-import { TemplateOptions, MultipleChoice as MultipleChoiceType } from '../../../../components/GiftTemplate/templates/types';
+import { MultipleChoice } from 'src/components/GiftTemplate/templates';
+import { TemplateOptions, MultipleChoice as MultipleChoiceType } from 'src/components/GiftTemplate/templates/types';
 
 // Mock the nanoid function
 jest.mock('nanoid', () => ({

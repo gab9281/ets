@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import TrueFalse from '../../../../components/GiftTemplate/templates';
-import { TemplateOptions, TrueFalse as TrueFalseType } from '../../../../components/GiftTemplate/templates/types';
+import TrueFalse from 'src/components/GiftTemplate/templates';
+import { TemplateOptions, TrueFalse as TrueFalseType } from 'src/components/GiftTemplate/templates/types';
 
 // Mock the nanoid function
 jest.mock('nanoid', () => ({

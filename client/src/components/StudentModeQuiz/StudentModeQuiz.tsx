@@ -8,7 +8,7 @@ import { QuestionType } from '../../Types/QuestionType';
 import { Button } from '@mui/material';
 import QuestionNavigation from '../QuestionNavigation/QuestionNavigation';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import DisconnectButton from '../../components/DisconnectButton/DisconnectButton';
+import DisconnectButton from 'src/components/DisconnectButton/DisconnectButton';
 
 interface StudentModeQuizProps {
     questions: QuestionType[];

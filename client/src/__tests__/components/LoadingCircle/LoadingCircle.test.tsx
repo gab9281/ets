@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import LoadingCircle from '../../../components/LoadingCircle/LoadingCircle';
+import LoadingCircle from 'src/components/LoadingCircle/LoadingCircle';
 
 describe('LoadingCircle', () => {
   it('displays the provided text correctly', () => {

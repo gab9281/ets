@@ -1,5 +1,5 @@
 //color.test.tsx
-import { colors } from "../../../../components/GiftTemplate/constants";
+import { colors } from "src/components/GiftTemplate/constants";
 
 describe('Colors object', () => {
     test('All colors are defined', () => {

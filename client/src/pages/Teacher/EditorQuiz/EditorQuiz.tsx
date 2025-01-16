@@ -4,15 +4,15 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import { FolderType } from '../../../Types/FolderType';
 
-import Editor from '../../../components/Editor/Editor';
-import GiftCheatSheet from '../../../components/GIFTCheatSheet/GiftCheatSheet';
-import GIFTTemplatePreview from '../../../components/GiftTemplate/GIFTTemplatePreview';
+import Editor from 'src/components/Editor/Editor';
+import GiftCheatSheet from 'src/components/GIFTCheatSheet/GiftCheatSheet';
+import GIFTTemplatePreview from 'src/components/GiftTemplate/GIFTTemplatePreview';
 
 import { QuizType } from '../../../Types/QuizType';
 
 import './editorQuiz.css';
 import { Button, TextField, NativeSelect, Divider, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material';
-import ReturnButton from '../../../components/ReturnButton/ReturnButton';
+import ReturnButton from 'src/components/ReturnButton/ReturnButton';
 
 import ApiService from '../../../services/ApiService';
 import { escapeForGIFT } from '../../../utils/giftUtils';

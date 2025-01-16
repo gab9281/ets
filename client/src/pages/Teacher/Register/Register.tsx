@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import LoginContainer from '../../../components/LoginContainer/LoginContainer'
+import LoginContainer from 'src/components/LoginContainer/LoginContainer'
 import ApiService from '../../../services/ApiService';
 
 const Register: React.FC = () => {

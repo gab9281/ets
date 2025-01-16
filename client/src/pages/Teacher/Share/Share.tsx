@@ -7,7 +7,7 @@ import { FolderType } from '../../../Types/FolderType';
 
 import './share.css';
 import { Button, NativeSelect } from '@mui/material';
-import ReturnButton from '../../../components/ReturnButton/ReturnButton';
+import ReturnButton from 'src/components/ReturnButton/ReturnButton';
 
 import ApiService from '../../../services/ApiService';
 

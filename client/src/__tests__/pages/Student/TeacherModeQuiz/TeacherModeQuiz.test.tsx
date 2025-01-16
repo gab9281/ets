@@ -5,7 +5,7 @@ import { screen } from '@testing-library/dom';
 import '@testing-library/jest-dom';
 import { parse } from 'gift-pegjs';
 
-import TeacherModeQuiz from '../../../../components/TeacherModeQuiz/TeacherModeQuiz';
+import TeacherModeQuiz from 'src/components/TeacherModeQuiz/TeacherModeQuiz';
 import { MemoryRouter } from 'react-router-dom';
 // import { mock } from 'node:test';
 

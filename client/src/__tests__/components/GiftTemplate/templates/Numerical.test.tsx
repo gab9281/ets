@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Numerical from '../../../../components/GiftTemplate/templates/Numerical';
-import { TemplateOptions, Numerical as NumericalType } from '../../../../components/GiftTemplate/templates/types';
+import Numerical from 'src/components/GiftTemplate/templates/Numerical';
+import { TemplateOptions, Numerical as NumericalType } from 'src/components/GiftTemplate/templates/types';
 
 // Mock the nanoid function
 jest.mock('nanoid', () => ({

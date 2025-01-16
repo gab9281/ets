@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import MultipleChoiceQuestion from '../../../../components/Questions/MultipleChoiceQuestion/MultipleChoiceQuestion';
+import MultipleChoiceQuestion from 'src/components/Questions/MultipleChoiceQuestion/MultipleChoiceQuestion';
 import { act } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 

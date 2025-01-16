@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import AnswerIcon from '../../../../components/GiftTemplate/templates/AnswerIcon';
+import AnswerIcon from 'src/components/GiftTemplate/templates/AnswerIcon';
 
 describe('AnswerIcon', () => {
   test('renders correct icon when correct is true', () => {
