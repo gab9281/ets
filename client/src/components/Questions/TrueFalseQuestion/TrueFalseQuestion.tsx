@@ -4,6 +4,7 @@ import '../questionStyle.css';
 import { Button } from '@mui/material';
 import textType from '../../GiftTemplate/templates/TextType';
 import { TextFormat } from '../../GiftTemplate/templates/types';
+import DOMPurify from 'dompurify';
 
 interface Props {
     questionContent: TextFormat;
@@ -27,7 +28,7 @@ const TrueFalseQuestion: React.FC<Props> = (props) => {
     return (
         <div className="question-container">
             <div className="question content">
-            <div dangerouslySetInnerHTML={{ __html: textType({ text: questionContent }) }} />
+            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({ text: questionContent })) }} />
             </div>
             <div className="choices-wrapper mb-1">
                 <Button

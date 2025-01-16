@@ -4,6 +4,7 @@ import '../questionStyle.css';
 import { Button } from '@mui/material';
 import textType, { formatLatex } from '../../GiftTemplate/templates/TextType';
 import { TextFormat } from '../../GiftTemplate/templates/types';
+import DOMPurify from 'dompurify';
 // import Latex from 'react-latex';
 
 type Choices = {
@@ -39,7 +40,7 @@ const MultipleChoiceQuestion: React.FC<Props> = (props) => {
     return (
         <div className="question-container">
             <div className="question content">
-                <div dangerouslySetInnerHTML={{ __html: textType({text: questionContent}) }} />
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({text: questionContent})) }} />
             </div>
             <div className="choices-wrapper mb-1">
                 {choices.map((choice, i) => {
@@ -56,7 +57,7 @@ const MultipleChoiceQuestion: React.FC<Props> = (props) => {
                                     (choice.isCorrect ? '✅' : '❌')}
                                 <div className={`circle ${selected}`}>{alphabet[i]}</div>
                                 <div className={`answer-text ${selected}`}>
-                                    <div dangerouslySetInnerHTML={{ __html: formatLatex(choice.text.text) }} />
+                                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(formatLatex(choice.text.text)) }} />
                                 </div>
                             </Button>
                             {choice.feedback && showAnswer && (
