@@ -2,7 +2,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ShortAnswerQuestion from '../../../../components/Questions/ShortAnswerQuestion/ShortAnswerQuestion';
+import ShortAnswerQuestion from 'src/components/Questions/ShortAnswerQuestion/ShortAnswerQuestion';
 
 describe('ShortAnswerQuestion Component', () => {
     const mockHandleSubmitAnswer = jest.fn();

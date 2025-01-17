@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, useMemo } from 'react';
 import { parse } from 'gift-pegjs';
 
-import Template from '../../../components/GiftTemplate/templates';
+import Template from 'src/components/GiftTemplate/templates';
 import { QuizType } from '../../../Types/QuizType';
 import { FolderType } from '../../../Types/FolderType';
 // import { QuestionService } from '../../../services/QuestionService';
 import ApiService from '../../../services/ApiService';
 
 import './dashboard.css';
-import ImportModal from '../../../components/ImportModal/ImportModal';
+import ImportModal from 'src/components/ImportModal/ImportModal';
 //import axios from 'axios';
 
 import {

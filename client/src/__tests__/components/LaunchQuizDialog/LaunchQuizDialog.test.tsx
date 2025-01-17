@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import LaunchQuizDialog from '../../../components/LaunchQuizDialog/LaunchQuizDialog';
+import LaunchQuizDialog from 'src/components/LaunchQuizDialog/LaunchQuizDialog';
 
 // Mock the functions passed as props
 const mockHandleOnClose = jest.fn();

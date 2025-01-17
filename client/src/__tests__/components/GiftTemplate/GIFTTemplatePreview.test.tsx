@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import GIFTTemplatePreview from '../../../components/GiftTemplate/GIFTTemplatePreview';
+import GIFTTemplatePreview from 'src/components/GiftTemplate/GIFTTemplatePreview';
 
 describe('GIFTTemplatePreview Component', () => {
   test('renders error message when questions contain invalid syntax', () => {

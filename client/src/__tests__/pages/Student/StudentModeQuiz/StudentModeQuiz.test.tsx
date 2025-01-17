@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import { parse } from 'gift-pegjs';
 import { MemoryRouter } from 'react-router-dom';
 import { QuestionType } from '../../../../Types/QuestionType';
-import StudentModeQuiz from '../../../../components/StudentModeQuiz/StudentModeQuiz';
+import StudentModeQuiz from 'src/components/StudentModeQuiz/StudentModeQuiz';
 
 const mockGiftQuestions = parse(
     `::Sample Question 1:: Sample Question 1 {=Option A ~Option B}

@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import { GIFTQuestion, parse } from 'gift-pegjs';
 import { QuestionType } from '../../../Types/QuestionType';
-import LiveResultsComponent from '../../../components/LiveResults/LiveResults';
+import LiveResultsComponent from 'src/components/LiveResults/LiveResults';
 // import { QuestionService } from '../../../services/QuestionService';
 import webSocketService, { AnswerReceptionFromBackendType } from '../../../services/WebsocketService';
 import { QuizType } from '../../../Types/QuizType';
@@ -13,12 +13,12 @@ import './manageRoom.css';
 import { ENV_VARIABLES } from 'src/constants';
 import { StudentType, Answer } from '../../../Types/StudentType';
 import { Button } from '@mui/material';
-import LoadingCircle from '../../../components/LoadingCircle/LoadingCircle';
+import LoadingCircle from 'src/components/LoadingCircle/LoadingCircle';
 import { Refresh, Error } from '@mui/icons-material';
-import StudentWaitPage from '../../../components/StudentWaitPage/StudentWaitPage';
-import DisconnectButton from '../../../components/DisconnectButton/DisconnectButton';
-import QuestionNavigation from '../../../components/QuestionNavigation/QuestionNavigation';
-import Question from '../../../components/Questions/Question';
+import StudentWaitPage from 'src/components/StudentWaitPage/StudentWaitPage';
+import DisconnectButton from 'src/components/DisconnectButton/DisconnectButton';
+import QuestionNavigation from 'src/components/QuestionNavigation/QuestionNavigation';
+import Question from 'src/components/Questions/Question';
 import ApiService from '../../../services/ApiService';
 
 const ManageRoom: React.FC = () => {

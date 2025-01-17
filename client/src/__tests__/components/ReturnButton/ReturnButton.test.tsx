@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ReturnButton from '../../../components/ReturnButton/ReturnButton';
+import ReturnButton from 'src/components/ReturnButton/ReturnButton';
 import { useNavigate } from 'react-router-dom';
 
 jest.mock('react-router-dom', () => ({

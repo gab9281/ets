@@ -2,7 +2,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import NumericalQuestion from '../../../../components/Questions/NumericalQuestion/NumericalQuestion';
+import NumericalQuestion from 'src/components/Questions/NumericalQuestion/NumericalQuestion';
 
 describe('NumericalQuestion Component', () => {
     const mockHandleSubmitAnswer = jest.fn();

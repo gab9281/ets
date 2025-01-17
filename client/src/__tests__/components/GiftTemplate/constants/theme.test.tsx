@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
-import { theme } from '../../../../components/GiftTemplate/constants/theme';
-import { colors } from '../../../../components/GiftTemplate/constants/colors';
+import { theme } from 'src/components/GiftTemplate/constants/theme';
+import { colors } from 'src/components/GiftTemplate/constants/colors';
 
 describe('Theme', () => {
   test('returns correct light color', () => {

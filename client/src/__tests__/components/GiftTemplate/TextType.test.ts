@@ -1,7 +1,7 @@
 // TextType.test.ts
 
 import { TextFormat } from "gift-pegjs";
-import textType from "../../../components/GiftTemplate/templates/TextType";
+import textType from "src/components/GiftTemplate/templates/TextType";
 
 describe('TextType', () => {
     it('should format text with basic characters correctly', () => {

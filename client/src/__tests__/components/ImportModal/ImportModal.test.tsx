@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import DragAndDrop from '../../../components/ImportModal/ImportModal';
+import DragAndDrop from 'src/components/ImportModal/ImportModal';
 
 describe('DragAndDrop Component', () => {
 

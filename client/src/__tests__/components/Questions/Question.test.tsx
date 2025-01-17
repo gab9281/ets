@@ -2,7 +2,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Questions from '../../../components/Questions/Question';
+import Questions from 'src/components/Questions/Question';
 import { GIFTQuestion } from 'gift-pegjs';
 
 //

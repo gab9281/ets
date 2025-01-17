@@ -3,17 +3,17 @@ import React, { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { ENV_VARIABLES } from 'src/constants';
 
-import StudentModeQuiz from '../../../components/StudentModeQuiz/StudentModeQuiz';
-import TeacherModeQuiz from '../../../components/TeacherModeQuiz/TeacherModeQuiz';
+import StudentModeQuiz from 'src/components/StudentModeQuiz/StudentModeQuiz';
+import TeacherModeQuiz from 'src/components/TeacherModeQuiz/TeacherModeQuiz';
 import webSocketService, { AnswerSubmissionToBackendType } from '../../../services/WebsocketService';
-import DisconnectButton from '../../../components/DisconnectButton/DisconnectButton';
+import DisconnectButton from 'src/components/DisconnectButton/DisconnectButton';
 
 import './joinRoom.css';
 import { QuestionType } from '../../../Types/QuestionType';
 import { TextField } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import LoginContainer from '../../../components/LoginContainer/LoginContainer'
+import LoginContainer from 'src/components/LoginContainer/LoginContainer'
 
 const JoinRoom: React.FC = () => {
     const [roomName, setRoomName] = useState('');

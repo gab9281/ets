@@ -3,7 +3,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import { ParagraphStyle } from '../../../../components/GiftTemplate/constants';
+import { ParagraphStyle } from 'src/components/GiftTemplate/constants';
 
 describe('ParagraphStyle', () => {
     test('applies styles correctly', () => {

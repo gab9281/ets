@@ -6,7 +6,7 @@ import QuestionComponent from '../Questions/Question';
 import '../../pages/Student/JoinRoom/joinRoom.css';
 import { QuestionType } from '../../Types/QuestionType';
 // import { QuestionService } from '../../services/QuestionService';
-import DisconnectButton from '../../components/DisconnectButton/DisconnectButton';
+import DisconnectButton from 'src/components/DisconnectButton/DisconnectButton';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 
 interface TeacherModeQuizProps {
