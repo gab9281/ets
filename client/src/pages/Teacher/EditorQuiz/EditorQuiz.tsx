@@ -1,5 +1,5 @@
 // EditorQuiz.tsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, CSSProperties } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { FolderType } from '../../../Types/FolderType';
@@ -40,6 +40,26 @@ const QuizForm: React.FC = () => {
     };
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [showScrollButton, setShowScrollButton] = useState(false);
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 300) {
+                setShowScrollButton(true);
+            } else {
+                setShowScrollButton(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     const scrollToImagesSection = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
@@ -308,8 +328,32 @@ const QuizForm: React.FC = () => {
 
             </div>
 
+            {showScrollButton && (
+                <Button
+                    onClick={scrollToTop}
+                    variant="contained"
+                    color="primary"
+                    style={scrollToTopButtonStyle}
+                    title="Scroll to top"
+                >
+                    ↑
+                </Button>
+            )}
         </div>
     );
+};
+
+const scrollToTopButtonStyle: CSSProperties = {
+    position: 'fixed',
+    bottom: '40px',
+    right: '50px',
+    padding: '10px',
+    fontSize: '16px',
+    color: 'white',
+    backgroundColor: '#5271ff',
+    border: 'none',
+    cursor: 'pointer',
+    zIndex: 1000,
 };
 
 export default QuizForm;
