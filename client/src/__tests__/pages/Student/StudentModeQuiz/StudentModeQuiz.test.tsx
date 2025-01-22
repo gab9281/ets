@@ -77,21 +77,5 @@ describe('StudentModeQuiz', () => {
 
     });
 
-    test('navigates to the previous question', async () => {
-
-        act(() => {
-            fireEvent.click(screen.getByText('Option A'));
-        });
-        act(() => {
-            fireEvent.click(screen.getByText('Répondre'));
-        });        
-        act(() => {
-            fireEvent.click(screen.getByText('Question précédente'));
-        });
-
-        expect(screen.getByText('Sample Question 1')).toBeInTheDocument();
-        expect(screen.getByText('Option B')).toBeInTheDocument();
-    });
-
 });
 

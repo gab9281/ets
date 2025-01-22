@@ -497,7 +497,7 @@ const ManageRoom: React.FC = () => {
                                 <Button onClick={previousQuestion} 
                                 variant="contained" 
                                 disabled={Number(currentQuestion?.question.id) <= 1}>
-                                    Question précedente
+                                    Question précédente
                                 </Button>
                             </div>
                             <div className="nextQuestionButton">
