@@ -23,7 +23,7 @@ interface Props {
 }
 
 const MultipleChoiceQuestion: React.FC<Props> = (props) => {
-
+  
     const { questionStem: questionContent, choices, showAnswer, handleOnSubmitAnswer, globalFeedback } = props;
     const [answer, setAnswer] = useState<string>();
 
