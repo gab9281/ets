@@ -17,7 +17,7 @@ import LoadingCircle from 'src/components/LoadingCircle/LoadingCircle';
 import { Refresh, Error } from '@mui/icons-material';
 import StudentWaitPage from 'src/components/StudentWaitPage/StudentWaitPage';
 import DisconnectButton from 'src/components/DisconnectButton/DisconnectButton';
-import QuestionNavigation from 'src/components/QuestionNavigation/QuestionNavigation';
+//import QuestionNavigation from 'src/components/QuestionNavigation/QuestionNavigation';
 import Question from 'src/components/Questions/Question';
 import ApiService from '../../../services/ApiService';
 
@@ -267,7 +267,6 @@ const ManageRoom: React.FC = () => {
         const prevQuestionIndex = Number(currentQuestion?.question.id) - 2; // -2 because question.id starts at index 1
 
         if (prevQuestionIndex === undefined || prevQuestionIndex < 0) return;
-
         setCurrentQuestion(quizQuestions[prevQuestionIndex]);
         webSocketService.nextQuestion(roomName, quizQuestions[prevQuestionIndex]);
     };
@@ -461,12 +460,12 @@ const ManageRoom: React.FC = () => {
                         {quizMode === 'teacher' && (
 
                             <div className="mb-1">
-                                <QuestionNavigation
+                                {/* <QuestionNavigation
                                     currentQuestionId={Number(currentQuestion?.question.id)}
                                     questionsLength={quizQuestions?.length}
                                     previousQuestion={previousQuestion}
                                     nextQuestion={nextQuestion}
-                                />
+                                /> */}
                             </div>
 
                         )}
@@ -493,12 +492,23 @@ const ManageRoom: React.FC = () => {
                         </div>
 
                         {quizMode === 'teacher' && (
+                        <div className="questionNavigationButtons" style={{ display: 'flex', justifyContent: 'center' }}>
+                            <div className="previousQuestionButton">
+                                <Button onClick={previousQuestion} 
+                                variant="contained" 
+                                disabled={Number(currentQuestion?.question.id) <= 1}>
+                                    Question précédente
+                                </Button>
+                            </div>
                             <div className="nextQuestionButton">
-                                <Button onClick={nextQuestion} variant="contained">
+                                <Button onClick={nextQuestion} 
+                                variant="contained" 
+                                disabled={Number(currentQuestion?.question.id) >=quizQuestions.length}
+                                >
                                     Prochaine question
                                 </Button>
                             </div>
-                        )}
+                        </div> )}
 
                     </div>
 

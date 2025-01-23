@@ -1,13 +1,12 @@
 // StudentModeQuiz.tsx
 import React, { useEffect, useState } from 'react';
 import QuestionComponent from '../Questions/Question';
-
 import '../../pages/Student/JoinRoom/joinRoom.css';
 import { QuestionType } from '../../Types/QuestionType';
 // import { QuestionService } from '../../services/QuestionService';
 import { Button } from '@mui/material';
-import QuestionNavigation from '../QuestionNavigation/QuestionNavigation';
-import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+//import QuestionNavigation from '../QuestionNavigation/QuestionNavigation';
+//import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import DisconnectButton from 'src/components/DisconnectButton/DisconnectButton';
 
 interface StudentModeQuizProps {
@@ -25,10 +24,10 @@ const StudentModeQuiz: React.FC<StudentModeQuizProps> = ({
     const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
     // const [imageUrl, setImageUrl] = useState('');
 
-    const previousQuestion = () => {
-        setQuestion(questions[Number(questionInfos.question?.id) - 2]);
-        setIsAnswerSubmitted(false);
-    };
+    // const previousQuestion = () => {
+    //     setQuestion(questions[Number(questionInfos.question?.id) - 2]);
+    //     setIsAnswerSubmitted(false);
+    // };
 
     useEffect(() => {}, [questionInfos]);
 
@@ -55,12 +54,12 @@ const StudentModeQuiz: React.FC<StudentModeQuizProps> = ({
         <div className="overflow-auto">
             <div className="question-component-container">
                 <div className="mb-5">
-                    <QuestionNavigation
+                    {/* <QuestionNavigation
                         currentQuestionId={Number(questionInfos.question.id)}
                         questionsLength={questions.length}
                         previousQuestion={previousQuestion}
                         nextQuestion={nextQuestion}
-                        />
+                        /> */}
                 </div>
                 <QuestionComponent
                     handleOnSubmitAnswer={handleOnSubmitAnswer}
@@ -69,7 +68,7 @@ const StudentModeQuiz: React.FC<StudentModeQuizProps> = ({
                     />
                 <div className="center-h-align mt-1/2">
                     <div className="w-12">
-                        <Button
+                        {/* <Button
                             variant="outlined"
                             onClick={previousQuestion}
                             fullWidth
@@ -77,14 +76,14 @@ const StudentModeQuiz: React.FC<StudentModeQuizProps> = ({
                             disabled={Number(questionInfos.question.id) <= 1}
                             >
                             Question précédente
-                        </Button>
+                        </Button> */}
                     </div>
                     <div className="w-12">
-                        <Button
+                        <Button style={{ display: isAnswerSubmitted ? 'block' : 'none' }}
                             variant="outlined"
                             onClick={nextQuestion}
                             fullWidth
-                            endIcon={<ChevronRight />}
+                            //endIcon={<ChevronRight />}
                             disabled={Number(questionInfos.question.id) >= questions.length}
                             >
                             Question suivante
@@ -93,7 +92,7 @@ const StudentModeQuiz: React.FC<StudentModeQuizProps> = ({
                 </div>
             </div>
         </div>
-                            </div>
+    </div>
     );
 };
 
