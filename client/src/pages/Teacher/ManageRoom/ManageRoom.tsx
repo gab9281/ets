@@ -18,7 +18,7 @@ import { Refresh, Error } from '@mui/icons-material';
 import StudentWaitPage from 'src/components/StudentWaitPage/StudentWaitPage';
 import DisconnectButton from 'src/components/DisconnectButton/DisconnectButton';
 //import QuestionNavigation from 'src/components/QuestionNavigation/QuestionNavigation';
-import Question from 'src/components/Questions/Question';
+import QuestionDisplay from 'src/components/Questions/QuestionDisplay';
 import ApiService from '../../../services/ApiService';
 
 const ManageRoom: React.FC = () => {
@@ -474,7 +474,7 @@ const ManageRoom: React.FC = () => {
                             <div className="preview-and-result-container">
 
                                 {currentQuestion && (
-                                    <Question
+                                    <QuestionDisplay
                                         showAnswer={false}
                                         question={currentQuestion?.question}
                                     />

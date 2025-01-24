@@ -1,35 +1,39 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import MultipleChoiceQuestion from 'src/components/Questions/MultipleChoiceQuestion/MultipleChoiceQuestion';
+import MultipleChoiceQuestionDisplay from 'src/components/Questions/MultipleChoiceQuestionDisplay/MultipleChoiceQuestionDisplay';
 import { act } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { MultipleChoiceQuestion, parse } from 'gift-pegjs';
 
-const questionStem = 'Question stem';
-const sampleFeedback = 'Feedback';
+const questions = parse(
+    `::Sample Question 1:: Question stem
+    {
+        =Choice 1
+        ~Choice 2
+    }`) as MultipleChoiceQuestion[];
 
-describe('MultipleChoiceQuestion', () => {
+const question = questions[0];
+
+describe('MultipleChoiceQuestionDisplay', () => {
     const mockHandleOnSubmitAnswer = jest.fn();
-    const choices = [
-        { feedback: null, isCorrect: true, text: { format: 'plain', text: 'Choice 1' } },
-        { feedback: null, isCorrect: false, text: { format: 'plain', text: 'Choice 2' } }
-    ];
+    const choices = question.choices;
 
     beforeEach(() => {
         render(
             <MemoryRouter>
-                <MultipleChoiceQuestion
-                    globalFeedback={sampleFeedback}
-                    choices={choices}
+                <MultipleChoiceQuestionDisplay
+                    question={question}
                     handleOnSubmitAnswer={mockHandleOnSubmitAnswer}
-                    questionStem={{ text: questionStem, format: 'plain' }} />
+                    showAnswer={false}
+                    />
             </MemoryRouter>);
     });
 
     test('renders the question and choices', () => {
-        expect(screen.getByText(questionStem)).toBeInTheDocument();
+        expect(screen.getByText(question.formattedStem.text)).toBeInTheDocument();
         choices.forEach((choice) => {
-            expect(screen.getByText(choice.text.text)).toBeInTheDocument();
+            expect(screen.getByText(choice.formattedText.text)).toBeInTheDocument();
         });
     });
 

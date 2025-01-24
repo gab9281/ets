@@ -3,19 +3,19 @@ import React, { useState } from 'react';
 import '../questionStyle.css';
 import { Button, TextField } from '@mui/material';
 import textType from '../../GiftTemplate/templates/TextType';
-import { TextFormat } from '../../GiftTemplate/templates/types';
+import { TextFormat, NumericalAnswer, isHighLowNumericalAnswer, isMultipleNumericalAnswer, isRangeNumericalAnswer, isSimpleNumericalAnswer, SimpleNumericalAnswer, RangeNumericalAnswer, HighLowNumericalAnswer } from 'gift-pegjs';
 import DOMPurify from 'dompurify';
 
-type CorrectAnswer = {
-    numberHigh?: number;
-    numberLow?: number;
-    number?: number;
-    type: string;
-};
+// type CorrectAnswer = {
+//     numberHigh?: number;
+//     numberLow?: number;
+//     number?: number;
+//     type: string;
+// };
 
 interface Props {
     questionContent: TextFormat;
-    correctAnswers: CorrectAnswer;
+    correctAnswers: NumericalAnswer;
     globalFeedback?: string | undefined;
     handleOnSubmitAnswer?: (answer: number) => void;
     showAnswer?: boolean;
@@ -27,11 +27,22 @@ const NumericalQuestion: React.FC<Props> = (props) => {
 
     const [answer, setAnswer] = useState<number>();
 
-    const correctAnswer =
-        correctAnswers.type === 'high-low'
-            ? `Entre ${correctAnswers.numberLow} et ${correctAnswers.numberHigh}`
-            : correctAnswers.number;
+    let correctAnswer= '';
 
+    if (isSimpleNumericalAnswer(correctAnswers)) {
+        correctAnswer = `${(correctAnswers as SimpleNumericalAnswer).number}`;
+      } else if (isRangeNumericalAnswer(correctAnswers)) {
+        const choice = correctAnswers as RangeNumericalAnswer;
+        correctAnswer = `Entre ${choice.number - choice.range} et ${choice.number + choice.range}`;
+      } else if (isHighLowNumericalAnswer(correctAnswers)) {
+        const choice = correctAnswers as HighLowNumericalAnswer;
+        correctAnswer = `Entre ${choice.numberLow} et ${choice.numberHigh}`;
+      } else if (isMultipleNumericalAnswer(correctAnswers)) {
+        correctAnswer = `MultipleNumericalAnswer is not supported yet`;
+      } else {
+        throw new Error('Unknown numerical answer type');
+      }
+  
     return (
         <div className="question-wrapper">
             <div>

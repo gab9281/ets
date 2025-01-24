@@ -1,35 +1,25 @@
-// MultipleChoiceQuestion.tsx
+// MultipleChoiceQuestionDisplay.tsx
 import React, { useEffect, useState } from 'react';
 import '../questionStyle.css';
 import { Button } from '@mui/material';
-import textType, { formatLatex } from '../../GiftTemplate/templates/TextType';
-import { TextFormat } from '../../GiftTemplate/templates/types';
+import { textType } from '../../GiftTemplate/templates/TextType';
+import { MultipleChoiceQuestion } from 'gift-pegjs';
 import DOMPurify from 'dompurify';
-// import Latex from 'react-latex';
-
-type Choices = {
-    feedback: { format: string; text: string } | null;
-    isCorrect: boolean;
-    text: { format: string; text: string };
-    weigth?: number;
-};
 
 interface Props {
-    questionStem: TextFormat;
-    choices: Choices[];
-    globalFeedback?: string | undefined;
+    question: MultipleChoiceQuestion;
     handleOnSubmitAnswer?: (answer: string) => void;
     showAnswer?: boolean;
 }
 
-const MultipleChoiceQuestion: React.FC<Props> = (props) => {
+const MultipleChoiceQuestionDisplay: React.FC<Props> = (props) => {
   
-    const { questionStem: questionContent, choices, showAnswer, handleOnSubmitAnswer, globalFeedback } = props;
+    const { question, showAnswer, handleOnSubmitAnswer } = props;
     const [answer, setAnswer] = useState<string>();
 
     useEffect(() => {
         setAnswer(undefined);
-    }, [questionContent]);
+    }, [question]);
 
     const handleOnClickAnswer = (choice: string) => {
         setAnswer(choice);
@@ -41,38 +31,40 @@ const MultipleChoiceQuestion: React.FC<Props> = (props) => {
     return (
         <div className="question-container">
             <div className="question content">
-                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({text: questionContent})) }} />
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({text: question.formattedStem})) }} />
             </div>
             <div className="choices-wrapper mb-1">
-                {choices.map((choice, i) => {
-                    const selected = answer === choice.text.text ? 'selected' : '';
+                {question.choices.map((choice, i) => {
+                    const selected = answer === choice.formattedText.text ? 'selected' : '';
                     return (
-                        <div key={choice.text.text + i} className="choice-container">
+                        <div key={choice.formattedText.text + i} className="choice-container">
                                 <Button
                                 variant="text"
                                 className="button-wrapper"
-                                onClick={() => !showAnswer && handleOnClickAnswer(choice.text.text)}
+                                onClick={() => !showAnswer && handleOnClickAnswer(choice.formattedText.text)}
                             >
-                                {choice.feedback === null &&
+                                {choice.formattedFeedback === null &&
                                     showAnswer &&
                                     (choice.isCorrect ? '✅' : '❌')}
                                 <div className={`circle ${selected}`}>{alphabet[i]}</div>
                                 <div className={`answer-text ${selected}`}>
-                                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(formatLatex(choice.text.text)) }} />
+                                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({ text: choice.formattedText })) }} />
                                 </div>
                             </Button>
-                            {choice.feedback && showAnswer && (
+                            {choice.formattedFeedback && showAnswer && (
                                 <div className="feedback-container mb-1 mt-1/2">
                                     {choice.isCorrect ? '✅' : '❌'}
-                                    {choice.feedback?.text}
+                                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({ text: choice.formattedFeedback })) }} />
                                 </div>
                             )}
                         </div>
                     );
                 })}
             </div>
-            {globalFeedback && showAnswer && (
-                <div className="global-feedback mb-2">{globalFeedback}</div>
+            {question.formattedGlobalFeedback && showAnswer && (
+                <div className="global-feedback mb-2">
+                    <p>${textType({ text: question.formattedGlobalFeedback })}</p>
+                </div>
             )}
             
             {!showAnswer && handleOnSubmitAnswer && (
@@ -92,4 +84,4 @@ const MultipleChoiceQuestion: React.FC<Props> = (props) => {
     );
 };
 
-export default MultipleChoiceQuestion;
+export default MultipleChoiceQuestionDisplay;

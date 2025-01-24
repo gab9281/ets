@@ -28,7 +28,7 @@ export function formatLatex(text: string): string {
  * @see marked
  * @see katex
  */
-export default function textType({ text }: TextTypeOptions) {
+export function textType({ text }: TextTypeOptions) {
     const formatText = formatLatex(text.text.trim());  // latex needs pure "&", ">", etc. Must not be escaped
     let parsedText = ''; 
     switch (text.format) {

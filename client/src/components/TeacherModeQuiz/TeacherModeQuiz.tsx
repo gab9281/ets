@@ -1,7 +1,7 @@
 // TeacherModeQuiz.tsx
 import React, { useEffect, useState } from 'react';
 
-import QuestionComponent from '../Questions/Question';
+import QuestionComponent from '../Questions/QuestionDisplay';
 
 import '../../pages/Student/JoinRoom/joinRoom.css';
 import { QuestionType } from '../../Types/QuestionType';

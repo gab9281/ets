@@ -1,21 +1,20 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { parse } from 'gift-pegjs';
 import { MemoryRouter } from 'react-router-dom';
-import { QuestionType } from '../../../../Types/QuestionType';
+import { Question } from 'gift-pegjs';
 import StudentModeQuiz from 'src/components/StudentModeQuiz/StudentModeQuiz';
+import { parse } from 'gift-pegjs';
 
 const mockGiftQuestions = parse(
     `::Sample Question 1:: Sample Question 1 {=Option A ~Option B}
     
     ::Sample Question 2:: Sample Question 2 {T}`);
 
-const mockQuestions: QuestionType[] = mockGiftQuestions.map((question, index) => {
-    question.id = (index + 1).toString();
-    const newMockQuestion: QuestionType = {
-        question: question,
-    };
+const mockQuestions: Question[] = mockGiftQuestions.map((question, index) => {
+    if (question.type !== "Category")
+        question.id = (index + 1).toString();
+    const newMockQuestion = question;
     return newMockQuestion;
 });
 
