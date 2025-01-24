@@ -2,29 +2,48 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import NumericalQuestion from 'src/components/Questions/NumericalQuestion/NumericalQuestion';
+import NumericalQuestionDisplay from 'src/components/Questions/NumericalQuestionDisplay/NumericalQuestionDisplay';
+import { NumericalQuestion, parse, ParsedGIFTQuestion } from 'gift-pegjs';
+import { MemoryRouter } from 'react-router-dom';
+
+const questions = parse(
+    `
+    ::Sample Question 1:: Question stem
+    {
+        #5..10
+    }`
+) as ParsedGIFTQuestion[];
+
+const question = questions[0] as NumericalQuestion;
+
+describe('NumericalQuestion parse', () => {
+    const q = questions[0];
+
+    it('The question is Numerical', () => {
+        expect(q.type).toBe('Numerical');
+    });
+});
 
 describe('NumericalQuestion Component', () => {
-    const mockHandleSubmitAnswer = jest.fn();
-    const sampleStem = 'Sample question stem';
+    const mockHandleOnSubmitAnswer = jest.fn();
 
     const sampleProps = {
-        questionTitle: 'Sample Question',
-        correctAnswers: {
-            numberHigh: 10,
-            numberLow: 5,
-            type: 'high-low'
-        },
-        handleOnSubmitAnswer: mockHandleSubmitAnswer,
+        question: question,
+        handleOnSubmitAnswer: mockHandleOnSubmitAnswer,
         showAnswer: false
     };
 
     beforeEach(() => {
-        render(<NumericalQuestion questionContent={{text: sampleStem, format: 'plain'}} {...sampleProps} />);
+        render(
+            <MemoryRouter>
+                <NumericalQuestionDisplay
+                    {...sampleProps}
+                />
+            </MemoryRouter>);
     });
 
     it('renders correctly', () => {
-        expect(screen.getByText(sampleStem)).toBeInTheDocument();
+        expect(screen.getByText(question.formattedStem.text)).toBeInTheDocument();
         expect(screen.getByTestId('number-input')).toBeInTheDocument();
         expect(screen.getByText('Répondre')).toBeInTheDocument();
     });
@@ -48,7 +67,7 @@ describe('NumericalQuestion Component', () => {
 
         fireEvent.click(submitButton);
 
-        expect(mockHandleSubmitAnswer).not.toHaveBeenCalled();
+        expect(mockHandleOnSubmitAnswer).not.toHaveBeenCalled();
     });
 
     it('submits answer correctly', () => {
@@ -59,6 +78,6 @@ describe('NumericalQuestion Component', () => {
 
         fireEvent.click(submitButton);
 
-        expect(mockHandleSubmitAnswer).toHaveBeenCalledWith(7);
+        expect(mockHandleOnSubmitAnswer).toHaveBeenCalledWith(7);
     });
 });

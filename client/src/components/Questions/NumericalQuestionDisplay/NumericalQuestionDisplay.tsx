@@ -3,71 +3,70 @@ import React, { useState } from 'react';
 import '../questionStyle.css';
 import { Button, TextField } from '@mui/material';
 import { textType } from '../../GiftTemplate/templates/TextType';
-import { TextFormat, NumericalAnswer, isHighLowNumericalAnswer, isMultipleNumericalAnswer, isRangeNumericalAnswer, isSimpleNumericalAnswer, SimpleNumericalAnswer, RangeNumericalAnswer, HighLowNumericalAnswer } from 'gift-pegjs';
+import { NumericalQuestion, SimpleNumericalAnswer, RangeNumericalAnswer, HighLowNumericalAnswer } from 'gift-pegjs';
+import { isSimpleNumericalAnswer, isRangeNumericalAnswer, isHighLowNumericalAnswer, isMultipleNumericalAnswer } from 'gift-pegjs/typeGuards';
 import DOMPurify from 'dompurify';
 
-// type CorrectAnswer = {
-//     numberHigh?: number;
-//     numberLow?: number;
-//     number?: number;
-//     type: string;
-// };
-
 interface Props {
-    questionContent: TextFormat;
-    correctAnswers: NumericalAnswer;
-    globalFeedback?: string | undefined;
+    question: NumericalQuestion;
     handleOnSubmitAnswer?: (answer: number) => void;
     showAnswer?: boolean;
 }
 
-const NumericalQuestion: React.FC<Props> = (props) => {
-    const { questionContent, correctAnswers, showAnswer, handleOnSubmitAnswer, globalFeedback } =
+const NumericalQuestionDisplay: React.FC<Props> = (props) => {
+    const { question, showAnswer, handleOnSubmitAnswer } =
         props;
 
     const [answer, setAnswer] = useState<number>();
 
-    let correctAnswer= '';
+    const correctAnswers = question.choices;
+    let correctAnswer = '';
 
-    if (isSimpleNumericalAnswer(correctAnswers)) {
-        correctAnswer = `${(correctAnswers as SimpleNumericalAnswer).number}`;
-      } else if (isRangeNumericalAnswer(correctAnswers)) {
-        const choice = correctAnswers as RangeNumericalAnswer;
+    //const isSingleAnswer = correctAnswers.length === 1;
+
+    if (isSimpleNumericalAnswer(correctAnswers[0])) {
+        correctAnswer = `${(correctAnswers[0] as SimpleNumericalAnswer).number}`;
+    } else if (isRangeNumericalAnswer(correctAnswers[0])) {
+        const choice = correctAnswers[0] as RangeNumericalAnswer;
         correctAnswer = `Entre ${choice.number - choice.range} et ${choice.number + choice.range}`;
-      } else if (isHighLowNumericalAnswer(correctAnswers)) {
-        const choice = correctAnswers as HighLowNumericalAnswer;
+    } else if (isHighLowNumericalAnswer(correctAnswers[0])) {
+        const choice = correctAnswers[0] as HighLowNumericalAnswer;
         correctAnswer = `Entre ${choice.numberLow} et ${choice.numberHigh}`;
-      } else if (isMultipleNumericalAnswer(correctAnswers)) {
+    } else if (isMultipleNumericalAnswer(correctAnswers[0])) {
         correctAnswer = `MultipleNumericalAnswer is not supported yet`;
-      } else {
+    } else {
         throw new Error('Unknown numerical answer type');
-      }
-  
+    }
+
     return (
         <div className="question-wrapper">
             <div>
-                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({text: questionContent})) }} />
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({ text: question.formattedStem })) }} />
             </div>
             {showAnswer ? (
                 <>
                     <div className="correct-answer-text mb-2">{correctAnswer}</div>
-                    {globalFeedback && <div className="global-feedback mb-2">{globalFeedback}</div>}
+                    {question.formattedGlobalFeedback && <div className="global-feedback mb-2">
+                        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({ text: question.formattedGlobalFeedback })) }} />
+                    </div>}
                 </>
             ) : (
                 <>
                     <div className="answer-wrapper mb-1">
                         <TextField
                             type="number"
-                            id={questionContent.text}
-                            name={questionContent.text}
+                            id={question.formattedStem.text}
+                            name={question.formattedStem.text}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 setAnswer(e.target.valueAsNumber);
                             }}
                             inputProps={{ 'data-testid': 'number-input' }}
                         />
                     </div>
-                    {globalFeedback && showAnswer && (
-                        <div className="global-feedback mb-2">{globalFeedback}</div>
+                    {question.formattedGlobalFeedback && showAnswer && (
+                        <div className="global-feedback mb-2">
+                            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({ text: question.formattedGlobalFeedback })) }} />
+                        </div>
                     )}
                     {handleOnSubmitAnswer && (
                         <Button
@@ -88,4 +87,4 @@ const NumericalQuestion: React.FC<Props> = (props) => {
     );
 };
 
-export default NumericalQuestion;
+export default NumericalQuestionDisplay;

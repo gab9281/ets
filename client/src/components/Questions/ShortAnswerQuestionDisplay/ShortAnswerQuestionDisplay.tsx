@@ -1,59 +1,50 @@
-// ShortAnswerQuestion.tsx
 import React, { useState } from 'react';
 import '../questionStyle.css';
 import { Button, TextField } from '@mui/material';
-import textType from '../../GiftTemplate/templates/TextType';
-import { TextFormat } from '../../GiftTemplate/templates/types';
+import { textType } from '../../GiftTemplate/templates/TextType';
+import { ShortAnswerQuestion } from 'gift-pegjs';
 import DOMPurify from 'dompurify';
 
-type Choices = {
-    feedback: { format: string; text: string } | null;
-    isCorrect: boolean;
-    text: { format: string; text: string };
-    weigth?: number;
-    id: string;
-};
-
 interface Props {
-    questionContent: TextFormat;
-    choices: Choices[];
-    globalFeedback?: string | undefined;
+    question: ShortAnswerQuestion;
     handleOnSubmitAnswer?: (answer: string) => void;
     showAnswer?: boolean;
 }
 
-const ShortAnswerQuestion: React.FC<Props> = (props) => {
-    const { questionContent, choices, showAnswer, handleOnSubmitAnswer, globalFeedback } = props;
+const ShortAnswerQuestionDisplay: React.FC<Props> = (props) => {
+    const { question, showAnswer, handleOnSubmitAnswer } = props;
     const [answer, setAnswer] = useState<string>();
 
     return (
         <div className="question-wrapper">
             <div className="question content">
-                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({text: questionContent})) }} />
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({text: question.formattedStem})) }} />
             </div>
             {showAnswer ? (
                 <>
                     <div className="correct-answer-text mb-1">
-                        {choices.map((choice) => (
-                            <div key={choice.id} className="mb-1">
-                                {choice.text.text}
+                        {question.choices.map((choice) => (
+                            <div key={choice.text} className="mb-1">
+                                {choice.text}
                             </div>
                         ))}
                     </div>
-                    {globalFeedback && <div className="global-feedback mb-2">{globalFeedback}</div>}
+                    {question.formattedGlobalFeedback && <div className="global-feedback mb-2">
+                        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({text: question.formattedGlobalFeedback})) }} />
+                    </div>}
                 </>
             ) : (
                 <>
                     <div className="answer-wrapper mb-1">
                         <TextField
                             type="text"
-                            id={questionContent.text}
-                            name={questionContent.text}
+                            id={question.formattedStem.text}
+                            name={question.formattedStem.text}
                             onChange={(e) => {
                                 setAnswer(e.target.value);
                             }}
                             disabled={showAnswer}
-                            inputProps={{ 'data-testid': 'text-input' }}
+                            aria-label="short-answer-input"
                         />
                     </div>
                     {handleOnSubmitAnswer && (
@@ -75,4 +66,4 @@ const ShortAnswerQuestion: React.FC<Props> = (props) => {
     );
 };
 
-export default ShortAnswerQuestion;
+export default ShortAnswerQuestionDisplay;

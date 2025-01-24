@@ -1,71 +1,40 @@
 // Question.test.tsx
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Questions from 'src/components/Questions/QuestionDisplay';
-import { GIFTQuestion } from 'gift-pegjs';
+import QuestionDisplay from 'src/components/Questions/QuestionDisplay';
+import { parse, Question } from 'gift-pegjs';
 
-//
 describe('Questions Component', () => {
     const mockHandleSubmitAnswer = jest.fn();
 
-    const sampleTrueFalseQuestion: GIFTQuestion = {
-        type: 'TF',
-        stem: { format: 'plain', text: 'Sample True/False Question' },
-        isTrue: true,
-        falseFeedback: null,
-        trueFeedback: null,
-        title: 'True/False Question',
-        hasEmbeddedAnswers: false,
-        globalFeedback: null,
+    const sampleTrueFalseQuestion = 
+        parse('::Sample True/False Question:: Sample True/False Question {T}')[0];
+
+    const sampleMultipleChoiceQuestion =
+        parse('::Sample Multiple Choice Question:: Sample Multiple Choice Question {=Choice 1 ~Choice 2}')[0];
+    
+    const sampleNumericalQuestion = 
+        parse('::Sample Numerical Question:: Sample Numerical Question {#5..10}')[0];
+
+    const sampleShortAnswerQuestion = 
+        parse('::Sample Short Answer Question:: Sample Short Answer Question {=Correct Answer =Another Answer}')[0];
+
+    const sampleProps = {
+        handleOnSubmitAnswer: mockHandleSubmitAnswer,
+        showAnswer: false
     };
 
-    const sampleMultipleChoiceQuestion: GIFTQuestion = {
-        type: 'MC',
-        stem: { format: 'plain', text: 'Sample Multiple Choice Question' },
-        title: 'Multiple Choice Question',
-        hasEmbeddedAnswers: false,
-        globalFeedback: null,
-        choices: [
-            { feedback: null, isCorrect: true, text: { format: 'plain', text: 'Choice 1' }, weight: 1 },
-            { feedback: null, isCorrect: false, text: { format: 'plain', text: 'Choice 2' }, weight: 0 },
-        ],
+    const renderComponent = (question: Question) => {
+        render(<QuestionDisplay question={question} {...sampleProps} />);
     };
 
-    const sampleNumericalQuestion: GIFTQuestion = {
-        type: 'Numerical',
-        stem: { format: 'plain', text: 'Sample Numerical Question' },
-        title: 'Numerical Question',
-        hasEmbeddedAnswers: false,
-        globalFeedback: null,
-        choices: { numberHigh: 10, numberLow: 5, type: 'high-low' },
-    };
-
-    const sampleShortAnswerQuestion: GIFTQuestion = {
-        type: 'Short',
-        stem: { format: 'plain', text: 'Sample short answer question' },
-        title: 'Short Answer Question Title',
-        hasEmbeddedAnswers: false,
-        globalFeedback: null,
-        choices: [
-            {
-                feedback: { format: 'html', text: 'Correct answer feedback' },
-                isCorrect: true,
-                text: { format: 'html', text: 'Correct Answer' },
-                weight: 1,
-            },
-            {
-                feedback: { format: 'html', text: 'Incorrect answer feedback' },
-                isCorrect: false,
-                text: { format: 'html', text: 'Incorrect Answer' },
-                weight: 0,
-            },
-        ],
-    };
-
-    const renderComponent = (question: GIFTQuestion) => {
-        render(<Questions question={question} handleOnSubmitAnswer={mockHandleSubmitAnswer} />);
-    };
+    it('parsed questions correctly', () => {
+        expect(sampleTrueFalseQuestion.type).toBe('TF');
+        expect(sampleMultipleChoiceQuestion.type).toBe('MC');
+        expect(sampleNumericalQuestion.type).toBe('Numerical');
+        expect(sampleShortAnswerQuestion.type).toBe('Short');
+    });
 
     it('renders correctly for True/False question', () => {
         renderComponent(sampleTrueFalseQuestion);
@@ -120,15 +89,19 @@ describe('Questions Component', () => {
     it('renders correctly for Short Answer question', () => {
         renderComponent(sampleShortAnswerQuestion);
 
-        expect(screen.getByText('Sample short answer question')).toBeInTheDocument();
-        expect(screen.getByTestId('text-input')).toBeInTheDocument();
+        expect(screen.getByText('Sample Short Answer Question')).toBeInTheDocument();
+        const container = screen.getByLabelText('short-answer-input');
+        const inputElement = within(container).getByRole('textbox') as HTMLInputElement;
+        expect(inputElement).toBeInTheDocument();
         expect(screen.getByText('Répondre')).toBeInTheDocument();
     });
 
     it('handles input and submission for Short Answer question', () => {
         renderComponent(sampleShortAnswerQuestion);
 
-        const inputElement = screen.getByTestId('text-input') as HTMLInputElement;
+        const container = screen.getByLabelText('short-answer-input');
+        const inputElement = within(container).getByRole('textbox') as HTMLInputElement;
+
         fireEvent.change(inputElement, { target: { value: 'User Input' } });
 
         const submitButton = screen.getByText('Répondre');

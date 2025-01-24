@@ -1,54 +1,35 @@
 // ShortAnswerQuestion.test.tsx
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ShortAnswerQuestion from 'src/components/Questions/ShortAnswerQuestion/ShortAnswerQuestion';
+import ShortAnswerQuestionDisplay from 'src/components/Questions/ShortAnswerQuestionDisplay/ShortAnswerQuestionDisplay';
+import { parse, ShortAnswerQuestion } from 'gift-pegjs';
 
 describe('ShortAnswerQuestion Component', () => {
     const mockHandleSubmitAnswer = jest.fn();
-    const sampleStem = 'Sample question stem';
+    const question = 
+        parse('::Sample Short Answer Question:: Sample Short Answer Question {=Correct Answer ~Incorrect Answer}')[0] as ShortAnswerQuestion;
 
     const sampleProps = {
-        questionTitle: 'Sample Question',
-        choices: [
-            {
-                id: '1',
-                feedback: {
-                    format: 'text',
-                    text: 'Correct answer feedback'
-                },
-                isCorrect: true,
-                text: {
-                    format: 'text',
-                    text: 'Correct Answer'
-                }
-            },
-            {
-                id: '2',
-                feedback: null,
-                isCorrect: false,
-                text: {
-                    format: 'text',
-                    text: 'Incorrect Answer'
-                }
-            }
-        ],
         handleOnSubmitAnswer: mockHandleSubmitAnswer,
         showAnswer: false
     };
 
     beforeEach(() => {
-        render(<ShortAnswerQuestion questionContent={{text: sampleStem, format: 'plain'}} {...sampleProps} />);
+        render(<ShortAnswerQuestionDisplay question={question} {...sampleProps} />);
     });
 
     it('renders correctly', () => {
-        expect(screen.getByText(sampleStem)).toBeInTheDocument();
-        expect(screen.getByTestId('text-input')).toBeInTheDocument();
+        expect(screen.getByText(question.formattedStem.text)).toBeInTheDocument();
+        const container = screen.getByLabelText('short-answer-input');
+        const inputElement = within(container).getByRole('textbox') as HTMLInputElement;
+        expect(inputElement).toBeInTheDocument();
         expect(screen.getByText('Répondre')).toBeInTheDocument();
     });
 
     it('handles input change correctly', () => {
-        const inputElement = screen.getByTestId('text-input') as HTMLInputElement;
+        const container = screen.getByLabelText('short-answer-input');
+        const inputElement = within(container).getByRole('textbox') as HTMLInputElement;
 
         fireEvent.change(inputElement, { target: { value: 'User Input' } });
 
@@ -70,7 +51,10 @@ describe('ShortAnswerQuestion Component', () => {
     });
 
     it('submits answer correctly', () => {
-        const inputElement = screen.getByTestId('text-input') as HTMLInputElement;
+        const container = screen.getByLabelText('short-answer-input');
+        const inputElement = within(container).getByRole('textbox') as HTMLInputElement;
+
+        // const inputElement = screen.getByRole('textbox', { name: 'short-answer-input'}) as HTMLInputElement;
         const submitButton = screen.getByText('Répondre');
 
         fireEvent.change(inputElement, { target: { value: 'User Input' } });

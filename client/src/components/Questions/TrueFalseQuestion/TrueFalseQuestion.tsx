@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import '../questionStyle.css';
 import { Button } from '@mui/material';
-import textType from '../../GiftTemplate/templates/TextType';
-import { TextFormat } from '../../GiftTemplate/templates/types';
+import { textType } from '../../GiftTemplate/templates/TextType';
+import { TextFormat } from 'gift-pegjs';
 import DOMPurify from 'dompurify';
 
 interface Props {

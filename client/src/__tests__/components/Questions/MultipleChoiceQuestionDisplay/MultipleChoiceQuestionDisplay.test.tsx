@@ -17,15 +17,19 @@ const question = questions[0];
 
 describe('MultipleChoiceQuestionDisplay', () => {
     const mockHandleOnSubmitAnswer = jest.fn();
+    const sampleProps = {
+        question: question,
+        handleOnSubmitAnswer: mockHandleOnSubmitAnswer,
+        showAnswer: false
+    };
+
     const choices = question.choices;
 
     beforeEach(() => {
         render(
             <MemoryRouter>
                 <MultipleChoiceQuestionDisplay
-                    question={question}
-                    handleOnSubmitAnswer={mockHandleOnSubmitAnswer}
-                    showAnswer={false}
+                  {...sampleProps}
                     />
             </MemoryRouter>);
     });

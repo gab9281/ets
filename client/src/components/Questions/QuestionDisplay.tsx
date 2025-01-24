@@ -1,12 +1,12 @@
 // Question;tsx
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Question } from 'gift-pegjs';
 
 import TrueFalseQuestion from './TrueFalseQuestion/TrueFalseQuestion';
 import MultipleChoiceQuestionDisplay from './MultipleChoiceQuestionDisplay/MultipleChoiceQuestionDisplay';
-import NumericalQuestion from './NumericalQuestion/NumericalQuestion';
-import ShortAnswerQuestion from './ShortAnswerQuestion/ShortAnswerQuestion';
-import useCheckMobileScreen from '../../services/useCheckMobileScreen';
+import NumericalQuestionDisplay from './NumericalQuestionDisplay/NumericalQuestionDisplay';
+import ShortAnswerQuestionDisplay from './ShortAnswerQuestionDisplay/ShortAnswerQuestionDisplay';
+// import useCheckMobileScreen from '../../services/useCheckMobileScreen';
 
 interface QuestionProps {
     question: Question;
@@ -18,10 +18,10 @@ const QuestionDisplay: React.FC<QuestionProps> = ({
     handleOnSubmitAnswer,
     showAnswer,
 }) => {
-    const isMobile = useCheckMobileScreen();
-    const imgWidth = useMemo(() => {
-        return isMobile ? '100%' : '20%';
-    }, [isMobile]);
+    // const isMobile = useCheckMobileScreen();
+    // const imgWidth = useMemo(() => {
+    //     return isMobile ? '100%' : '20%';
+    // }, [isMobile]);
 
     let questionTypeComponent = null;
     switch (question?.type) {
@@ -49,22 +49,18 @@ const QuestionDisplay: React.FC<QuestionProps> = ({
             if (question.choices) {
                 if (!Array.isArray(question.choices)) {
                     questionTypeComponent = (
-                        <NumericalQuestion
-                            questionContent={question.formattedStem}
-                            correctAnswers={question.choices}
+                        <NumericalQuestionDisplay
+                            question={question}
                             handleOnSubmitAnswer={handleOnSubmitAnswer}
                             showAnswer={showAnswer}
-                            globalFeedback={question.formattedGlobalFeedback?.text}
                         />
                     );
                 } else {
                     questionTypeComponent = (  // TODO fix NumericalQuestion (correctAnswers is borked)
-                        <NumericalQuestion
-                            questionContent={question.formattedStem}
-                            correctAnswers={question.choices}
+                        <NumericalQuestionDisplay
+                            question={question}
                             handleOnSubmitAnswer={handleOnSubmitAnswer}
                             showAnswer={showAnswer}
-                            globalFeedback={question.formattedGlobalFeedback?.text}
                         />
                     );
                 }
@@ -72,12 +68,10 @@ const QuestionDisplay: React.FC<QuestionProps> = ({
             break;
         case 'Short':
             questionTypeComponent = (
-                <ShortAnswerQuestion
-                    questionContent={question.formattedStem}
-                    choices={question.choices.map((choice, index) => ({ ...choice, id: index.toString() }))}
+                <ShortAnswerQuestionDisplay
+                    question={question}
                     handleOnSubmitAnswer={handleOnSubmitAnswer}
                     showAnswer={showAnswer}
-                    globalFeedback={question.formattedGlobalFeedback?.text}
                 />
             );
             break;
@@ -86,13 +80,6 @@ const QuestionDisplay: React.FC<QuestionProps> = ({
         <div className="question-container">
             {questionTypeComponent ? (
                 <>
-                    {imageUrl && (
-                        <img
-                            src={imageUrl}
-                            alt="QuestionImage"
-                            style={{ width: imgWidth, marginBottom: '2rem' }}
-                        />
-                    )}
                     {questionTypeComponent}
                 </>
             ) : (
