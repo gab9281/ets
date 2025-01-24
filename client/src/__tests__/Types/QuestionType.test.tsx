@@ -1,4 +1,5 @@
 //QuestionType.test.tsx
+// Superfluous test now that gift-pegjs has TypeScript types (and its own tests)
 import { Question } from 'gift-pegjs';
 
 const sampleStem = 'Sample question stem';

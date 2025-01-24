@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import '../questionStyle.css';
 import { Button, TextField } from '@mui/material';
-import textType from '../../GiftTemplate/templates/TextType';
+import { textType } from '../../GiftTemplate/templates/TextType';
 import { TextFormat, NumericalAnswer, isHighLowNumericalAnswer, isMultipleNumericalAnswer, isRangeNumericalAnswer, isSimpleNumericalAnswer, SimpleNumericalAnswer, RangeNumericalAnswer, HighLowNumericalAnswer } from 'gift-pegjs';
 import DOMPurify from 'dompurify';
 
