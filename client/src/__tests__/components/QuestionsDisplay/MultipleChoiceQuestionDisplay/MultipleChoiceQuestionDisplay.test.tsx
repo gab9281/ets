@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import MultipleChoiceQuestionDisplay from 'src/components/Questions/MultipleChoiceQuestionDisplay/MultipleChoiceQuestionDisplay';
 import { act } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { MultipleChoiceQuestion, parse } from 'gift-pegjs';
+import MultipleChoiceQuestionDisplay from 'src/components/QuestionsDisplay/MultipleChoiceQuestionDisplay/MultipleChoiceQuestionDisplay';
 
 const questions = parse(
     `::Sample Question 1:: Question stem

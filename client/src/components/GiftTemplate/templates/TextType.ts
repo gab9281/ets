@@ -1,10 +1,7 @@
 import { marked } from 'marked';
 import katex from 'katex';
-import { TemplateOptions, TextFormat } from './types';
+import { TextFormat } from 'gift-pegjs';
 
-interface TextTypeOptions extends TemplateOptions {
-    text: TextFormat;
-}
 
 export function formatLatex(text: string): string {
     return text
@@ -28,10 +25,10 @@ export function formatLatex(text: string): string {
  * @see marked
  * @see katex
  */
-export function textType({ text }: TextTypeOptions) {
-    const formatText = formatLatex(text.text.trim());  // latex needs pure "&", ">", etc. Must not be escaped
+export function textType(formattedText: TextFormat): string {
+    const formatText = formatLatex(formattedText.text.trim());  // latex needs pure "&", ">", etc. Must not be escaped
     let parsedText = ''; 
-    switch (text.format) {
+    switch (formattedText.format) {
         case 'moodle':
         case 'plain':
             // Replace newlines with <br> tags
@@ -43,6 +40,6 @@ export function textType({ text }: TextTypeOptions) {
             parsedText = marked.parse(formatText, { breaks: true }) as string; // https://github.com/markedjs/marked/discussions/3219
             return parsedText.replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2');
         default:
-            throw new Error(`Unsupported text format: ${text.format}`);
+            throw new Error(`Unsupported text format: ${formattedText.format}`);
     }
 }

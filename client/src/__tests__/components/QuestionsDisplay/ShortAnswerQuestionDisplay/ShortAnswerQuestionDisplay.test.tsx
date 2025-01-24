@@ -1,9 +1,8 @@
-// ShortAnswerQuestion.test.tsx
 import React from 'react';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ShortAnswerQuestionDisplay from 'src/components/Questions/ShortAnswerQuestionDisplay/ShortAnswerQuestionDisplay';
 import { parse, ShortAnswerQuestion } from 'gift-pegjs';
+import ShortAnswerQuestionDisplay from 'src/components/QuestionsDisplay/ShortAnswerQuestionDisplay/ShortAnswerQuestionDisplay';
 
 describe('ShortAnswerQuestion Component', () => {
     const mockHandleSubmitAnswer = jest.fn();

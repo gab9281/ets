@@ -2,8 +2,8 @@
 import React from 'react';
 import { render, fireEvent, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import TrueFalseQuestion from 'src/components/Questions/TrueFalseQuestion/TrueFalseQuestion';
 import { MemoryRouter } from 'react-router-dom';
+import TrueFalseQuestion from 'src/components/QuestionsDisplay/TrueFalseQuestionDisplay/TrueFalseQuestionDisplay';
 
 describe('TrueFalseQuestion Component', () => {
     const mockHandleSubmitAnswer = jest.fn();

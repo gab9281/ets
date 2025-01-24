@@ -2,7 +2,7 @@
 import React from 'react';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import QuestionDisplay from 'src/components/Questions/QuestionDisplay';
+import QuestionDisplay from 'src/components/QuestionsDisplay/QuestionDisplay';
 import { parse, Question } from 'gift-pegjs';
 
 describe('Questions Component', () => {
@@ -29,13 +29,23 @@ describe('Questions Component', () => {
         render(<QuestionDisplay question={question} {...sampleProps} />);
     };
 
-    it('parsed questions correctly', () => {
-        expect(sampleTrueFalseQuestion.type).toBe('TF');
-        expect(sampleMultipleChoiceQuestion.type).toBe('MC');
-        expect(sampleNumericalQuestion.type).toBe('Numerical');
-        expect(sampleShortAnswerQuestion.type).toBe('Short');
-    });
+    describe('question type parsing', () => {
+        it('parses true/false question type correctly', () => {
+            expect(sampleTrueFalseQuestion.type).toBe('TF');
+        });
 
+        it('parses multiple choice question type correctly', () => {
+            expect(sampleMultipleChoiceQuestion.type).toBe('MC');
+        });
+
+        it('parses numerical question type correctly', () => {
+            expect(sampleNumericalQuestion.type).toBe('Numerical');
+        });
+
+        it('parses short answer question type correctly', () => {
+            expect(sampleShortAnswerQuestion.type).toBe('Short');
+        });
+    });
     it('renders correctly for True/False question', () => {
         renderComponent(sampleTrueFalseQuestion);
 

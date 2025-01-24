@@ -1,10 +1,9 @@
-// NumericalQuestion.test.tsx
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import NumericalQuestionDisplay from 'src/components/Questions/NumericalQuestionDisplay/NumericalQuestionDisplay';
 import { NumericalQuestion, parse, ParsedGIFTQuestion } from 'gift-pegjs';
 import { MemoryRouter } from 'react-router-dom';
+import NumericalQuestionDisplay from 'src/components/QuestionsDisplay/NumericalQuestionDisplay/NumericalQuestionDisplay';
 
 const questions = parse(
     `

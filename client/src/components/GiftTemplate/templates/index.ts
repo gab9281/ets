@@ -1,5 +1,5 @@
 import Category from './Category';
-import Description from './Description';
+import DescriptionTemplate from './Description';
 import Essay from './Essay';
 import Matching from './Matching';
 import MultipleChoice from './MultipleChoice';
@@ -67,7 +67,7 @@ export function ErrorTemplate(text: string, options?: Partial<DisplayOptions>): 
 
 export {
     Category,
-    Description,
+    DescriptionTemplate as Description,
     Essay,
     Matching,
     MultipleChoice,
