@@ -472,7 +472,11 @@ const ManageRoom: React.FC = () => {
 
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <div className="title center-h-align mb-2">{quiz?.title}</div>
-                        <strong className='number of questions'>Question {Number(currentQuestion?.question.id)}/{quizQuestions?.length}</strong>
+                        {!isNaN(Number(currentQuestion?.question.id)) && (
+                            <strong className='number of questions'>
+                                Question {Number(currentQuestion?.question.id)}/{quizQuestions?.length}
+                            </strong>
+                        )}
 
                         {quizMode === 'teacher' && (
 
