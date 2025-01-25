@@ -1,11 +1,12 @@
 import { TemplateOptions } from './types';
 import QuestionContainer from './QuestionContainerTemplate';
 import Title from './TitleTemplate';
-import {textType} from './TextTypeTemplate';
+import {FormatTextTemplate} from './TextTypeTemplate';
 import GlobalFeedback from './GlobalFeedbackTemplate';
 import { ParagraphStyle, SelectStyle } from '../constants';
 import { state } from '.';
 import { MatchingQuestion } from 'gift-pegjs';
+import StemTemplate from './StemTemplate';
 
 type MatchingOptions = TemplateOptions & MatchingQuestion;
 
@@ -25,7 +26,7 @@ export default function MatchingTemplate({
                 type: 'Appariement',
                 title: title
             }),
-            `<p style="${ParagraphStyle(state.theme)}">${textType(formattedStem)}</p>`,
+            StemTemplate({formattedStem}),
             MatchAnswers({ choices: matchPairs }),
             formattedGlobalFeedback ? GlobalFeedback(formattedGlobalFeedback) : ''
         ]
@@ -66,7 +67,7 @@ function MatchAnswers({ choices }: MatchAnswerOptions): string {
         .map(({ formattedSubquestion }) => {
             return `
           <div style="${OptionTable} ${ParagraphStyle(state.theme)}">
-            ${textType(formattedSubquestion)} 
+            ${FormatTextTemplate(formattedSubquestion)} 
           </div>
           <div>
             <select class="gift-select" style="${SelectStyle(state.theme)} ${Dropdown}">

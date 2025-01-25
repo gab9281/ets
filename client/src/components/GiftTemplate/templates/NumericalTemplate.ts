@@ -1,12 +1,12 @@
 import { TemplateOptions } from './types';
 import QuestionContainer from './QuestionContainerTemplate';
 import Title from './TitleTemplate';
-import { textType } from './TextTypeTemplate';
 import GlobalFeedback from './GlobalFeedbackTemplate';
 import { ParagraphStyle, InputStyle } from '../constants';
 import { state } from '.';
 import { NumericalAnswer, NumericalQuestion } from 'gift-pegjs';
 import { isHighLowNumericalAnswer, isRangeNumericalAnswer, isSimpleNumericalAnswer } from 'gift-pegjs/typeGuards';
+import StemTemplate from './StemTemplate';
 
 type NumericalOptions = TemplateOptions & NumericalQuestion;
 type NumericalAnswerOptions = TemplateOptions & Pick<NumericalQuestion, 'choices'>;
@@ -23,7 +23,7 @@ export default function NumericalTemplate({
                 type: 'Numérique',
                 title: title
             }),
-            `<p style="${ParagraphStyle(state.theme)}">${textType(formattedStem)}</p>`,
+            StemTemplate({formattedStem}),
             NumericalAnswers({ choices: choices }),
             formattedGlobalFeedback ? GlobalFeedback(formattedGlobalFeedback) : ''
         ]

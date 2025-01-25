@@ -1,7 +1,7 @@
 import { marked } from 'marked';
 import katex from 'katex';
 import { TextFormat } from 'gift-pegjs';
-
+import DOMPurify from 'dompurify';  // cleans HTML to prevent XSS attacks, etc.
 
 export function formatLatex(text: string): string {
     return text
@@ -25,7 +25,7 @@ export function formatLatex(text: string): string {
  * @see marked
  * @see katex
  */
-export function textType(formattedText: TextFormat): string {
+export function FormatTextTemplate(formattedText: TextFormat): string {
     const formatText = formatLatex(formattedText.text.trim());  // latex needs pure "&", ">", etc. Must not be escaped
     let parsedText = ''; 
     switch (formattedText.format) {
@@ -33,13 +33,13 @@ export function textType(formattedText: TextFormat): string {
         case 'moodle':
         case 'plain':
             // Replace newlines with <br> tags
-            return formatText.replace(/(?:\r\n|\r|\n)/g, '<br>');
+            return DOMPurify.sanitize(formatText.replace(/(?:\r\n|\r|\n)/g, '<br>'));
         case 'html':
             // Strip outer paragraph tags (not a great approach with regex)
-            return formatText.replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2');
+            return DOMPurify.sanitize(formatText.replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2'));
         case 'markdown':
             parsedText = marked.parse(formatText, { breaks: true }) as string; // https://github.com/markedjs/marked/discussions/3219
-            return parsedText.replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2');
+            return DOMPurify.sanitize(parsedText.replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2'));
         default:
             throw new Error(`Unsupported text format: ${formattedText.format}`);
     }

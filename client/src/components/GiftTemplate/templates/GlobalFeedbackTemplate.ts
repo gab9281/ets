@@ -1,5 +1,5 @@
 import { TemplateOptions } from './types';
-import {textType} from './TextTypeTemplate';
+import {FormatTextTemplate} from './TextTypeTemplate';
 import { state } from '.';
 import { theme } from '../constants';
 import { TextFormat } from 'gift-pegjs';
@@ -20,7 +20,7 @@ export default function GlobalFeedbackTemplate({ format, text }: GlobalFeedbackO
 
     return (format && text)
         ? `<div style="${Container}">
-        <p>${textType({format: format, text: text})}</p>
+        <p>${FormatTextTemplate({format: format, text: text})}</p>
       </div>`
         : ``;
 }

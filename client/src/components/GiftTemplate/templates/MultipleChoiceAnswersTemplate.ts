@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { TemplateOptions } from './types';
-import {textType} from './TextTypeTemplate';
+import {FormatTextTemplate} from './TextTypeTemplate';
 import AnswerIcon from './AnswerIconTemplate';
 import { state } from '.';
 import { ParagraphStyle, theme } from '../constants';
@@ -42,7 +42,7 @@ export default function MultipleChoiceAnswersTemplate({ choices }: MultipleChoic
           }" id="${inputId}" name="${id}">
           ${AnswerWeight({ correct: isCorrectOption, weight: weight })}
             <label style="${CustomLabel} ${ParagraphStyle(state.theme)}" for="${inputId}">
-            ${textType(formattedText)}
+            ${FormatTextTemplate(formattedText)}
             </label>
           ${AnswerIcon({ correct: isCorrectOption })}
           ${AnswerFeedback({ formattedFeedback: formattedFeedback })}
@@ -86,5 +86,5 @@ function AnswerFeedback({ formattedFeedback }: AnswerFeedbackOptions): string {
       color: ${theme(state.theme, 'teal700', 'gray700')};
     `;
 
-    return formattedFeedback ? `<span style="${Container}">${textType(formattedFeedback)}</span>` : ``;
+    return formattedFeedback ? `<span style="${Container}">${FormatTextTemplate(formattedFeedback)}</span>` : ``;
 }

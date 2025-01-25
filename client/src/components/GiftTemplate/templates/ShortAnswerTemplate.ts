@@ -1,11 +1,12 @@
 import { TemplateOptions } from './types';
 import QuestionContainer from './QuestionContainerTemplate';
 import Title from './TitleTemplate';
-import {textType} from './TextTypeTemplate';
+import {FormatTextTemplate} from './TextTypeTemplate';
 import GlobalFeedback from './GlobalFeedbackTemplate';
 import { ParagraphStyle, InputStyle } from '../constants';
 import { state } from './index';
 import { ShortAnswerQuestion } from 'gift-pegjs';
+import StemTemplate from './StemTemplate';
 
 type ShortAnswerOptions = TemplateOptions & ShortAnswerQuestion;
 type AnswerOptions = TemplateOptions & Pick<ShortAnswerQuestion, 'choices'>;
@@ -22,7 +23,7 @@ export default function ShortAnswerTemplate({
                 type: 'Réponse courte',
                 title: title
             }),
-            `<p style="${ParagraphStyle(state.theme)}">${textType(formattedStem)}</p>`,
+            StemTemplate({formattedStem}),
             Answers({ choices: choices }),
             formattedGlobalFeedback ? GlobalFeedback(formattedGlobalFeedback) : ''
         ]
@@ -31,7 +32,7 @@ export default function ShortAnswerTemplate({
 
 function Answers({ choices }: AnswerOptions): string {
     const placeholder = choices
-        .map(({ text }) => textType({ format: '', text: text }))
+        .map(({ text }) => FormatTextTemplate({ format: '', text: text }))
         .join(', ');
     return `
     <div>
