@@ -22,7 +22,7 @@ export default function MultipleChoiceTemplate({
                 type: 'Choix multiple',
                 title: title
             }),
-            `<p style="${ParagraphStyle(state.theme)}">${textType(formattedStem)}</p>`,
+            `<p style="${ParagraphStyle(state.theme)}" class="present-question-stem">${textType(formattedStem)}</p>`,
             MultipleChoiceAnswers({ choices: choices }),
             formattedGlobalFeedback ? GlobalFeedback(formattedGlobalFeedback) : ''
         ]

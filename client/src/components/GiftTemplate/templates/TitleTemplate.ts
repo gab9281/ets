@@ -44,7 +44,7 @@ export default function Title({ type, title }: TitleOptions): string {
   <div style="${Container}">
     <span>
       ${
-          title !== null
+          title
               ? `<span style="${QuestionTitle}">${title}</span>`
               : `<span style="${OptionalTitle}"><em>(Sans titre)</em></span>`
       }

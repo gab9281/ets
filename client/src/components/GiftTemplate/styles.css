@@ -72,6 +72,11 @@
     font-size: 2rem;
     font-weight: 500;
 }
+
+.present-question-stem {
+  margin-bottom: 2vh;
+}
+
 .preview-container {
     margin-bottom: 2vh;
     width: 60vw;

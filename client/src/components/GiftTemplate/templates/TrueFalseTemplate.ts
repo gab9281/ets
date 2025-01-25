@@ -5,6 +5,8 @@ import GlobalFeedback from './GlobalFeedbackTemplate';
 import MultipleChoiceAnswersTemplate from './MultipleChoiceAnswersTemplate';
 import Title from './TitleTemplate';
 import { TextChoice, TrueFalseQuestion } from 'gift-pegjs';
+import { ParagraphStyle } from '../constants';
+import { state } from '.';
 import DOMPurify from 'dompurify';
 
 type TrueFalseOptions = TemplateOptions & TrueFalseQuestion;
@@ -40,7 +42,7 @@ export default function TrueFalseTemplate({
                 type: 'Vrai/Faux',
                 title: title
             }),
-            `<div dangerouslySetInnerHTML={{ __html: ${DOMPurify.sanitize(textType(formattedStem))} }} />`,
+            `<p style="${ParagraphStyle(state.theme)}" class="present-question-stem">${DOMPurify.sanitize(textType(formattedStem))}</p>`,
             MultipleChoiceAnswersTemplate({ choices: choices }),
             formattedGlobalFeedback ? GlobalFeedback(formattedGlobalFeedback) : ``
         ]
