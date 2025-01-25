@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import '../questionStyle.css';
 import { Button } from '@mui/material';
 import { TrueFalseQuestion } from 'gift-pegjs';
-import DOMPurify from 'dompurify';
 import { FormatTextTemplate } from 'src/components/GiftTemplate/templates/TextTypeTemplate';
 
 interface Props {
