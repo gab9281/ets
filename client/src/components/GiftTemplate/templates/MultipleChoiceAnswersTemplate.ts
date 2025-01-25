@@ -1,20 +1,21 @@
 import { nanoid } from 'nanoid';
-import { TemplateOptions, TextFormat, Choice, MultipleChoice as MultipleChoiceType } from './types';
-import textType from './TextType';
-import AnswerIcon from './AnswerIcon';
+import { TemplateOptions } from './types';
+import {textType} from './TextTypeTemplate';
+import AnswerIcon from './AnswerIconTemplate';
 import { state } from '.';
 import { ParagraphStyle, theme } from '../constants';
+import { MultipleChoiceQuestion, TextChoice } from 'gift-pegjs';
 
-type MultipleChoiceAnswerOptions = TemplateOptions & Pick<MultipleChoiceType, 'choices'>;
+type MultipleChoiceAnswerOptions = TemplateOptions & Pick<MultipleChoiceQuestion, 'choices'>;
 
-type AnswerFeedbackOptions = TemplateOptions & Pick<Choice, 'feedback'>;
+type AnswerFeedbackOptions = TemplateOptions & Pick<TextChoice, 'formattedFeedback'>;
 
 interface AnswerWeightOptions extends TemplateOptions {
-    weight: Choice['weight'];
-    correct: Choice['isCorrect'];
+    weight: TextChoice['weight'];
+    correct: TextChoice['isCorrect'];
 }
 
-export default function MultipleChoiceAnswers({ choices }: MultipleChoiceAnswerOptions) {
+export default function MultipleChoiceAnswersTemplate({ choices }: MultipleChoiceAnswerOptions) {
     const id = `id${nanoid(8)}`;
 
     const isMultipleAnswer = choices.filter(({ isCorrect }) => isCorrect === true).length === 0;
@@ -23,7 +24,7 @@ export default function MultipleChoiceAnswers({ choices }: MultipleChoiceAnswerO
         isMultipleAnswer ? ` ou plusieurs` : ``
     }:</span>`;
     const result = choices
-        .map(({ weight, isCorrect, text, feedback }) => {
+        .map(({ weight, isCorrect, formattedText, formattedFeedback }) => {
             const CustomLabel = `
           display: inline-block;
           padding: 0.2em 0 0.2em 0;
@@ -31,7 +32,7 @@ export default function MultipleChoiceAnswers({ choices }: MultipleChoiceAnswerO
 
             const inputId = `id${nanoid(6)}`;
 
-            const isPositiveWeight = weight !== null && weight > 0;
+            const isPositiveWeight = (weight != undefined) && (weight > 0);
             const isCorrectOption = isMultipleAnswer ? isPositiveWeight : isCorrect;
 
             return `
@@ -41,10 +42,10 @@ export default function MultipleChoiceAnswers({ choices }: MultipleChoiceAnswerO
           }" id="${inputId}" name="${id}">
           ${AnswerWeight({ correct: isCorrectOption, weight: weight })}
             <label style="${CustomLabel} ${ParagraphStyle(state.theme)}" for="${inputId}">
-            ${textType({ text: text as TextFormat })}
+            ${textType(formattedText)}
             </label>
           ${AnswerIcon({ correct: isCorrectOption })}
-          ${AnswerFeedback({ feedback: feedback })}
+          ${AnswerFeedback({ formattedFeedback: formattedFeedback })}
           </input>
         </div>
         `;
@@ -80,10 +81,10 @@ function AnswerWeight({ weight, correct }: AnswerWeightOptions): string {
         : ``;
 }
 
-function AnswerFeedback({ feedback }: AnswerFeedbackOptions): string {
+function AnswerFeedback({ formattedFeedback }: AnswerFeedbackOptions): string {
     const Container = `
       color: ${theme(state.theme, 'teal700', 'gray700')};
     `;
 
-    return feedback ? `<span style="${Container}">${textType({ text: feedback })}</span>` : ``;
+    return formattedFeedback ? `<span style="${Container}">${textType(formattedFeedback)}</span>` : ``;
 }

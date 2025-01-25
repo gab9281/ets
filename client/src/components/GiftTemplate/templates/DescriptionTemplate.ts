@@ -1,7 +1,7 @@
 import { TemplateOptions } from './types';
-import QuestionContainer from './QuestionContainer';
-import Title from './Title';
-import { textType } from './TextType';
+import QuestionContainer from './QuestionContainerTemplate';
+import Title from './TitleTemplate';
+import { textType } from './TextTypeTemplate';
 import { ParagraphStyle } from '../constants';
 import { state } from '.';
 import { Description } from 'gift-pegjs';

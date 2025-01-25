@@ -2,99 +2,100 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MultipleChoice } from 'src/components/GiftTemplate/templates';
-import { TemplateOptions, MultipleChoice as MultipleChoiceType } from 'src/components/GiftTemplate/templates/types';
+import { TemplateOptions } from 'src/components/GiftTemplate/templates/types';
+import { MultipleChoiceQuestion } from 'gift-pegjs';
 
 // Mock the nanoid function
 jest.mock('nanoid', () => ({
     nanoid: jest.fn(() => 'mocked-id')
   }));
 
-const mockProps: TemplateOptions & MultipleChoiceType = {
+const mockProps: TemplateOptions & MultipleChoiceQuestion = {
     type: 'MC',
     hasEmbeddedAnswers: false,
     title: 'Sample Title',
-    stem: { format: 'plain' , text: 'Sample Stem'},
+    formattedStem: { format: 'plain' , text: 'Sample Stem'},
     choices: [
-        { text: { format: 'plain' , text: 'Choice 1'}, isCorrect: true, feedback: { format: 'plain' , text: 'Correct!'}, weight: 1 },
-        { text: { format: 'plain', text: 'Choice 2' }, isCorrect: false, feedback: { format: 'plain' , text: 'InCorrect!'}, weight: 1 }
+        { formattedText: { format: 'plain' , text: 'Choice 1'}, isCorrect: true, formattedFeedback: { format: 'plain' , text: 'Correct!'}, weight: 1 },
+        { formattedText: { format: 'plain', text: 'Choice 2' }, isCorrect: false, formattedFeedback: { format: 'plain' , text: 'InCorrect!'}, weight: 1 }
     ],
-    globalFeedback:  { format: 'plain', text: 'Sample Global Feedback' } 
+    formattedGlobalFeedback:  { format: 'plain', text: 'Sample Global Feedback' } 
 };
 
-const katekMock: TemplateOptions & MultipleChoiceType = {
+const katekMock: TemplateOptions & MultipleChoiceQuestion = {
     type: 'MC',
     hasEmbeddedAnswers: false,
     title: 'Sample Title',
-    stem: { format: 'plain' , text: '$$\\frac{zzz}{yyy}$$'},
+    formattedStem: { format: 'plain' , text: '$$\\frac{zzz}{yyy}$$'},
     choices: [
-        { text: { format: 'plain' , text: 'Choice 1'}, isCorrect: true, feedback: { format: 'plain' , text: 'Correct!'}, weight: 1 },
-        { text: { format: 'plain', text: 'Choice 2' }, isCorrect: true, feedback: { format: 'plain' , text: 'Correct!'}, weight: 1 }
+        { formattedText: { format: 'plain' , text: 'Choice 1'}, isCorrect: true, formattedFeedback: { format: 'plain' , text: 'Correct!'}, weight: 1 },
+        { formattedText: { format: 'plain', text: 'Choice 2' }, isCorrect: true, formattedFeedback: { format: 'plain' , text: 'Correct!'}, weight: 1 }
     ],
-    globalFeedback:  { format: 'plain', text: 'Sample Global Feedback' } 
+    formattedGlobalFeedback:   { format: 'plain', text: 'Sample Global Feedback' } 
 };
 
-const imageMock: TemplateOptions & MultipleChoiceType = {
+const imageMock: TemplateOptions & MultipleChoiceQuestion = {
     type: 'MC',
     hasEmbeddedAnswers: false,
     title: 'Sample Title with Image',
-    stem: { format: 'plain', text: 'Sample Stem with Image' },
+    formattedStem: { format: 'plain', text: 'Sample Stem with Image' },
     choices: [
-        { text: { format: 'plain', text: 'Choice 1' }, isCorrect: true, feedback: { format: 'plain', text: 'Correct!' }, weight: 1 },
-        { text: { format: 'plain', text: 'Choice 2' }, isCorrect: false, feedback: { format: 'plain', text: 'Incorrect!' }, weight: 1 },
-        { text: { format: 'plain', text: '<img src="https://via.placeholder.com/150" alt="Sample Image" />' }, isCorrect: false, feedback: { format: 'plain', text: 'Image Feedback' }, weight: 1 }
+        { formattedText: { format: 'plain', text: 'Choice 1' }, isCorrect: true, formattedFeedback: { format: 'plain', text: 'Correct!' }, weight: 1 },
+        { formattedText: { format: 'plain', text: 'Choice 2' }, isCorrect: false, formattedFeedback: { format: 'plain', text: 'Incorrect!' }, weight: 1 },
+        { formattedText: { format: 'plain', text: '<img src="https://via.placeholder.com/150" alt="Sample Image" />' }, isCorrect: false, formattedFeedback: { format: 'plain', text: 'Image Feedback' }, weight: 1 }
     ],
-    globalFeedback: { format: 'plain', text: 'Sample Global Feedback with Image' }
+    formattedGlobalFeedback:  { format: 'plain', text: 'Sample Global Feedback with Image' }
 };
 
-const mockMoodle: TemplateOptions & MultipleChoiceType = {
+const mockMoodle: TemplateOptions & MultipleChoiceQuestion = {
     type: 'MC',
     hasEmbeddedAnswers: false,
     title: 'Sample Title',
-    stem: { format: 'moodle' , text: 'Sample Stem'},
+    formattedStem: { format: 'moodle' , text: 'Sample Stem'},
     choices: [
-        { text: { format: 'moodle' , text: 'Choice 1'}, isCorrect: true, feedback: { format: 'plain' , text: 'Correct!'}, weight: 1 },
-        { text: { format: 'plain', text: 'Choice 2' }, isCorrect: false, feedback: { format: 'plain' , text: 'InCorrect!'}, weight: 1 }
+        { formattedText: { format: 'moodle' , text: 'Choice 1'}, isCorrect: true, formattedFeedback: { format: 'plain' , text: 'Correct!'}, weight: 1 },
+        { formattedText: { format: 'plain', text: 'Choice 2' }, isCorrect: false, formattedFeedback: { format: 'plain' , text: 'InCorrect!'}, weight: 1 }
     ],
-    globalFeedback:  { format: 'plain', text: 'Sample Global Feedback' } 
+    formattedGlobalFeedback:   { format: 'plain', text: 'Sample Global Feedback' } 
 };
 
 
-const mockHTML: TemplateOptions & MultipleChoiceType = {
+const mockHTML: TemplateOptions & MultipleChoiceQuestion = {
     type: 'MC',
     hasEmbeddedAnswers: false,
     title: 'Sample Title',
-    stem: { format: 'html' , text: '$$\\frac{zzz}{yyy}$$'},
+    formattedStem: { format: 'html' , text: '$$\\frac{zzz}{yyy}$$'},
     choices: [
-        { text: { format: 'html' , text: 'Choice 1'}, isCorrect: true, feedback: { format: 'plain' , text: 'Correct!'}, weight: 1 },
-        { text: { format: 'html', text: 'Choice 2' }, isCorrect: false, feedback: { format: 'plain' , text: 'InCorrect!'}, weight: 1 }
+        { formattedText: { format: 'html' , text: 'Choice 1'}, isCorrect: true, formattedFeedback: { format: 'plain' , text: 'Correct!'}, weight: 1 },
+        { formattedText: { format: 'html', text: 'Choice 2' }, isCorrect: false, formattedFeedback: { format: 'plain' , text: 'InCorrect!'}, weight: 1 }
     ],
-    globalFeedback:  { format: 'html', text: 'Sample Global Feedback' } 
+    formattedGlobalFeedback:   { format: 'html', text: 'Sample Global Feedback' } 
 };
 
-const mockMarkdown: TemplateOptions & MultipleChoiceType = {
+const mockMarkdown: TemplateOptions & MultipleChoiceQuestion = {
     type: 'MC',
     hasEmbeddedAnswers: false,
     title: 'Sample Title with Image',
-    stem: { format: 'markdown', text: 'Sample Stem with Image' },
+    formattedStem: { format: 'markdown', text: 'Sample Stem with Image' },
     choices: [
-        { text: { format: 'markdown', text: 'Choice 1' }, isCorrect: true, feedback: { format: 'plain', text: 'Correct!' }, weight: 1 },
-        { text: { format: 'markdown', text: 'Choice 2' }, isCorrect: false, feedback: { format: 'plain', text: 'Incorrect!' }, weight: 1 },
-        { text: { format: 'markdown', text: '<img src="https://via.placeholder.com/150" alt="Sample Image" />' }, isCorrect: false, feedback: { format: 'plain', text: 'Image Feedback' }, weight: 1 }
+        { formattedText: { format: 'markdown', text: 'Choice 1' }, isCorrect: true, formattedFeedback: { format: 'plain', text: 'Correct!' }, weight: 1 },
+        { formattedText: { format: 'markdown', text: 'Choice 2' }, isCorrect: false, formattedFeedback: { format: 'plain', text: 'Incorrect!' }, weight: 1 },
+        { formattedText: { format: 'markdown', text: '<img src="https://via.placeholder.com/150" alt="Sample Image" />' }, isCorrect: false, formattedFeedback: { format: 'plain', text: 'Image Feedback' }, weight: 1 }
     ],
-    globalFeedback: { format: 'markdown', text: 'Sample Global Feedback with Image' }
+    formattedGlobalFeedback:  { format: 'markdown', text: 'Sample Global Feedback with Image' }
 };
 
-const mockMarkdownTwoImages: TemplateOptions & MultipleChoiceType = {
+const mockMarkdownTwoImages: TemplateOptions & MultipleChoiceQuestion = {
     type: 'MC',
     hasEmbeddedAnswers: false,
     title: 'Sample Title with Image',
-    stem: { format: 'markdown', text: '<img src="https://via.placeholder.com/150" alt = "Sample Image"/>' },
+    formattedStem: { format: 'markdown', text: '<img src="https://via.placeholder.com/150" alt = "Sample Image"/>' },
     choices: [
-        { text: { format: 'markdown', text: 'Choice 1' }, isCorrect: true, feedback: { format: 'plain', text: 'Correct!' }, weight: 1 },
-        { text: { format: 'markdown', text: 'Choice 2' }, isCorrect: false, feedback: { format: 'plain', text: 'Incorrect!' }, weight: 1 },
-        { text: { format: 'markdown', text: '<img src="https://via.placeholder.com/150" alt="Sample Image" />' }, isCorrect: false, feedback: { format: 'plain', text: 'Image Feedback' }, weight: 1 }
+        { formattedText: { format: 'markdown', text: 'Choice 1' }, isCorrect: true, formattedFeedback: { format: 'plain', text: 'Correct!' }, weight: 1 },
+        { formattedText: { format: 'markdown', text: 'Choice 2' }, isCorrect: false, formattedFeedback: { format: 'plain', text: 'Incorrect!' }, weight: 1 },
+        { formattedText: { format: 'markdown', text: '<img src="https://via.placeholder.com/150" alt="Sample Image" />' }, isCorrect: false, formattedFeedback: { format: 'plain', text: 'Image Feedback' }, weight: 1 }
     ],
-    globalFeedback: { format: 'markdown', text: 'Sample Global Feedback with Image' }
+    formattedGlobalFeedback:  { format: 'markdown', text: 'Sample Global Feedback with Image' }
 };
 
 test('MultipleChoice snapshot test', () => {

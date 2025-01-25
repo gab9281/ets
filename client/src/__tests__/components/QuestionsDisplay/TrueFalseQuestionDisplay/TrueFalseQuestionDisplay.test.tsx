@@ -3,15 +3,17 @@ import React from 'react';
 import { render, fireEvent, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router-dom';
-import TrueFalseQuestion from 'src/components/QuestionsDisplay/TrueFalseQuestionDisplay/TrueFalseQuestionDisplay';
+import TrueFalseQuestionDisplay from 'src/components/QuestionsDisplay/TrueFalseQuestionDisplay/TrueFalseQuestionDisplay';
+import { parse, TrueFalseQuestion } from 'gift-pegjs';
 
 describe('TrueFalseQuestion Component', () => {
     const mockHandleSubmitAnswer = jest.fn();
-    const sampleStem = 'Sample question stem';
+    const sampleStem = 'Sample True False Question';
+    const trueFalseQuestion = 
+        parse(`${sampleStem}{T}`)[0] as TrueFalseQuestion;
 
     const sampleProps = {
-        questionTitle: 'Sample True/False Question',
-        correctAnswer: true,
+        question: trueFalseQuestion,
         handleOnSubmitAnswer: mockHandleSubmitAnswer,
         showAnswer: false
     };
@@ -19,7 +21,7 @@ describe('TrueFalseQuestion Component', () => {
     beforeEach(() => {
         render(
             <MemoryRouter>
-                <TrueFalseQuestion questionContent={{ text: sampleStem, format: 'plain' }} {...sampleProps} />
+                <TrueFalseQuestionDisplay {...sampleProps} />
             </MemoryRouter>);
     });
 

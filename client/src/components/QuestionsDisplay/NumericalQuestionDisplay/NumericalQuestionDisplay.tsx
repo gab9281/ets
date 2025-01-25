@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import '../questionStyle.css';
 import { Button, TextField } from '@mui/material';
-import { textType } from '../../GiftTemplate/templates/TextType';
+import { textType } from '../../GiftTemplate/templates/TextTypeTemplate';
 import { NumericalQuestion, SimpleNumericalAnswer, RangeNumericalAnswer, HighLowNumericalAnswer } from 'gift-pegjs';
 import { isSimpleNumericalAnswer, isRangeNumericalAnswer, isHighLowNumericalAnswer, isMultipleNumericalAnswer } from 'gift-pegjs/typeGuards';
 import DOMPurify from 'dompurify';
@@ -41,13 +41,13 @@ const NumericalQuestionDisplay: React.FC<Props> = (props) => {
     return (
         <div className="question-wrapper">
             <div>
-                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({ text: question.formattedStem })) }} />
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType(question.formattedStem)) }} />
             </div>
             {showAnswer ? (
                 <>
                     <div className="correct-answer-text mb-2">{correctAnswer}</div>
                     {question.formattedGlobalFeedback && <div className="global-feedback mb-2">
-                        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({ text: question.formattedGlobalFeedback })) }} />
+                        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType(question.formattedGlobalFeedback)) }} />
                     </div>}
                 </>
             ) : (
@@ -65,7 +65,7 @@ const NumericalQuestionDisplay: React.FC<Props> = (props) => {
                     </div>
                     {question.formattedGlobalFeedback && showAnswer && (
                         <div className="global-feedback mb-2">
-                            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({ text: question.formattedGlobalFeedback })) }} />
+                            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType(question.formattedGlobalFeedback)) }} />
                         </div>
                     )}
                     {handleOnSubmitAnswer && (

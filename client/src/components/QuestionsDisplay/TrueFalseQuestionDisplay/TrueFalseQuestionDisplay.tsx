@@ -2,33 +2,32 @@
 import React, { useState, useEffect } from 'react';
 import '../questionStyle.css';
 import { Button } from '@mui/material';
-import { textType } from '../../GiftTemplate/templates/TextType';
-import { TextFormat } from 'gift-pegjs';
+import { TrueFalseQuestion } from 'gift-pegjs';
 import DOMPurify from 'dompurify';
+import { textType } from 'src/components/GiftTemplate/templates/TextTypeTemplate';
 
 interface Props {
-    questionContent: TextFormat;
-    correctAnswer: boolean;
-    globalFeedback?: string | undefined;
+    question: TrueFalseQuestion;
     handleOnSubmitAnswer?: (answer: boolean) => void;
     showAnswer?: boolean;
 }
 
-const TrueFalseQuestion: React.FC<Props> = (props) => {
-    const { questionContent, correctAnswer, showAnswer, handleOnSubmitAnswer, globalFeedback } =
+const TrueFalseQuestionDisplay: React.FC<Props> = (props) => {
+    const { question, showAnswer, handleOnSubmitAnswer } =
         props;
     const [answer, setAnswer] = useState<boolean | undefined>(undefined);
 
     useEffect(() => {
         setAnswer(undefined);
-    }, [questionContent]);
+    }, [question]);
 
     const selectedTrue = answer ? 'selected' : '';
     const selectedFalse = answer !== undefined && !answer ? 'selected' : '';
+    const correctAnswer = question.isTrue === answer;
     return (
         <div className="question-container">
             <div className="question content">
-            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({ text: questionContent })) }} />
+            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType(question.formattedStem)) }} />
             </div>
             <div className="choices-wrapper mb-1">
                 <Button
@@ -50,8 +49,22 @@ const TrueFalseQuestion: React.FC<Props> = (props) => {
                     <div className={`answer-text ${selectedFalse}`}>Faux</div>
                 </Button>
             </div>
-            {globalFeedback && showAnswer && (
-                <div className="global-feedback mb-2">{globalFeedback}</div>
+            {/* selected TRUE, show True feedback if it exists */}
+            {showAnswer && answer && question.trueFormattedFeedback && (
+                <div className="true-feedback mb-2">
+                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType(question.trueFormattedFeedback)) }} />
+                </div>
+            )}
+            {/* selected FALSE, show False feedback if it exists */}
+            {showAnswer && !answer && question.falseFormattedFeedback && (
+                <div className="false-feedback mb-2">
+                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType(question.falseFormattedFeedback)) }} />
+                </div>
+            )}
+            {question.formattedGlobalFeedback && showAnswer && (
+                <div className="global-feedback mb-2">
+                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType(question.formattedGlobalFeedback)) }} />
+                </div>
             )}
             {!showAnswer && handleOnSubmitAnswer && (
                 <Button
@@ -68,4 +81,4 @@ const TrueFalseQuestion: React.FC<Props> = (props) => {
     );
 };
 
-export default TrueFalseQuestion;
+export default TrueFalseQuestionDisplay;

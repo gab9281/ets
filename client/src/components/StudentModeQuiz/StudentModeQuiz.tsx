@@ -1,6 +1,6 @@
 // StudentModeQuiz.tsx
 import React, { useEffect, useState } from 'react';
-import QuestionComponent from '../Questions/QuestionDisplay';
+import QuestionComponent from '../QuestionsDisplay/QuestionDisplay';
 import '../../pages/Student/JoinRoom/joinRoom.css';
 import { QuestionType } from '../../Types/QuestionType';
 // import { QuestionService } from '../../services/QuestionService';
@@ -8,6 +8,7 @@ import { Button } from '@mui/material';
 //import QuestionNavigation from '../QuestionNavigation/QuestionNavigation';
 //import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import DisconnectButton from 'src/components/DisconnectButton/DisconnectButton';
+import { Question } from 'gift-pegjs';
 
 interface StudentModeQuizProps {
     questions: QuestionType[];
@@ -63,7 +64,7 @@ const StudentModeQuiz: React.FC<StudentModeQuizProps> = ({
                 </div>
                 <QuestionComponent
                     handleOnSubmitAnswer={handleOnSubmitAnswer}
-                    question={questionInfos.question}
+                    question={questionInfos.question as Question}
                     showAnswer={isAnswerSubmitted}
                     />
                 <div className="center-h-align mt-1/2">

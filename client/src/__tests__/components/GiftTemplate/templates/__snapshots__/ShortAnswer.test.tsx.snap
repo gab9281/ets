@@ -40,7 +40,7 @@ exports[`ShortAnswer snapshot test with image 1`] = `
   &lt;/div&gt;
 &lt;p style="
   color: hsl(0, 0%, 0%);
-"&gt;Sample Stem with Image
+"&gt;Sample Stem with Image &lt;img src="https://example.com/cat.jpg" alt=""&gt;
 &lt;/p&gt;
     &lt;div&gt;
       &lt;span style="
@@ -59,9 +59,7 @@ exports[`ShortAnswer snapshot test with image 1`] = `
   font-size: inherit;
   line-height: inherit;
   width: 90%;
-" placeholder="Answer 1
-, Answer 2
-, &lt;img src="https://via.placeholder.com/150" alt="Sample Image" /&gt;"&gt;
+" placeholder="Answer 1, Answer 2"&gt;
         &lt;/div&gt;
       &lt;div style="
   position: relative;
@@ -73,7 +71,8 @@ exports[`ShortAnswer snapshot test with image 1`] = `
   border-radius: 6px;
   box-shadow: 0px 2px 5px hsl(0, 0%, 74%);
 "&gt;
-        &lt;p&gt;Sample Global Feedback with Image&lt;/p&gt;
+        &lt;p&gt;Sample Global Feedback with Image
+&lt;/p&gt;
       &lt;/div&gt;&lt;/section&gt;
 </DocumentFragment>
 `;

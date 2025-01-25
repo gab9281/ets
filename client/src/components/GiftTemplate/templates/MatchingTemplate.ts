@@ -1,22 +1,23 @@
-import { TemplateOptions, Matching as MatchingType } from './types';
-import QuestionContainer from './QuestionContainer';
-import Title from './Title';
-import textType from './TextType';
-import GlobalFeedback from './GlobalFeedback';
+import { TemplateOptions } from './types';
+import QuestionContainer from './QuestionContainerTemplate';
+import Title from './TitleTemplate';
+import {textType} from './TextTypeTemplate';
+import GlobalFeedback from './GlobalFeedbackTemplate';
 import { ParagraphStyle, SelectStyle } from '../constants';
 import { state } from '.';
+import { MatchingQuestion } from 'gift-pegjs';
 
-type MatchingOptions = TemplateOptions & MatchingType;
+type MatchingOptions = TemplateOptions & MatchingQuestion;
 
 interface MatchAnswerOptions extends TemplateOptions {
-    choices: MatchingType['matchPairs'];
+    choices: MatchingQuestion['matchPairs'];
 }
 
-export default function Matching({
+export default function MatchingTemplate({
     title,
-    stem,
+    formattedStem,
     matchPairs,
-    globalFeedback
+    formattedGlobalFeedback
 }: MatchingOptions): string {
     return `${QuestionContainer({
         children: [
@@ -24,11 +25,9 @@ export default function Matching({
                 type: 'Appariement',
                 title: title
             }),
-            `<p style="${ParagraphStyle(state.theme)}">${textType({
-                text: stem
-            })}</p>`,
+            `<p style="${ParagraphStyle(state.theme)}">${textType(formattedStem)}</p>`,
             MatchAnswers({ choices: matchPairs }),
-            GlobalFeedback({ feedback: globalFeedback })
+            formattedGlobalFeedback ? GlobalFeedback(formattedGlobalFeedback) : ''
         ]
     })}`;
 }
@@ -64,10 +63,10 @@ function MatchAnswers({ choices }: MatchAnswerOptions): string {
     const uniqueMatchOptions = Array.from(new Set(choices.map(({ subanswer }) => subanswer)));
 
     const result = choices
-        .map(({ subquestion }) => {
+        .map(({ formattedSubquestion }) => {
             return `
           <div style="${OptionTable} ${ParagraphStyle(state.theme)}">
-            ${textType({ text: subquestion })} 
+            ${textType(formattedSubquestion)} 
           </div>
           <div>
             <select class="gift-select" style="${SelectStyle(state.theme)} ${Dropdown}">

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import '../questionStyle.css';
 import { Button } from '@mui/material';
-import { textType } from '../../GiftTemplate/templates/TextType';
+import { textType } from '../../GiftTemplate/templates/TextTypeTemplate';
 import { MultipleChoiceQuestion } from 'gift-pegjs';
 import DOMPurify from 'dompurify';
 
@@ -31,7 +31,7 @@ const MultipleChoiceQuestionDisplay: React.FC<Props> = (props) => {
     return (
         <div className="question-container">
             <div className="question content">
-                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({text: question.formattedStem})) }} />
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType(question.formattedStem)) }} />
             </div>
             <div className="choices-wrapper mb-1">
                 {question.choices.map((choice, i) => {
@@ -48,13 +48,13 @@ const MultipleChoiceQuestionDisplay: React.FC<Props> = (props) => {
                                     (choice.isCorrect ? '✅' : '❌')}
                                 <div className={`circle ${selected}`}>{alphabet[i]}</div>
                                 <div className={`answer-text ${selected}`}>
-                                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({ text: choice.formattedText })) }} />
+                                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType(choice.formattedText)) }} />
                                 </div>
                             </Button>
                             {choice.formattedFeedback && showAnswer && (
                                 <div className="feedback-container mb-1 mt-1/2">
                                     {choice.isCorrect ? '✅' : '❌'}
-                                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType({ text: choice.formattedFeedback })) }} />
+                                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType(choice.formattedFeedback)) }} />
                                 </div>
                             )}
                         </div>
@@ -63,8 +63,8 @@ const MultipleChoiceQuestionDisplay: React.FC<Props> = (props) => {
             </div>
             {question.formattedGlobalFeedback && showAnswer && (
                 <div className="global-feedback mb-2">
-                    <p>${textType({ text: question.formattedGlobalFeedback })}</p>
-                </div>
+                                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(textType(question.formattedGlobalFeedback)) }} />
+                                    </div>
             )}
             
             {!showAnswer && handleOnSubmitAnswer && (

@@ -1,8 +1,7 @@
-// Question;tsx
 import React from 'react';
 import { Question } from 'gift-pegjs';
 
-import TrueFalseQuestion from './TrueFalseQuestion/TrueFalseQuestion';
+import TrueFalseQuestionDisplay from './TrueFalseQuestionDisplay/TrueFalseQuestionDisplay';
 import MultipleChoiceQuestionDisplay from './MultipleChoiceQuestionDisplay/MultipleChoiceQuestionDisplay';
 import NumericalQuestionDisplay from './NumericalQuestionDisplay/NumericalQuestionDisplay';
 import ShortAnswerQuestionDisplay from './ShortAnswerQuestionDisplay/ShortAnswerQuestionDisplay';
@@ -27,12 +26,10 @@ const QuestionDisplay: React.FC<QuestionProps> = ({
     switch (question?.type) {
         case 'TF':
             questionTypeComponent = (
-                <TrueFalseQuestion
-                    questionContent={question.formattedStem}
-                    correctAnswer={question.isTrue}
+                <TrueFalseQuestionDisplay
+                    question={question}
                     handleOnSubmitAnswer={handleOnSubmitAnswer}
                     showAnswer={showAnswer}
-                    globalFeedback={question.formattedGlobalFeedback?.text}
                 />
             );
             break;

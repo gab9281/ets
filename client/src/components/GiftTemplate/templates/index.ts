@@ -1,24 +1,25 @@
-import Category from './Category';
-import DescriptionTemplate from './Description';
-import Essay from './Essay';
-import Matching from './Matching';
-import MultipleChoice from './MultipleChoice';
-import Numerical from './Numerical';
-import ShortAnswer from './ShortAnswer';
-import TrueFalse from './TrueFalse';
-import Error from './Error';
+
 import {
-    GIFTQuestion,
+    ParsedGIFTQuestion as GIFTQuestion,
     // Category as CategoryType,
     // Description as DescriptionType,
-    MultipleChoice as MultipleChoiceType,
-    Numerical as NumericalType,
-    ShortAnswer as ShortAnswerType,
+    MultipleChoiceQuestion as MultipleChoiceType,
+    NumericalQuestion as NumericalType,
+    ShortAnswerQuestion as ShortAnswerType,
     // Essay as EssayType,
-    TrueFalse as TrueFalseType,
-    Matching as MatchingType,
-    DisplayOptions
-} from './types';
+    TrueFalseQuestion as TrueFalseType,
+    // MatchingQuestion as MatchingType,
+} from 'gift-pegjs';
+import { DisplayOptions } from './types';
+import DescriptionTemplate from './DescriptionTemplate';
+import EssayTemplate from './EssayTemplate';
+import MatchingTemplate from './MatchingTemplate';
+import MultipleChoiceTemplate from './MultipleChoiceTemplate';
+import NumericalTemplate from './NumericalTemplate';
+import ShortAnswerTemplate from './ShortAnswerTemplate';
+import TrueFalseTemplate from './TrueFalseTemplate';
+import Error from './ErrorTemplate';
+import CategoryTemplate from './CategoryTemplate';
 
 export const state: DisplayOptions = { preview: true, theme: 'light' };
 
@@ -37,21 +38,21 @@ export default function Template(
         //         ...(keys as DescriptionType)
         //     });
         case 'MC':
-            return MultipleChoice({
+            return MultipleChoiceTemplate({
                 ...(keys as MultipleChoiceType)
             });
         case 'Numerical':
-            return Numerical({ ...(keys as NumericalType) });
+            return NumericalTemplate({ ...(keys as NumericalType) });
         case 'Short':
-            return ShortAnswer({
+            return ShortAnswerTemplate({
                 ...(keys as ShortAnswerType)
             });
         // case 'Essay':
         //     return Essay({ ...(keys as EssayType) });
         case 'TF':
-            return TrueFalse({ ...(keys as TrueFalseType) });
-        case 'Matching':
-            return Matching({ ...(keys as MatchingType) });
+            return TrueFalseTemplate({ ...(keys as TrueFalseType) });
+        // case 'Matching':
+        //     return Matching({ ...(keys as MatchingType) });
         default:
             // TODO: throw error for unsupported question types?
             // throw new Error(`Unsupported question type: ${type}`);
@@ -66,13 +67,13 @@ export function ErrorTemplate(text: string, options?: Partial<DisplayOptions>): 
 }
 
 export {
-    Category,
+    CategoryTemplate,
     DescriptionTemplate as Description,
-    Essay,
-    Matching,
-    MultipleChoice,
-    Numerical,
-    ShortAnswer,
-    TrueFalse,
+    EssayTemplate as Essay,
+    MatchingTemplate as Matching,
+    MultipleChoiceTemplate as MultipleChoice,
+    NumericalTemplate as Numerical,
+    ShortAnswerTemplate as ShortAnswer,
+    TrueFalseTemplate as TrueFalse,
     Error
 };

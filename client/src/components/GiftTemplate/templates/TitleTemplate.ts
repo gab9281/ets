@@ -1,6 +1,7 @@
-import { TemplateOptions, Question } from './types';
+import { TemplateOptions } from './types';
 import { state } from '.';
 import { theme } from '../constants';
+import { Question } from 'gift-pegjs';
 
 // Type is string to allow for custom question type text (e,g, "Multiple Choice")
 interface TitleOptions extends TemplateOptions {

@@ -2,20 +2,20 @@ import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router-dom';
-import { Question } from 'gift-pegjs';
 import StudentModeQuiz from 'src/components/StudentModeQuiz/StudentModeQuiz';
-import { parse } from 'gift-pegjs';
+import { BaseQuestion, parse } from 'gift-pegjs';
+import { QuestionType } from 'src/Types/QuestionType';
 
 const mockGiftQuestions = parse(
     `::Sample Question 1:: Sample Question 1 {=Option A ~Option B}
     
     ::Sample Question 2:: Sample Question 2 {T}`);
 
-const mockQuestions: Question[] = mockGiftQuestions.map((question, index) => {
+const mockQuestions: QuestionType[] = mockGiftQuestions.map((question, index) => {
     if (question.type !== "Category")
         question.id = (index + 1).toString();
     const newMockQuestion = question;
-    return newMockQuestion;
+    return {question : newMockQuestion as BaseQuestion};
 });
 
 const mockSubmitAnswer = jest.fn();

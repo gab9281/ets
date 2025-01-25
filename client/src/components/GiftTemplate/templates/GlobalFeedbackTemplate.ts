@@ -1,13 +1,12 @@
-import { TemplateOptions, Question } from './types';
-import textType from './TextType';
+import { TemplateOptions } from './types';
+import {textType} from './TextTypeTemplate';
 import { state } from '.';
 import { theme } from '../constants';
+import { TextFormat } from 'gift-pegjs';
 
-interface GlobalFeedbackOptions extends TemplateOptions {
-    feedback: Question['globalFeedback'];
-}
+type GlobalFeedbackOptions = TemplateOptions & TextFormat;
 
-export default function GlobalFeedback({ feedback }: GlobalFeedbackOptions): string {
+export default function GlobalFeedbackTemplate({ format, text }: GlobalFeedbackOptions): string {
     const Container = `
   position: relative;
   margin-top: 1rem;
@@ -19,9 +18,9 @@ export default function GlobalFeedback({ feedback }: GlobalFeedbackOptions): str
   box-shadow: 0px 2px 5px ${theme(state.theme, 'gray400', 'black800')};
 `;
 
-    return feedback !== null
+    return (format && text)
         ? `<div style="${Container}">
-        <p>${textType({ text: feedback })}</p>
+        <p>${textType({format: format, text: text})}</p>
       </div>`
         : ``;
 }

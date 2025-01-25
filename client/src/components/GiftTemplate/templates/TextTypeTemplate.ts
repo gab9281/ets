@@ -29,6 +29,7 @@ export function textType(formattedText: TextFormat): string {
     const formatText = formatLatex(formattedText.text.trim());  // latex needs pure "&", ">", etc. Must not be escaped
     let parsedText = ''; 
     switch (formattedText.format) {
+        case '':
         case 'moodle':
         case 'plain':
             // Replace newlines with <br> tags
