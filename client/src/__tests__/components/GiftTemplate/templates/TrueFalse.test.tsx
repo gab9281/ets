@@ -14,7 +14,7 @@ const plainTextMock: TemplateOptions & TrueFalseQuestion =
     parse(`::Sample True/False Title::Sample Stem {T#Correct!#Incorrect!####Sample Global Feedback}`)[0] as TrueFalseQuestion;
 
 const katexMock: TemplateOptions & TrueFalseQuestion =
-    parse(`::Sample True/False Title::$$\\frac{zzz}{yyy}$$ {T#Correct!#Incorrect!####Sample Global Feedback}`)[0] as TrueFalseQuestion;
+    parse(`::Sample True/False Title::$$\\frac\\{zzz\\}\\{yyy\\}$$ {T#Correct!#Incorrect!####Sample Global Feedback}`)[0] as TrueFalseQuestion;
 
 const moodleMock: TemplateOptions & TrueFalseQuestion =
     parse(`::Sample True/False Title::[moodle]Sample Stem{TRUE#Correct!#Incorrect!####Sample Global Feedback}`)[0] as TrueFalseQuestion;
@@ -22,7 +22,7 @@ const moodleMock: TemplateOptions & TrueFalseQuestion =
 const imageMock: TemplateOptions & ShortAnswerQuestion =
     parse(`::Sample Short Answer Title with Image::
         [markdown]Sample Stem with Image ![](https\\://example.com/cat.gif)
-        {=A =B =C####[html]<img src="https\\://via.placeholder.com/150" alt="Sample Image" />}`)[0] as ShortAnswerQuestion;
+        {=A =B =C####[html]<img src\\="https\\://via.placeholder.com/150" alt\\="Sample Image" />}`)[0] as ShortAnswerQuestion;
 
 test('TrueFalse snapshot test with plain text', () => {
     const { asFragment } = render(<TrueFalse {...plainTextMock} />);
