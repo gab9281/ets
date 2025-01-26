@@ -1,4 +1,3 @@
-// import { marked } from 'marked';
 import marked from 'src/markedConfig';
 
 import katex from 'katex';

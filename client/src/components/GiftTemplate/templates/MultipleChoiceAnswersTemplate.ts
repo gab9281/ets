@@ -55,35 +55,9 @@ export default function MultipleChoiceAnswersTemplate({ choices }: MultipleChoic
 }
 
 function AnswerWeight({ weight }: AnswerWeightOptions): string {
-  //   const Container = `
-  //     box-shadow: 0px 1px 1px ${theme(state.theme, 'gray400', 'black900')};
-  //     border-radius: 3px;
-  //     padding-left: 0.2rem;
-  //     padding-right: 0.2rem;
-  //     padding-top: 0.05rem;
-  //     padding-bottom: 0.05rem;
-  //   `;
-
-  //   const CorrectWeight = `
-  //     color: ${theme(state.theme, 'green700', 'green100')};
-  //     background-color: ${theme(state.theme, 'green100', 'greenGray700')};
-  //   `;
-  //   const IncorrectWeight = `
-  //   color: ${theme(state.theme, 'beige600', 'beige100')};
-  //   background-color: ${theme(state.theme, 'beige300', 'beigeGray800')};
-  // `;
-
     return weight ? `<span class="answer-weight-container ${weight > 0 ? 'answer-positive-weight' : 'answer-zero-or-less-weight'}">${weight}%</span>` : ``;
-        // ? `<span style="${Container} ${
-        //       correct ? `${CorrectWeight}` : `${IncorrectWeight}`
-        //   }">${weight}%</span>`
-        // : ``;
 }
 
 function AnswerFeedback({ formattedFeedback }: AnswerFeedbackOptions): string {
-    // const Container = `
-    //   color: ${theme(state.theme, 'teal700', 'gray700')};
-    // `;
-
     return formattedFeedback ? `<span class="feedback-container">${FormattedTextTemplate(formattedFeedback)}</span>` : ``;
 }

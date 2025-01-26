@@ -100,4 +100,12 @@ describe('TextType', () => {
     });
 
     // Add more tests for other formats if needed
+    it('should format a resized image correctly', () => {
+        const input: TextFormat = {
+            text: '![](https\\://www.etsmtl.ca/assets/img/ets.svg "\\=50px")',
+            format: 'markdown'
+        };
+        const expectedOutput = '<img width="50p" alt="" src="https://www.etsmtl.ca/assets/img/ets.svg">\n';
+        expect(FormattedTextTemplate(input)).toBe(expectedOutput);
+    });
 });
