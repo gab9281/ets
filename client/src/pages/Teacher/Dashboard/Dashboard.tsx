@@ -299,7 +299,8 @@ const Dashboard: React.FC = () => {
                 await ApiService.renameFolder(selectedFolderId, newTitle);
                 const userFolders = await ApiService.getUserFolders();
                 setFolders(userFolders as FolderType[]);
-                
+                // refresh the page
+                setSelectedFolderId('');
             }
         } catch (error) {
             console.error('Error renaming folder:', error);
