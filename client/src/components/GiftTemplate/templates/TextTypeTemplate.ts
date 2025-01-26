@@ -25,22 +25,27 @@ export function formatLatex(text: string): string {
  * @see marked
  * @see katex
  */
-export function FormatTextTemplate(formattedText: TextFormat): string {
+export function FormattedTextTemplate(formattedText: TextFormat): string {
     const formatText = formatLatex(formattedText.text.trim());  // latex needs pure "&", ">", etc. Must not be escaped
     let parsedText = ''; 
+    let result = '';
     switch (formattedText.format) {
         case '':
         case 'moodle':
         case 'plain':
             // Replace newlines with <br> tags
-            return DOMPurify.sanitize(formatText.replace(/(?:\r\n|\r|\n)/g, '<br>'));
+            result = formatText.replace(/(?:\r\n|\r|\n)/g, '<br>');
+            break;
         case 'html':
             // Strip outer paragraph tags (not a great approach with regex)
-            return DOMPurify.sanitize(formatText.replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2'));
+            result = formatText.replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2');
+            break;
         case 'markdown':
-            parsedText = marked.parse(formatText, { breaks: true }) as string; // https://github.com/markedjs/marked/discussions/3219
-            return DOMPurify.sanitize(parsedText.replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2'));
+            parsedText = marked.parse(formatText, { breaks: true, gfm: true }) as string; // <br> for newlines
+            result = parsedText.replace(/(^<p>)(.*?)(<\/p>)$/gm, '$2');
+            break;
         default:
             throw new Error(`Unsupported text format: ${formattedText.format}`);
     }
+    return DOMPurify.sanitize(result);
 }

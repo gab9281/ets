@@ -1,7 +1,7 @@
 import { TemplateOptions } from './types';
 import QuestionContainer from './QuestionContainerTemplate';
 import Title from './TitleTemplate';
-import {FormatTextTemplate} from './TextTypeTemplate';
+import {FormattedTextTemplate} from './TextTypeTemplate';
 import GlobalFeedback from './GlobalFeedbackTemplate';
 import { ParagraphStyle, SelectStyle } from '../constants';
 import { state } from '.';
@@ -67,7 +67,7 @@ function MatchAnswers({ choices }: MatchAnswerOptions): string {
         .map(({ formattedSubquestion }) => {
             return `
           <div style="${OptionTable} ${ParagraphStyle(state.theme)}">
-            ${FormatTextTemplate(formattedSubquestion)} 
+            ${FormattedTextTemplate(formattedSubquestion)} 
           </div>
           <div>
             <select class="gift-select" style="${SelectStyle(state.theme)} ${Dropdown}">

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import '../questionStyle.css';
 import { Button } from '@mui/material';
-import { FormatTextTemplate } from '../../GiftTemplate/templates/TextTypeTemplate';
+import { FormattedTextTemplate } from '../../GiftTemplate/templates/TextTypeTemplate';
 import { MultipleChoiceQuestion } from 'gift-pegjs';
 
 interface Props {
@@ -30,7 +30,7 @@ const MultipleChoiceQuestionDisplay: React.FC<Props> = (props) => {
     return (
         <div className="question-container">
             <div className="question content">
-                <div dangerouslySetInnerHTML={{ __html: FormatTextTemplate(question.formattedStem) }} />
+                <div dangerouslySetInnerHTML={{ __html: FormattedTextTemplate(question.formattedStem) }} />
             </div>
             <div className="choices-wrapper mb-1">
                 {question.choices.map((choice, i) => {
@@ -47,13 +47,13 @@ const MultipleChoiceQuestionDisplay: React.FC<Props> = (props) => {
                                     (choice.isCorrect ? '✅' : '❌')}
                                 <div className={`circle ${selected}`}>{alphabet[i]}</div>
                                 <div className={`answer-text ${selected}`}>
-                                    <div dangerouslySetInnerHTML={{ __html: FormatTextTemplate(choice.formattedText) }} />
+                                    <div dangerouslySetInnerHTML={{ __html: FormattedTextTemplate(choice.formattedText) }} />
                                 </div>
                             </Button>
                             {choice.formattedFeedback && showAnswer && (
                                 <div className="feedback-container mb-1 mt-1/2">
                                     {choice.isCorrect ? '✅' : '❌'}
-                                    <div dangerouslySetInnerHTML={{ __html: FormatTextTemplate(choice.formattedFeedback) }} />
+                                    <div dangerouslySetInnerHTML={{ __html: FormattedTextTemplate(choice.formattedFeedback) }} />
                                 </div>
                             )}
                         </div>
@@ -62,7 +62,7 @@ const MultipleChoiceQuestionDisplay: React.FC<Props> = (props) => {
             </div>
             {question.formattedGlobalFeedback && showAnswer && (
                 <div className="global-feedback mb-2">
-                                    <div dangerouslySetInnerHTML={{ __html: FormatTextTemplate(question.formattedGlobalFeedback) }} />
+                                    <div dangerouslySetInnerHTML={{ __html: FormattedTextTemplate(question.formattedGlobalFeedback) }} />
                                     </div>
             )}
             

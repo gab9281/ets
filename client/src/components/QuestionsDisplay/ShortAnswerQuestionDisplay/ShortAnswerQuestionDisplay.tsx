@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../questionStyle.css';
 import { Button, TextField } from '@mui/material';
-import { FormatTextTemplate } from '../../GiftTemplate/templates/TextTypeTemplate';
+import { FormattedTextTemplate } from '../../GiftTemplate/templates/TextTypeTemplate';
 import { ShortAnswerQuestion } from 'gift-pegjs';
 
 interface Props {
@@ -17,7 +17,7 @@ const ShortAnswerQuestionDisplay: React.FC<Props> = (props) => {
     return (
         <div className="question-wrapper">
             <div className="question content">
-                <div dangerouslySetInnerHTML={{ __html: FormatTextTemplate(question.formattedStem) }} />
+                <div dangerouslySetInnerHTML={{ __html: FormattedTextTemplate(question.formattedStem) }} />
             </div>
             {showAnswer ? (
                 <>
@@ -29,7 +29,7 @@ const ShortAnswerQuestionDisplay: React.FC<Props> = (props) => {
                         ))}
                     </div>
                     {question.formattedGlobalFeedback && <div className="global-feedback mb-2">
-                        <div dangerouslySetInnerHTML={{ __html: FormatTextTemplate(question.formattedGlobalFeedback) }} />
+                        <div dangerouslySetInnerHTML={{ __html: FormattedTextTemplate(question.formattedGlobalFeedback) }} />
                     </div>}
                 </>
             ) : (

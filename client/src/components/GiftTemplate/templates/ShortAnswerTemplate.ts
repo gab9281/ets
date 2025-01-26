@@ -1,7 +1,7 @@
 import { TemplateOptions } from './types';
 import QuestionContainer from './QuestionContainerTemplate';
 import Title from './TitleTemplate';
-import {FormatTextTemplate} from './TextTypeTemplate';
+import {FormattedTextTemplate} from './TextTypeTemplate';
 import GlobalFeedback from './GlobalFeedbackTemplate';
 import { ParagraphStyle, InputStyle } from '../constants';
 import { state } from './index';
@@ -32,7 +32,7 @@ export default function ShortAnswerTemplate({
 
 function Answers({ choices }: AnswerOptions): string {
     const placeholder = choices
-        .map(({ text }) => FormatTextTemplate({ format: '', text: text }))
+        .map(({ text }) => FormattedTextTemplate({ format: '', text: text }))
         .join(', ');
     return `
     <div>

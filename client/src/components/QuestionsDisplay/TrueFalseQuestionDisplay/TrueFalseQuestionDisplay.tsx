@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import '../questionStyle.css';
 import { Button } from '@mui/material';
 import { TrueFalseQuestion } from 'gift-pegjs';
-import { FormatTextTemplate } from 'src/components/GiftTemplate/templates/TextTypeTemplate';
+import { FormattedTextTemplate } from 'src/components/GiftTemplate/templates/TextTypeTemplate';
 
 interface Props {
     question: TrueFalseQuestion;
@@ -26,7 +26,7 @@ const TrueFalseQuestionDisplay: React.FC<Props> = (props) => {
     return (
         <div className="question-container">
             <div className="question content">
-            <div dangerouslySetInnerHTML={{ __html: FormatTextTemplate(question.formattedStem) }} />
+            <div dangerouslySetInnerHTML={{ __html: FormattedTextTemplate(question.formattedStem) }} />
             </div>
             <div className="choices-wrapper mb-1">
                 <Button
@@ -51,18 +51,18 @@ const TrueFalseQuestionDisplay: React.FC<Props> = (props) => {
             {/* selected TRUE, show True feedback if it exists */}
             {showAnswer && answer && question.trueFormattedFeedback && (
                 <div className="true-feedback mb-2">
-                    <div dangerouslySetInnerHTML={{ __html: FormatTextTemplate(question.trueFormattedFeedback) }} />
+                    <div dangerouslySetInnerHTML={{ __html: FormattedTextTemplate(question.trueFormattedFeedback) }} />
                 </div>
             )}
             {/* selected FALSE, show False feedback if it exists */}
             {showAnswer && !answer && question.falseFormattedFeedback && (
                 <div className="false-feedback mb-2">
-                    <div dangerouslySetInnerHTML={{ __html: FormatTextTemplate(question.falseFormattedFeedback) }} />
+                    <div dangerouslySetInnerHTML={{ __html: FormattedTextTemplate(question.falseFormattedFeedback) }} />
                 </div>
             )}
             {question.formattedGlobalFeedback && showAnswer && (
                 <div className="global-feedback mb-2">
-                    <div dangerouslySetInnerHTML={{ __html: FormatTextTemplate(question.formattedGlobalFeedback) }} />
+                    <div dangerouslySetInnerHTML={{ __html: FormattedTextTemplate(question.formattedGlobalFeedback) }} />
                 </div>
             )}
             {!showAnswer && handleOnSubmitAnswer && (
