@@ -1,4 +1,6 @@
-import { marked } from 'marked';
+// import { marked } from 'marked';
+import marked from 'src/markedConfig';
+
 import katex from 'katex';
 import { TextFormat } from 'gift-pegjs';
 import DOMPurify from 'dompurify';  // cleans HTML to prevent XSS attacks, etc.
