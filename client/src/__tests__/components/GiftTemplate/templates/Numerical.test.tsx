@@ -32,7 +32,7 @@ const moodleMock: TemplateOptions & NumericalQuestion =
 
 const imageMock: TemplateOptions & NumericalQuestion = 
     parse(`
-        ::Sample Numerical Title with Image::[markdown]Sample Stem with Image ![](https\\://example.com/cat.jpg){#=42#Correct!=43#Incorrect! ![](https\\://example.com/cat.jpg)####Sample Global Feedback with Image}
+        ::Sample Numerical Title with Image::[markdown]Sample Stem with Image ![](https\\://example.com/cat.jpg){#=42#Correct!=43#Incorrect!=44#Also Incorrect! ![](https\\://example.com/cat.jpg)####Sample Global Feedback with Image}
     `)[0] as NumericalQuestion;
 
 

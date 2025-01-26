@@ -4,9 +4,10 @@ import Title from './TitleTemplate';
 import GlobalFeedback from './GlobalFeedbackTemplate';
 import { ParagraphStyle, InputStyle } from '../constants';
 import { state } from '.';
-import { NumericalAnswer, NumericalQuestion } from 'gift-pegjs';
-import { isHighLowNumericalAnswer, isRangeNumericalAnswer, isSimpleNumericalAnswer } from 'gift-pegjs/typeGuards';
+import { MultipleNumericalAnswer, NumericalAnswer, NumericalQuestion, TextFormat } from 'gift-pegjs';
+import { isHighLowNumericalAnswer, isMultipleNumericalAnswer, isRangeNumericalAnswer, isSimpleNumericalAnswer } from 'gift-pegjs/typeGuards';
 import StemTemplate from './StemTemplate';
+import { FormattedTextTemplate } from './TextTypeTemplate';
 
 type NumericalOptions = TemplateOptions & NumericalQuestion;
 type NumericalAnswerOptions = TemplateOptions & Pick<NumericalQuestion, 'choices'>;
@@ -31,8 +32,12 @@ export default function NumericalTemplate({
 }
 
 function NumericalAnswers({ choices }: NumericalAnswerOptions): string {
-    const placeholder = choices.length > 1
-    ? choices.map(choice => {Answer(choice)}).join(', ')
+    const placeholder = isMultipleNumericalAnswer(choices[0])
+    ? choices.map(choice => {
+        console.log(JSON.stringify(choice)); 
+        const c = choice as MultipleNumericalAnswer; 
+        return Answer(c.answer, c.formattedFeedback)
+    }).join(', ')
     : Answer(choices[0]);
 
     return `
@@ -46,14 +51,15 @@ function NumericalAnswers({ choices }: NumericalAnswerOptions): string {
       `;
 }
 
-function Answer(choice: NumericalAnswer): string {
+function Answer(choice: NumericalAnswer, formattedFeedback?: TextFormat): string {
+    const formattedFeedbackString = formattedFeedback ? ` (${FormattedTextTemplate(formattedFeedback)})` : '';
     switch (true) {
         case isSimpleNumericalAnswer(choice):
-            return `${choice.number}`;
+            return `${choice.number}${formattedFeedbackString}`;
         case isRangeNumericalAnswer(choice):
-            return `${choice.number} &plusmn; ${choice.range}`;
+            return `${choice.number} &plusmn; ${choice.range}${formattedFeedbackString}`;
         case isHighLowNumericalAnswer(choice):
-            return `${choice.numberLow}..${choice.numberHigh}`;
+            return `${choice.numberLow}..${choice.numberHigh}${formattedFeedbackString}`;
         default:
             return ``;
     }
