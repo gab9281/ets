@@ -197,31 +197,51 @@ describe('Folders', () => {
         it('should rename a folder and return true', async () => {
             const folderId = '60c72b2f9b1d8b3a4c8e4d3b';
             const newTitle = 'New Folder Name';
+            const userId = '12345';
 
             // Mock the database response
             collection.updateOne.mockResolvedValue({ modifiedCount: 1 });
 
-            const result = await folders.rename(folderId, newTitle);
+            const result = await folders.rename(folderId, userId, newTitle);
 
             expect(db.connect).toHaveBeenCalled();
             expect(db.collection).toHaveBeenCalledWith('folders');
-            expect(collection.updateOne).toHaveBeenCalledWith({ _id: new ObjectId(folderId) }, { $set: { title: newTitle } });
+            // { _id: ObjectId.createFromHexString(folderId), userId: userId }, { $set: { title: newTitle } }
+            expect(collection.updateOne).toHaveBeenCalledWith({ _id: new ObjectId(folderId), userId: userId }, { $set: { title: newTitle } });
             expect(result).toBe(true);
         });
 
         it('should return false if the folder does not exist', async () => {
             const folderId = '60c72b2f9b1d8b3a4c8e4d3b';
             const newTitle = 'New Folder Name';
+            const userId = '12345';
 
             // Mock the database response
             collection.updateOne.mockResolvedValue({ modifiedCount: 0 });
             
-            const result = await folders.rename(folderId, newTitle);
+            const result = await folders.rename(folderId, userId, newTitle);
 
             expect(db.connect).toHaveBeenCalled();
             expect(db.collection).toHaveBeenCalledWith('folders');
-            expect(collection.updateOne).toHaveBeenCalledWith({ _id: new ObjectId(folderId) }, { $set: { title: newTitle } });
+            expect(collection.updateOne).toHaveBeenCalledWith({ _id: new ObjectId(folderId), userId: userId }, { $set: { title: newTitle } });
             expect(result).toBe(false);
+        });
+
+        it('should throw an error if the new title is already in use', async () => {
+            const folderId = '60c72b2f9b1d8b3a4c8e4d3b';
+            const newTitle = 'Existing Folder';
+            const userId = '12345';
+
+            // Mock the database response
+            collection.findOne.mockResolvedValue({ title: newTitle });
+            collection.updateOne.mockResolvedValue({ modifiedCount: 0 });
+            
+            await expect(folders.rename(folderId, userId, newTitle)).rejects.toThrow(`Folder with name '${newTitle}' already exists.`);
+
+            expect(db.connect).toHaveBeenCalled();
+            expect(db.collection).toHaveBeenCalledWith('folders');
+            // expect(collection.updateOne).toHaveBeenCalledWith({ _id: new ObjectId(folderId) }, { $set: { title: newTitle } });
+            expect(collection.findOne).toHaveBeenCalledWith({ userId: userId, title: newTitle });
         });
     });
 

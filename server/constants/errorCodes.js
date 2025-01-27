@@ -29,7 +29,7 @@ exports.UPDATE_PASSWORD_ERROR = {
     code: 400
 }
 exports.DELETE_USER_ERROR = {
-    message: 'Une erreur s\'est produite lors de supression de l\'utilisateur.',
+    message: 'Une erreur s\'est produite lors de suppression de l\'utilisateur.',
     code: 400
 }
 
@@ -43,15 +43,15 @@ exports.QUIZ_NOT_FOUND = {
     code: 404
 }
 exports.QUIZ_ALREADY_EXISTS = {
-    message: 'Le quiz existe déja.',
+    message: 'Le quiz existe déjà.',
     code: 400
 }
 exports.UPDATE_QUIZ_ERROR = {
-    message: 'Une erreur s\'est produite lors de la mise à jours du quiz.',
+    message: 'Une erreur s\'est produite lors de la mise à jour du quiz.',
     code: 400
 }
 exports.DELETE_QUIZ_ERROR = {
-    message: 'Une erreur s\'est produite lors de la supression du quiz.',
+    message: 'Une erreur s\'est produite lors de la suppression du quiz.',
     code: 400
 }
 exports.GETTING_QUIZ_ERROR = {
@@ -76,15 +76,15 @@ exports.FOLDER_NOT_FOUND = {
     code: 404
 }
 exports.FOLDER_ALREADY_EXISTS = {
-    message: 'Le dossier existe déja.',
-    code: 400
+    message: 'Le dossier existe déjà.',
+    code: 409
 }
 exports.UPDATE_FOLDER_ERROR = {
-    message: 'Une erreur s\'est produite lors de la mise à jours du dossier.',
+    message: 'Une erreur s\'est produite lors de la mise à jour du dossier.',
     code: 400
 }
 exports.DELETE_FOLDER_ERROR = {
-    message: 'Une erreur s\'est produite lors de la supression du dossier.',
+    message: 'Une erreur s\'est produite lors de la suppression du dossier.',
     code: 400
 }
 exports.GETTING_FOLDER_ERROR = {
