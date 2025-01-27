@@ -50,9 +50,9 @@ exports[`Numerical snapshot test with html 1`] = `
                   &lt;/p&gt;
     &lt;/span&gt;
   &lt;/div&gt;
-&lt;div&gt;&lt;span style="
+&lt;div&gt;&lt;p style="
   color: hsl(0, 0%, 0%);
-"&gt;Réponse: &lt;/span&gt;&lt;input class="gift-input" type="text" style="
+"&gt;Réponse: &lt;/p&gt;&lt;input class="gift-input" type="text" style="
   display: inline-block;
   padding: 0.375rem 0.75rem;
   line-height: 1.5;
@@ -66,9 +66,9 @@ exports[`Numerical snapshot test with html 1`] = `
   font-size: inherit;
   line-height: inherit;
   width: 90%;
-" placeholder="42"&gt;&lt;div class="feedback-container"&gt;Correct&lt;/div&gt;&lt;span style="
+;width: 100%" placeholder="42"&gt;&lt;div class="feedback-container"&gt;Correct&lt;/div&gt;&lt;p style="
   color: hsl(0, 0%, 0%);
-"&gt;Réponse: &lt;/span&gt;&lt;input class="gift-input" type="text" style="
+"&gt;Réponse: &lt;/p&gt;&lt;input class="gift-input" type="text" style="
   display: inline-block;
   padding: 0.375rem 0.75rem;
   line-height: 1.5;
@@ -82,7 +82,7 @@ exports[`Numerical snapshot test with html 1`] = `
   font-size: inherit;
   line-height: inherit;
   width: 90%;
-" placeholder="43"&gt;&lt;div class="feedback-container"&gt;Incorrect!&lt;/div&gt;&lt;/div&gt;&lt;div style="
+;width: 100%" placeholder="43"&gt;&lt;div class="feedback-container"&gt;Incorrect!&lt;/div&gt;&lt;/div&gt;&lt;div style="
   position: relative;
   margin-top: 1rem;
   padding: 0 1rem;
@@ -148,9 +148,9 @@ exports[`Numerical snapshot test with image 1`] = `
                   &lt;/p&gt;
     &lt;/span&gt;
   &lt;/div&gt;
-&lt;div&gt;&lt;span style="
+&lt;div&gt;&lt;p style="
   color: hsl(0, 0%, 0%);
-"&gt;Réponse: &lt;/span&gt;&lt;input class="gift-input" type="text" style="
+"&gt;Réponse: &lt;/p&gt;&lt;input class="gift-input" type="text" style="
   display: inline-block;
   padding: 0.375rem 0.75rem;
   line-height: 1.5;
@@ -164,10 +164,10 @@ exports[`Numerical snapshot test with image 1`] = `
   font-size: inherit;
   line-height: inherit;
   width: 90%;
-" placeholder="42"&gt;&lt;div class="feedback-container"&gt;Correct!
-&lt;/div&gt;&lt;span style="
+;width: 100%" placeholder="42"&gt;&lt;div class="feedback-container"&gt;Correct!
+&lt;/div&gt;&lt;p style="
   color: hsl(0, 0%, 0%);
-"&gt;Réponse: &lt;/span&gt;&lt;input class="gift-input" type="text" style="
+"&gt;Réponse: &lt;/p&gt;&lt;input class="gift-input" type="text" style="
   display: inline-block;
   padding: 0.375rem 0.75rem;
   line-height: 1.5;
@@ -181,10 +181,10 @@ exports[`Numerical snapshot test with image 1`] = `
   font-size: inherit;
   line-height: inherit;
   width: 90%;
-" placeholder="43"&gt;&lt;div class="feedback-container"&gt;Incorrect!
-&lt;/div&gt;&lt;span style="
+;width: 100%" placeholder="43"&gt;&lt;div class="feedback-container"&gt;Incorrect!
+&lt;/div&gt;&lt;p style="
   color: hsl(0, 0%, 0%);
-"&gt;Réponse: &lt;/span&gt;&lt;input class="gift-input" type="text" style="
+"&gt;Réponse: &lt;/p&gt;&lt;input class="gift-input" type="text" style="
   display: inline-block;
   padding: 0.375rem 0.75rem;
   line-height: 1.5;
@@ -198,7 +198,7 @@ exports[`Numerical snapshot test with image 1`] = `
   font-size: inherit;
   line-height: inherit;
   width: 90%;
-" placeholder="44"&gt;&lt;div class="feedback-container"&gt;Also Incorrect! &lt;img alt="" src="https://example.com/cat.jpg"&gt;
+;width: 100%" placeholder="44"&gt;&lt;div class="feedback-container"&gt;Also Incorrect! &lt;img alt="" src="https://example.com/cat.jpg"&gt;
 &lt;/div&gt;&lt;/div&gt;&lt;div style="
   position: relative;
   margin-top: 1rem;
@@ -265,9 +265,9 @@ exports[`Numerical snapshot test with moodle 1`] = `
                   &lt;/p&gt;
     &lt;/span&gt;
   &lt;/div&gt;
-&lt;div&gt;&lt;span style="
+&lt;div&gt;&lt;p style="
   color: hsl(0, 0%, 0%);
-"&gt;Réponse: &lt;/span&gt;&lt;input class="gift-input" type="text" style="
+"&gt;Réponse: &lt;/p&gt;&lt;input class="gift-input" type="text" style="
   display: inline-block;
   padding: 0.375rem 0.75rem;
   line-height: 1.5;
@@ -281,9 +281,9 @@ exports[`Numerical snapshot test with moodle 1`] = `
   font-size: inherit;
   line-height: inherit;
   width: 90%;
-" placeholder="42"&gt;&lt;div class="feedback-container"&gt;Correct!&lt;/div&gt;&lt;span style="
+;width: 100%" placeholder="42"&gt;&lt;div class="feedback-container"&gt;Correct!&lt;/div&gt;&lt;p style="
   color: hsl(0, 0%, 0%);
-"&gt;Réponse: &lt;/span&gt;&lt;input class="gift-input" type="text" style="
+"&gt;Réponse: &lt;/p&gt;&lt;input class="gift-input" type="text" style="
   display: inline-block;
   padding: 0.375rem 0.75rem;
   line-height: 1.5;
@@ -297,7 +297,7 @@ exports[`Numerical snapshot test with moodle 1`] = `
   font-size: inherit;
   line-height: inherit;
   width: 90%;
-" placeholder="43"&gt;&lt;div class="feedback-container"&gt;Incorrect!&lt;/div&gt;&lt;/div&gt;&lt;div style="
+;width: 100%" placeholder="43"&gt;&lt;div class="feedback-container"&gt;Incorrect!&lt;/div&gt;&lt;/div&gt;&lt;div style="
   position: relative;
   margin-top: 1rem;
   padding: 0 1rem;
@@ -362,9 +362,9 @@ exports[`Numerical snapshot test with plain text 1`] = `
                   &lt;/p&gt;
     &lt;/span&gt;
   &lt;/div&gt;
-&lt;div&gt;&lt;span style="
+&lt;div&gt;&lt;p style="
   color: hsl(0, 0%, 0%);
-"&gt;Réponse: &lt;/span&gt;&lt;input class="gift-input" type="text" style="
+"&gt;Réponse: &lt;/p&gt;&lt;input class="gift-input" type="text" style="
   display: inline-block;
   padding: 0.375rem 0.75rem;
   line-height: 1.5;
@@ -378,9 +378,9 @@ exports[`Numerical snapshot test with plain text 1`] = `
   font-size: inherit;
   line-height: inherit;
   width: 90%;
-" placeholder="42"&gt;&lt;div class="feedback-container"&gt;Correct!&lt;/div&gt;&lt;span style="
+;width: 100%" placeholder="42"&gt;&lt;div class="feedback-container"&gt;Correct!&lt;/div&gt;&lt;p style="
   color: hsl(0, 0%, 0%);
-"&gt;Réponse: &lt;/span&gt;&lt;input class="gift-input" type="text" style="
+"&gt;Réponse: &lt;/p&gt;&lt;input class="gift-input" type="text" style="
   display: inline-block;
   padding: 0.375rem 0.75rem;
   line-height: 1.5;
@@ -394,7 +394,7 @@ exports[`Numerical snapshot test with plain text 1`] = `
   font-size: inherit;
   line-height: inherit;
   width: 90%;
-" placeholder="43"&gt;&lt;div class="feedback-container"&gt;Incorrect!&lt;/div&gt;&lt;/div&gt;&lt;div style="
+;width: 100%" placeholder="43"&gt;&lt;div class="feedback-container"&gt;Incorrect!&lt;/div&gt;&lt;/div&gt;&lt;div style="
   position: relative;
   margin-top: 1rem;
   padding: 0 1rem;
