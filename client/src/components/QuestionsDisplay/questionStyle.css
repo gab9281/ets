@@ -88,8 +88,7 @@
 }
 
 .numerical-answer-weight-container {
-    display: flow;
-    float: left;
+    display: inline;
     box-shadow: 0px 1px 1px #3a3a3a;
     border-radius: 3px;
     padding-left: 0.2rem;
@@ -122,7 +121,8 @@
 
 .feedback-container {
     margin-left: 1.1rem;
-    display: flow;
+    display: inline-flex !important; /* override the parent */
+    align-items: center;
     position: relative;
     padding: 0 0.5rem;
     background-color: hsl(43, 100%, 94%);
@@ -131,6 +131,12 @@
     border-radius: 6px;
     box-shadow: 0px 2px 5px hsl(0, 0%, 74%);
 }
+
+.feedback-container img {
+    vertical-align: middle;
+    /* height: 1em; */
+}
+
 
 .global-feedback {
     position: relative;

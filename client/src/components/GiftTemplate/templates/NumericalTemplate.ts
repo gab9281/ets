@@ -49,8 +49,8 @@ function NumericalAnswers2({ choices }: NumericalAnswerOptions): string {
         `<span class="numerical-answer-weight-container ${answer.weight > 0 ? 'answer-positive-weight' : 'answer-zero-or-less-weight'}">${answer.weight}%</span>` : 
         ''
         result += 
-            `<span style="${ParagraphStyle(state.theme)}">Réponse: </span>`
-            + `<input class="gift-input" type="text" style="${InputStyle(state.theme)}" placeholder="${answer.answer}">`
+            `<p style="${ParagraphStyle(state.theme)}">Réponse: </p>`
+            + `<input class="gift-input" type="text" style="${InputStyle(state.theme)};width: 100%" placeholder="${answer.answer}">`
             + weight
             + (answer.feedback ? `<div class="feedback-container">${FormattedTextTemplate(answer.feedback)}</div>` : '');
     });
