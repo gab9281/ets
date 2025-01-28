@@ -1,8 +1,7 @@
 const AppError = require("./AppError");
 const fs = require('fs');
 
-const errorHandler = (error, req, res) => {
-    console.log("ERROR", error);
+const errorHandler = (error, req, res, _next) => {
 
     if (error instanceof AppError) {
         logError(error);

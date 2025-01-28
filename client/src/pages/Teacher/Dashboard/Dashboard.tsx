@@ -101,12 +101,12 @@ const Dashboard: React.FC = () => {
 
             if (selectedFolderId == '') {
                 const folders = await ApiService.getUserFolders(); // HACK force user folders to load on first load
-                console.log("show all quizes")
+                //console.log("show all quizzes")
                 let quizzes: QuizType[] = [];
 
                 for (const folder of folders as FolderType[]) {
                     const folderQuizzes = await ApiService.getFolderContent(folder._id);
-                    console.log("folder: ", folder.title, " quiz: ", folderQuizzes);
+                    //console.log("folder: ", folder.title, " quiz: ", folderQuizzes);
                     // add the folder.title to the QuizType if the folderQuizzes is an array
                     addFolderTitleToQuizzes(folderQuizzes, folder.title);
                     quizzes = quizzes.concat(folderQuizzes as QuizType[])
@@ -294,15 +294,25 @@ const Dashboard: React.FC = () => {
         try {
             // folderId: string GET THIS FROM CURRENT FOLDER
             // currentTitle: string GET THIS FROM CURRENT FOLDER
-            const newTitle = prompt('Entrée le nouveau nom du fichier', "Nouveau nom de dossier");
+            const newTitle = prompt('Entrée le nouveau nom du fichier', folders.find((folder) => folder._id === selectedFolderId)?.title);
             if (newTitle) {
-                await ApiService.renameFolder(selectedFolderId, newTitle);
+                const renamedFolderId = selectedFolderId;
+                const result = await ApiService.renameFolder(selectedFolderId, newTitle);
+
+                if (result !== true )  {
+                    window.alert(`Une erreur est survenue: ${result}`);
+                    return;
+                }
+
                 const userFolders = await ApiService.getUserFolders();
                 setFolders(userFolders as FolderType[]);
-                
+                // refresh the page
+                setSelectedFolderId('');
+                setSelectedFolderId(renamedFolderId);
             }
         } catch (error) {
             console.error('Error renaming folder:', error);
+            alert('Erreur lors du renommage du dossier: ' + error);
         }
     };
 

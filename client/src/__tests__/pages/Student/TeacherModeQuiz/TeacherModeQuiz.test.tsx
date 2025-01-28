@@ -3,7 +3,7 @@ import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
 import '@testing-library/jest-dom';
-import { parse } from 'gift-pegjs';
+import { MultipleChoiceQuestion, parse } from 'gift-pegjs';
 
 import TeacherModeQuiz from 'src/components/TeacherModeQuiz/TeacherModeQuiz';
 import { MemoryRouter } from 'react-router-dom';
@@ -14,7 +14,11 @@ const mockGiftQuestions = parse(
 
 
 describe('TeacherModeQuiz', () => {
-    const mockQuestion = mockGiftQuestions[0];
+    it ('renders the initial question as MultipleChoiceQuestion', () => {
+        expect(mockGiftQuestions[0].type).toBe('MC');
+    });
+    
+    const mockQuestion = mockGiftQuestions[0] as MultipleChoiceQuestion;
     mockQuestion.id = '1';
 
     const mockSubmitAnswer = jest.fn();

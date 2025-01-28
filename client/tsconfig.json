@@ -2,14 +2,19 @@
     "compilerOptions": {
         "baseUrl": "./",
         "paths": {
-            "src/*": ["src/*"]
+            "src/*": [
+                "src/*"
+            ]
         },
         "target": "ESNext",
         "useDefineForClassFields": true,
-        "lib": ["ES2020", "DOM", "DOM.Iterable"],
+        "lib": [
+            "ES2020",
+            "DOM",
+            "DOM.Iterable"
+        ],
         "module": "ESNext",
         "skipLibCheck": true,
-
         /* Bundler mode */
         "moduleResolution": "bundler",
         "allowImportingTsExtensions": true,
@@ -17,7 +22,6 @@
         "isolatedModules": true,
         "noEmit": true,
         "jsx": "react",
-
         /* Linting */
         "strict": true,
         "noUnusedLocals": true,
@@ -25,6 +29,16 @@
         "noFallthroughCasesInSwitch": true,
         "esModuleInterop": true
     },
-    "include": ["src"],
-    "references": [{ "path": "./tsconfig.node.json" }]
+    // "exclude": [
+    //     // "src/components/GiftTemplate/**/*",
+    //     // "src/__tests__/components/GiftTemplate/**/*",
+    // ],
+    "include": [
+        "src"
+    ],
+    "references": [
+        {
+            "path": "./tsconfig.node.json"
+        }
+    ]
 }

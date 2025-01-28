@@ -1,5 +1,5 @@
-import { GIFTQuestion } from 'gift-pegjs';
+import { BaseQuestion } from "gift-pegjs";
 
 export interface QuestionType {
-    question: GIFTQuestion;
+    question: BaseQuestion;
 }

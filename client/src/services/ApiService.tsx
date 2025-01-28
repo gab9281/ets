@@ -419,7 +419,7 @@ class ApiService {
      */
     public async renameFolder(folderId: string, newTitle: string): Promise<ApiResponse> {
         try {
-
+            console.log(`rename folder: folderId: ${folderId}, newTitle: ${newTitle}`);
             if (!folderId || !newTitle) {
                 throw new Error(`Le folderId et le nouveau titre sont requis.`);
             }
@@ -428,7 +428,9 @@ class ApiService {
             const headers = this.constructRequestHeaders();
             const body = { folderId, newTitle };
 
-            const result: AxiosResponse = await axios.put(url, body, { headers: headers });
+            const result = await axios.put(url, body, { headers: headers });
+
+            console.log(`rename folder: result: ${result.status}, ${result.data}`);
             if (result.status !== 200) {
                 throw new Error(`Le changement de nom de dossier a échoué. Status: ${result.status}`);
             }
@@ -440,6 +442,7 @@ class ApiService {
 
             if (axios.isAxiosError(error)) {
                 const err = error as AxiosError;
+                console.log(JSON.stringify(err));
                 const data = err.response?.data as { error: string } | undefined;
                 return data?.error || 'Erreur serveur inconnue lors de la requête.';
             }

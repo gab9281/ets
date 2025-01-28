@@ -9,7 +9,7 @@ class Quiz {
     }
 
     async create(title, content, folderId, userId) {
-        console.log(`quizzes: create title: ${title}, folderId: ${folderId}, userId: ${userId}`);
+        // console.log(`quizzes: create title: ${title}, folderId: ${folderId}, userId: ${userId}`);
         await this.db.connect()
         const conn = this.db.getConnection();
 
@@ -31,7 +31,7 @@ class Quiz {
         }
 
         const result = await quizCollection.insertOne(newQuiz);
-        console.log("quizzes: create insertOne result", result);
+        // console.log("quizzes: create insertOne result", result);
 
         return result.insertedId;
     }

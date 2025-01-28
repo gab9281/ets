@@ -12,13 +12,13 @@ export interface DisplayOptions {
     preview: boolean;
 }
 
-export { 
-    QuestionType, FormatType, NumericalType, TextFormat, NumericalFormat, TextChoice, NumericalChoice, Question, Description, Category, MultipleChoice, ShortAnswer, Numerical, Essay, TrueFalse,
-    Matching, Match, GIFTQuestion } from 'gift-pegjs';
+// export { 
+//     QuestionType, FormatType, NumericalType, TextFormat, NumericalFormat, TextChoice, NumericalChoice, Question, Description, Category, MultipleChoice, ShortAnswer, Numerical, Essay, TrueFalse,
+//     Matching, Match, GIFTQuestion } from 'gift-pegjs';
 
-export interface Choice {
-    isCorrect: boolean;
-    weight: number | null;
-    text: TextFormat | NumericalFormat;
-    feedback: TextFormat | null;
-}
+// export interface Choice {
+//     isCorrect: boolean;
+//     weight: number | null;
+//     text: TextFormat | NumericalFormat;
+//     feedback: TextFormat | null;
+// }

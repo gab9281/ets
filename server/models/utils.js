@@ -1,6 +1,6 @@
 // utils.js
 async function generateUniqueTitle(baseTitle, existsCallback) {
-    console.log(`generateUniqueTitle(${baseTitle})`);
+    // console.log(`generateUniqueTitle(${baseTitle})`);
     let newTitle = baseTitle;
     let counter = 1;
 
@@ -19,12 +19,12 @@ async function generateUniqueTitle(baseTitle, existsCallback) {
         newTitle = `${baseTitle} (${counter})`;
     }
 
-    console.log(`first check of newTitle: ${newTitle}`);
+    // console.log(`first check of newTitle: ${newTitle}`);
 
     while (await existsCallback(newTitle)) {
         counter++;
         newTitle = `${baseTitle} (${counter})`;
-        console.log(`trying newTitle: ${newTitle}`);
+        // console.log(`trying newTitle: ${newTitle}`);
     }
 
     return newTitle;

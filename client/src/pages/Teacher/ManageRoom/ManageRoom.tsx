@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
-import { GIFTQuestion, parse } from 'gift-pegjs';
-import { QuestionType } from '../../../Types/QuestionType';
+import { ParsedGIFTQuestion, BaseQuestion, parse, Question } from 'gift-pegjs';
+import { isSimpleNumericalAnswer, isRangeNumericalAnswer, isHighLowNumericalAnswer } from "gift-pegjs/typeGuards";
 import LiveResultsComponent from 'src/components/LiveResults/LiveResults';
 // import { QuestionService } from '../../../services/QuestionService';
 import webSocketService, { AnswerReceptionFromBackendType } from '../../../services/WebsocketService';
@@ -18,8 +18,9 @@ import { Refresh, Error } from '@mui/icons-material';
 import StudentWaitPage from 'src/components/StudentWaitPage/StudentWaitPage';
 import DisconnectButton from 'src/components/DisconnectButton/DisconnectButton';
 //import QuestionNavigation from 'src/components/QuestionNavigation/QuestionNavigation';
-import Question from 'src/components/Questions/Question';
+import QuestionDisplay from 'src/components/QuestionsDisplay/QuestionDisplay';
 import ApiService from '../../../services/ApiService';
+import { QuestionType } from 'src/Types/QuestionType';
 
 const ManageRoom: React.FC = () => {
     const navigate = useNavigate();
@@ -277,7 +278,7 @@ const ManageRoom: React.FC = () => {
         const parsedQuestions = [] as QuestionType[];
 
         quizQuestionArray.forEach((question, index) => {
-            parsedQuestions.push({ question: parse(question)[0] });
+            parsedQuestions.push({ question: parse(question)[0] as BaseQuestion });
             parsedQuestions[index].question.id = (index + 1).toString();
         });
         if (parsedQuestions.length === 0) return null;
@@ -347,7 +348,7 @@ const ManageRoom: React.FC = () => {
 
         const answerText = answer.toString();
         if (questionInfo) {
-            const question = questionInfo.question as GIFTQuestion;
+            const question = questionInfo.question as ParsedGIFTQuestion;
             if (question.type === 'TF') {
                 return (
                     (question.isTrue && answerText == 'true') ||
@@ -355,53 +356,39 @@ const ManageRoom: React.FC = () => {
                 );
             } else if (question.type === 'MC') {
                 return question.choices.some(
-                    (choice) => choice.isCorrect && choice.text.text === answerText
+                    (choice) => choice.isCorrect && choice.formattedText.text === answerText
                 );
             } else if (question.type === 'Numerical') {
-                if (question.choices && !Array.isArray(question.choices)) {
-                    if (
-                        question.choices.type === 'high-low' &&
-                        question.choices.numberHigh &&
-                        question.choices.numberLow
-                    ) {
-                        const answerNumber = parseFloat(answerText);
-                        if (!isNaN(answerNumber)) {
-                            return (
-                                answerNumber <= question.choices.numberHigh &&
-                                answerNumber >= question.choices.numberLow
-                            );
-                        }
+                if (isHighLowNumericalAnswer(question.choices[0])) {
+                    const choice = question.choices[0];
+                    const answerNumber = parseFloat(answerText);
+                    if (!isNaN(answerNumber)) {
+                        return (
+                            answerNumber <= choice.numberHigh &&
+                            answerNumber >= choice.numberLow
+                        );
                     }
                 }
-                if (question.choices && Array.isArray(question.choices)) {
-                    if (
-                        question.choices[0].text.type === 'range' &&
-                        question.choices[0].text.number &&
-                        question.choices[0].text.range
-                    ) {
-                        const answerNumber = parseFloat(answerText);
-                        const range = question.choices[0].text.range;
-                        const correctAnswer = question.choices[0].text.number;
-                        if (!isNaN(answerNumber)) {
-                            return (
-                                answerNumber <= correctAnswer + range &&
-                                answerNumber >= correctAnswer - range
-                            );
-                        }
+                if (isRangeNumericalAnswer(question.choices[0])) {
+                    const answerNumber = parseFloat(answerText);
+                    const range = question.choices[0].range;
+                    const correctAnswer = question.choices[0].number;
+                    if (!isNaN(answerNumber)) {
+                        return (
+                            answerNumber <= correctAnswer + range &&
+                            answerNumber >= correctAnswer - range
+                        );
                     }
-                    if (
-                        question.choices[0].text.type === 'simple' &&
-                        question.choices[0].text.number
-                    ) {
-                        const answerNumber = parseFloat(answerText);
-                        if (!isNaN(answerNumber)) {
-                            return answerNumber === question.choices[0].text.number;
-                        }
+                }
+                if (isSimpleNumericalAnswer(question.choices[0])) {
+                    const answerNumber = parseFloat(answerText);
+                    if (!isNaN(answerNumber)) {
+                        return answerNumber === question.choices[0].number;
                     }
                 }
             } else if (question.type === 'Short') {
                 return question.choices.some(
-                    (choice) => choice.text.text.toUpperCase() === answerText.toUpperCase()
+                    (choice) => choice.text.toUpperCase() === answerText.toUpperCase()
                 );
             }
         }
@@ -474,9 +461,9 @@ const ManageRoom: React.FC = () => {
                             <div className="preview-and-result-container">
 
                                 {currentQuestion && (
-                                    <Question
+                                    <QuestionDisplay
                                         showAnswer={false}
-                                        question={currentQuestion?.question}
+                                        question={currentQuestion?.question as Question}
                                     />
                                 )}
 
