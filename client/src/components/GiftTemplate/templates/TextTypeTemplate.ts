@@ -35,7 +35,7 @@ export function FormattedTextTemplate(formattedText: TextFormat): string {
         case 'moodle':
         case 'plain':
             // Replace newlines with <br> tags
-            result = formatText.replace(/(?:\r\n|\r|\n)/g, '<br>');
+            result = replaceNewlinesOutsideSVG(formatText);
             break;
         case 'html':
             // Strip outer paragraph tags (not a great approach with regex)
@@ -49,4 +49,26 @@ export function FormattedTextTemplate(formattedText: TextFormat): string {
             throw new Error(`Unsupported text format: ${formattedText.format}`);
     }
     return DOMPurify.sanitize(result);
+}
+
+// Function to replace \n outside of SVG paths
+function replaceNewlinesOutsideSVG(text: string): string {
+    const svgPathRegex = /<path[^>]*d="([^"]*)"[^>]*>/g;
+    let result = '';
+    let lastIndex = 0;
+
+    // Iterate over all SVG paths
+    text.replace(svgPathRegex, (match, _p1, offset) => {
+        // Append text before the SVG path, replacing \n with <br>
+        result += text.slice(lastIndex, offset).replace(/(?:\r\n|\r|\n)/g, '<br>');
+        // Append the SVG path without replacing \n
+        result += match;
+        // Update the last index
+        lastIndex = offset + match.length;
+        return match;
+    });
+
+    // Append the remaining text, replacing \n with <br>
+    result += text.slice(lastIndex).replace(/(?:\r\n|\r|\n)/g, '<br>');
+    return result;
 }
