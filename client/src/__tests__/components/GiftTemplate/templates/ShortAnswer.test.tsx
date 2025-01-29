@@ -1,63 +1,35 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ShortAnswer from 'src/components/GiftTemplate/templates/ShortAnswer';
-import { TemplateOptions, ShortAnswer as ShortAnswerType } from 'src/components/GiftTemplate/templates/types';
+import ShortAnswer from 'src/components/GiftTemplate/templates/ShortAnswerTemplate';
+import { TemplateOptions } from 'src/components/GiftTemplate/templates/types';
+import { parse, ShortAnswerQuestion } from 'gift-pegjs';
 
 // Mock the nanoid function
 jest.mock('nanoid', () => ({
     nanoid: jest.fn(() => 'mocked-id')
   }));
 
-const plainTextMock: TemplateOptions & ShortAnswerType = {
-    type: 'Short',
-    hasEmbeddedAnswers: false,
-    title: 'Sample Short Answer Title',
-    stem: { format: 'plain', text: 'Sample Stem' },
-    choices: [
-        { text: { format: 'plain' , text: 'Answer 1'}, isCorrect: true, feedback: { format: 'plain' , text: 'Correct!'}, weight: 1 },
-        { text: { format: 'plain' , text: 'Answer 2'}, isCorrect: true, feedback: { format: 'plain' , text: 'Correct!'}, weight: 1 }
-    ],
-    globalFeedback: { format: 'plain', text: 'Sample Global Feedback' }
-};
+const plainTextMock: TemplateOptions & ShortAnswerQuestion = 
+    parse(`
+    ::Sample Short Answer Title:: Sample Stem {=%1%Answer 1#Correct! =%1%Answer 2#Correct!####Sample Global Feedback}
+        `)[0] as ShortAnswerQuestion;
 
-const katexMock: TemplateOptions & ShortAnswerType = {
-    type: 'Short',
-    hasEmbeddedAnswers: false,
-    title: 'Sample Short Answer Title',
-    stem: { format: 'html', text: '$$\\frac{zzz}{yyy}$$' },
-    choices: [
-        { text: { format: 'html' , text: 'Answer 1'}, isCorrect: true, feedback: { format: 'html' , text: 'Correct!'}, weight: 1 },
-        { text: { format: 'html' , text: 'Answer 2'}, isCorrect: true, feedback: { format: 'moodle' , text: 'Correct!'}, weight: 1 }
-    ],
-    globalFeedback: { format: 'html', text: 'Sample Global Feedback' }
-};
+const katexMock: TemplateOptions & ShortAnswerQuestion = 
+    parse(`
+    ::Sample Short Answer Title:: $$\\frac\\{zzz\\}\\{yyy\\}$$ {=%1%Answer 1#Correct! =%1%Answer 2#Correct!####[html]Sample Global Feedback}
+        `)[0] as ShortAnswerQuestion;
 
-const moodleMock: TemplateOptions & ShortAnswerType = {
-    type: 'Short',
-    hasEmbeddedAnswers: false,
-    title: 'Sample Short Answer Title',
-    stem: { format: 'moodle', text: 'Sample Stem' },
-    choices: [
-        { text: { format: 'moodle' , text: 'Answer 1'}, isCorrect: true, feedback: { format: 'plain' , text: 'Correct!'}, weight: 1 },
-        { text: { format: 'moodle' , text: 'Answer 2'}, isCorrect: true, feedback: { format: 'plain' , text: 'Correct!'}, weight: 1 }
-    ],
-    globalFeedback: { format: 'moodle', text: 'Sample Global Feedback' }
-};
 
-const imageMock: TemplateOptions & ShortAnswerType = {
-    type: 'Short',
-    hasEmbeddedAnswers: false,
-    title: 'Sample Short Answer Title with Image',
-    stem: { format: 'markdown', text: 'Sample Stem with Image' },
-    choices: [
-        { text: { format: 'markdown', text: 'Answer 1' }, isCorrect: true, feedback: { format: 'plain', text: 'Correct!' }, weight: 1 },
-        { text: { format: 'markdown', text: 'Answer 2' }, isCorrect: true, feedback: { format: 'plain', text: 'Correct!' }, weight: 1 },
-        { text: { format: 'markdown', text: '<img src="https://via.placeholder.com/150" alt="Sample Image" />' }, isCorrect: true, feedback: { format: 'plain', text: 'Correct!' }, weight: 1 }
-    ],
-    globalFeedback: { format: 'plain', text: 'Sample Global Feedback with Image' }
-};
+const moodleMock: TemplateOptions & ShortAnswerQuestion = 
+    parse(`
+    ::Sample Short Answer Title:: Sample Stem {=%1%Answer 1#Correct! =%1%Answer 2#Correct!####[moodle]Sample Global Feedback}
+        `)[0] as ShortAnswerQuestion;
 
+const imageMock: TemplateOptions & ShortAnswerQuestion = 
+    parse(`
+    ::Sample Short Answer Title with Image::[markdown]Sample Stem with Image ![](https\\://example.com/cat.jpg) {=%1%Answer 1#Correct! =%1%Answer 2#Correct!####Sample Global Feedback with Image}
+        `)[0] as ShortAnswerQuestion;
 
 test('ShortAnswer snapshot test with plain text', () => {
     const { asFragment } = render(<ShortAnswer {...plainTextMock} />);

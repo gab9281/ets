@@ -10,8 +10,6 @@ class Folders {
 
     async create(title, userId) {
 
-        console.log("LOG: create", title, userId);
-
         if (!title || !userId) {
             throw new Error('Missing required parameter(s)');
         }
@@ -86,13 +84,18 @@ class Folders {
         return true;
     }
 
-    async rename(folderId, newTitle) {
+    async rename(folderId, userId, newTitle) {
         await this.db.connect()
         const conn = this.db.getConnection();
 
         const foldersCollection = conn.collection('folders');
 
-        const result = await foldersCollection.updateOne({ _id: ObjectId.createFromHexString(folderId) }, { $set: { title: newTitle } })
+        // see if a folder exists for this user with the new title
+        const existingFolder = await foldersCollection.findOne({ title: newTitle, userId: userId });
+
+        if (existingFolder) throw new Error(`Folder with name '${newTitle}' already exists.`);
+
+        const result = await foldersCollection.updateOne({ _id: ObjectId.createFromHexString(folderId), userId: userId }, { $set: { title: newTitle } })
 
         if (result.modifiedCount != 1) return false;
 
@@ -100,7 +103,6 @@ class Folders {
     }
 
     async duplicate(folderId, userId) {
-        console.log("LOG: duplicate", folderId, userId);
         const conn = this.db.getConnection();
         const foldersCollection = conn.collection('folders');
 
@@ -112,7 +114,7 @@ class Folders {
         const theUserId = userId;
         // Use the utility function to generate a unique title
         const newFolderTitle = await generateUniqueTitle(sourceFolder.title, async (title) => {
-            console.log(`generateUniqueTitle(${title}): userId`, theUserId);
+            // console.log(`generateUniqueTitle(${title}): userId`, theUserId);
             return await foldersCollection.findOne({ title: title, userId: theUserId });
         });
 
@@ -124,9 +126,9 @@ class Folders {
 
         // copy the quizzes from source folder to destination folder
         const content = await this.getContent(folderId);
-        console.log("folders.duplicate: found content", content);
+        // console.log("folders.duplicate: found content", content);
         for (const quiz of content) {
-            console.log("folders.duplicate: creating quiz (copy)", quiz);
+            // console.log("folders.duplicate: creating quiz (copy)", quiz);
             const result = await this.quizModel.create(quiz.title, quiz.content, newFolderId.toString(), userId);
             if (!result) {
                 throw new Error('Failed to create duplicate quiz');
@@ -137,14 +139,12 @@ class Folders {
     }
 
     async folderExists(title, userId) {
-        console.log("LOG: folderExists", title, userId);
         await this.db.connect();
         const conn = this.db.getConnection();
     
         const foldersCollection = conn.collection('folders');           
-        const existingFolder = await foldersCollection.findOne({ title: title, userId: userId });        
-        
-        return !!existingFolder;
+        const existingFolder = await foldersCollection.findOne({ title: title, userId: userId });
+        return existingFolder ? true : false;
     }
 
 

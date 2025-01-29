@@ -126,8 +126,15 @@ class FoldersController {
             if (owner != req.user.userId) {
                 throw new AppError(FOLDER_NOT_FOUND);
             }
-    
-            const result = await this.folders.rename(folderId, newTitle);
+
+            // Is this the new title already taken by another folder that I own?
+            const exists = await this.folders.folderExists(newTitle, req.user.userId);
+
+            if (exists) {
+                throw new AppError(FOLDER_ALREADY_EXISTS);
+            }
+
+            const result = await this.folders.rename(folderId, req.user.userId, newTitle);
     
             if (!result) {
                 throw new AppError(UPDATE_FOLDER_ERROR);

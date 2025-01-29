@@ -20,7 +20,7 @@ import {
     TableRow
 } from '@mui/material';
 import { StudentType } from '../../Types/StudentType';
-import { formatLatex } from '../GiftTemplate/templates/TextType';
+import { formatLatex } from '../GiftTemplate/templates/TextTypeTemplate';
 
 interface LiveResultsProps {
     socket: Socket | null;

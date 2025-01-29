@@ -2,56 +2,27 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TrueFalse from 'src/components/GiftTemplate/templates';
-import { TemplateOptions, TrueFalse as TrueFalseType } from 'src/components/GiftTemplate/templates/types';
+import { TemplateOptions } from 'src/components/GiftTemplate/templates/types';
+import { parse, ShortAnswerQuestion, TrueFalseQuestion } from 'gift-pegjs';
 
 // Mock the nanoid function
 jest.mock('nanoid', () => ({
     nanoid: jest.fn(() => 'mocked-id')
-  }));
+}));
 
-const plainTextMock: TemplateOptions & TrueFalseType = {
-    type: 'TF',
-    hasEmbeddedAnswers: false,
-    title: 'Sample True/False Title',
-    stem: { format: 'plain', text: 'Sample Stem' },
-    isTrue: true,
-    trueFeedback: { format: 'plain', text: 'Correct!' },
-    falseFeedback: { format: 'plain', text: 'Incorrect!' },
-    globalFeedback: { format: 'plain', text: 'Sample Global Feedback' }
-};
+const plainTextMock: TemplateOptions & TrueFalseQuestion =
+    parse(`::Sample True/False Title::Sample Stem {T#Correct!#Incorrect!####Sample Global Feedback}`)[0] as TrueFalseQuestion;
 
-const katexMock: TemplateOptions & TrueFalseType = {
-    type: 'TF',
-    hasEmbeddedAnswers: false,
-    title: 'Sample True/False Title',
-    stem: { format: 'html', text: '$$\\frac{zzz}{yyy}$$' },
-    isTrue: true,
-    trueFeedback: { format: 'moodle', text: 'Correct!' },
-    falseFeedback: { format: 'html', text: 'Incorrect!' },
-    globalFeedback: { format: 'markdown', text: 'Sample Global Feedback' }
-};
+const katexMock: TemplateOptions & TrueFalseQuestion =
+    parse(`::Sample True/False Title::$$\\frac\\{zzz\\}\\{yyy\\}$$ {T#Correct!#Incorrect!####Sample Global Feedback}`)[0] as TrueFalseQuestion;
 
-const moodleMock: TemplateOptions & TrueFalseType = {
-    type: 'TF',
-    hasEmbeddedAnswers: false,
-    title: 'Sample True/False Title',
-    stem: { format: 'moodle', text: 'Sample Stem' },
-    isTrue: true,
-    trueFeedback: { format: 'moodle', text: 'Correct!' },
-    falseFeedback: { format: 'moodle', text: 'Incorrect!' },
-    globalFeedback: { format: 'moodle', text: 'Sample Global Feedback' }
-};
+const moodleMock: TemplateOptions & TrueFalseQuestion =
+    parse(`::Sample True/False Title::[moodle]Sample Stem{TRUE#Correct!#Incorrect!####Sample Global Feedback}`)[0] as TrueFalseQuestion;
 
-const imageMock: TemplateOptions & TrueFalseType = {
-    type: 'TF',
-    hasEmbeddedAnswers: false,
-    title: 'Sample Short Answer Title with Image',
-    stem: { format: 'plain', text: 'Sample Stem with Image' },
-    trueFeedback: { format: 'moodle', text: 'Correct!' },
-    isTrue: true,
-    falseFeedback: { format: 'moodle', text: 'Incorrect!' },
-    globalFeedback: { format: 'plain', text: '<img src="https://via.placeholder.com/150" alt="Sample Image" />'  }
-};
+const imageMock: TemplateOptions & ShortAnswerQuestion =
+    parse(`::Sample Short Answer Title with Image::
+        [markdown]Sample Stem with Image ![](https\\://example.com/cat.gif)
+        {=A =B =C####[html]<img src\\="https\\://via.placeholder.com/150" alt\\="Sample Image" />}`)[0] as ShortAnswerQuestion;
 
 test('TrueFalse snapshot test with plain text', () => {
     const { asFragment } = render(<TrueFalse {...plainTextMock} />);

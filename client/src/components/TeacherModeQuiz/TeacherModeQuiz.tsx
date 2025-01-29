@@ -1,13 +1,14 @@
 // TeacherModeQuiz.tsx
 import React, { useEffect, useState } from 'react';
 
-import QuestionComponent from '../Questions/Question';
+import QuestionComponent from '../QuestionsDisplay/QuestionDisplay';
 
 import '../../pages/Student/JoinRoom/joinRoom.css';
 import { QuestionType } from '../../Types/QuestionType';
 // import { QuestionService } from '../../services/QuestionService';
 import DisconnectButton from 'src/components/DisconnectButton/DisconnectButton';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import { Question } from 'gift-pegjs';
 
 interface TeacherModeQuizProps {
     questionInfos: QuestionType;
@@ -63,7 +64,7 @@ const TeacherModeQuiz: React.FC<TeacherModeQuizProps> = ({
             ) : (
                 <QuestionComponent
                     handleOnSubmitAnswer={handleOnSubmitAnswer}
-                    question={questionInfos.question}
+                    question={questionInfos.question as Question}
                 />
             )}
 
@@ -76,7 +77,7 @@ const TeacherModeQuiz: React.FC<TeacherModeQuizProps> = ({
                     {feedbackMessage}
                 <QuestionComponent
                     handleOnSubmitAnswer={handleOnSubmitAnswer}
-                    question={questionInfos.question}
+                    question={questionInfos.question as Question}
                     showAnswer={true}
                     />
                 </DialogContent>

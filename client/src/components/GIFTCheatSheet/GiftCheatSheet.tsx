@@ -23,8 +23,8 @@ const GiftCheatSheet: React.FC = () => {
 
     const QuestionVraiFaux = "2+2 \\= 4 ? {T}\n// Utilisez les valeurs {T}, {F}, {TRUE} \net {FALSE}.";
     const QuestionChoixMul = "Quelle ville est la capitale du Canada? {\n~ Toronto\n~ Montréal\n= Ottawa #Bonne réponse!\n}\n// La bonne réponse est Ottawa";
-    const QuestionChoixMulMany = "Quelles villes trouve-t-on au Canada? { \n~ %33.3% Montréal \n ~ %33.3% Ottawa \n ~ %33.3% Vancouver \n ~ %-100% New York \n ~ %-100% Paris \n#### La bonne réponse est Montréal, Ottawa et Vancouver \n}\n/ Utilisez tilde (signe de vague) pour toutes les réponses.\n// On doit indiquer le pourcentage de chaque réponse.";
-    const QuestionCourte ="Avec quoi ouvre-t-on une porte? { \n= clé \n= clef \n}\n/ Permet de fournir plusieurs bonnes réponses.\n// Note: La casse n'est pas prise en compte.";
+    const QuestionChoixMulMany = "Quelles villes trouve-t-on au Canada? { \n~ %33.3% Montréal \n ~ %33.3% Ottawa \n ~ %33.3% Vancouver \n ~ %-100% New York \n ~ %-100% Paris \n#### La bonne réponse est Montréal, Ottawa et Vancouver \n}\n// Utilisez tilde (signe de vague) pour toutes les réponses.\n// On doit indiquer le pourcentage de chaque réponse.";
+    const QuestionCourte ="Avec quoi ouvre-t-on une porte? { \n= clé \n= clef \n}\n// Permet de fournir plusieurs bonnes réponses.\n// Note: La casse n'est pas prise en compte.";
     const QuestionNum ="// Question de plage mathématique. \n Quel est un nombre de 1 à 5 ? {\n#3:2\n}\n \n// Plage mathématique spécifiée avec des points de fin d'intervalle. \n Quel est un nombre de 1 à 5 ? {\n#1..5\n} \n\n// Réponses numériques multiples avec crédit partiel et commentaires.\nQuand est né Ulysses S. Grant ? {\n# =1822:0 # Correct ! Crédit complet. \n=%50%1822:2 # Il est né en 1822. Demi-crédit pour être proche.\n}";
     return (
         <div className="gift-cheat-sheet">
@@ -123,7 +123,7 @@ const GiftCheatSheet: React.FC = () => {
             </div>
 
             <div className="question-type">
-                <h4> 7. Paramètres optionnels </h4>
+                <h4> 7. Caractères spéciaux </h4>
                 <p>
                     Si vous souhaitez utiliser certains caractères spéciaux dans vos énoncés,
                     réponses ou feedback, vous devez «échapper» ces derniers en ajoutant un \
@@ -155,7 +155,7 @@ const GiftCheatSheet: React.FC = () => {
 
             <div className="question-type">
                 <h4> 9. Images </h4>
-                <p>Pour insérer une image dans une question ou dans une réponse, vous devez utiliser la syntaxe suivante:</p>
+                <p>Il est possible d&apos;insérer une image dans une question, une réponse (choix multiple) et dans une rétroaction. D&apos;abord, <strong>le format de l&apos;élément doit être [markdown]</strong>. Ensuite utilisez la syntaxe suivante&nbsp;:</p>
                 <pre>
                     <code className="question-code-block">
                         {'!['}
@@ -173,8 +173,14 @@ const GiftCheatSheet: React.FC = () => {
                         {'[markdown]Ceci est un chat: \n![Image de chat](https\\://www.example.com\\:8000/chat.jpg "Chat mignon")\n{T}'}
                     </code>
                 </pre>
+                <p>Exemple d&apos;une question à choix multiple avec l&apos;image d&apos;un chat dans une rétroaction&nbsp;:</p>
+                <pre>
+                    <code className="question-code-block">
+                        {`[markdown]Qui a initié le développement d'ÉvalueTonSavoir {=ÉTS#OUI! ![](https\\://www.etsmtl.ca/assets/img/ets.svg "\\=50px")
+                        ~EPFL#Non...}`}
+                    </code>
+                </pre>
                 <p>Note&nbsp;: les images étant spécifiées avec la syntaxe Markdown dans GIFT, on doit échapper les caractères spéciales (:) dans l&apos;URL de l&apos;image.</p>
-                <p>Note&nbsp;: On ne peut utiliser les images dans les messages de rétroaction (GIFT), car les rétroactions ne supportent pas le texte avec formatage (Markdown).</p>
                 <p style={{ color: 'red' }}>
                     Attention: l&apos;ancienne fonctionnalité avec les balises <code>{'<img>'}</code> n&apos;est plus
                     supportée.
