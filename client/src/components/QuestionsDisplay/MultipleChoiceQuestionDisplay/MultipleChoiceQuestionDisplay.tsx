@@ -39,7 +39,8 @@ const MultipleChoiceQuestionDisplay: React.FC<Props> = (props) => {
                                 variant="text"
                                 className="button-wrapper"
                                 onClick={() => !showAnswer && handleOnClickAnswer(choice.formattedText.text)}>
-                                { showAnswer && (choice.isCorrect ? '✅' : '❌')}
+                                {showAnswer? (<div> {(choice.isCorrect ? '✅' : '❌')}</div>)
+                                :``}
                                 <div className={`circle ${selected}`}>{alphabet[i]}</div>
                                 <div className={`answer-text ${selected}`}>
                                     <div dangerouslySetInnerHTML={{ __html: FormattedTextTemplate(choice.formattedText) }} />
